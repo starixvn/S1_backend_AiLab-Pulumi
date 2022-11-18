@@ -2,4 +2,4 @@ config:
   ConfigService:containerPort: "7242"
   ConfigService:cpu: "4"
   ConfigService:memory: "2"
-  aws:region: ap-southeast-1
+  ConfigService:desiredCount: "1"
