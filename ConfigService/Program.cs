@@ -1,20 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using Pulumi;
 using Aws = Pulumi.Aws;
 using Awsx = Pulumi.Awsx;
 
-return await Deployment.RunAsync(() => 
+return await Deployment.RunAsync(() =>
 {
     //todo:取得外部傳入的參數
     var brand = $"ailab";
     var env = "DEV";
     var version = $"3772c1b";
-  
+
     //設定執行參數
     var config = new Config();
     var name = config.Require("name");
     var registry = config.Require("registry");
-    var vpcId = config.Require("vpcId");
+    var network = config.RequireObject<JsonElement>("network");
+    var vpcId = network.GetProperty("vpcId").GetRawText();
+    var subnets = new InputList<string>();
+    foreach (var subnet in network.GetProperty("subnets").EnumerateArray())
+    {
+        var subnetName = subnet.GetRawText();
+        if (!string.IsNullOrEmpty(subnetName))
+        {
+            subnets.Add(subnetName);
+        }    
+    }
 
     var containerPort = config.GetInt32("containerPort") ?? 80;
     var cpu = config.GetInt32("cpu") ?? 4;
@@ -32,10 +43,7 @@ return await Deployment.RunAsync(() =>
         DesiredCount = desiredCount,
         NetworkConfiguration = new Aws.Ecs.Inputs.ServiceNetworkConfigurationArgs
         {
-            Subnets = new InputList<string>
-            {
-                "arn:aws:ec2:ap-southeast-1:761771912479:subnet/subnet-09332247c64aff074",
-            }
+            Subnets = subnets
         },
         TaskDefinitionArgs = new Awsx.Ecs.Inputs.EC2ServiceTaskDefinitionArgs
         {

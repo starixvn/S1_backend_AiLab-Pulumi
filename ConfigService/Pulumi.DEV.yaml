@@ -1,5 +1,12 @@
 config:
   ConfigService:containerPort: "7242"
-  ConfigService:cpu: "4"
+  ConfigService:cpu: "4" 
   ConfigService:memory: "2"
   ConfigService:desiredCount: "1"
+  ConfigService:network:
+    subnets:
+    - subnet-09332247c64aff074
+    - subnet-01756b250ebae0fae
+    - subnet-0ea1391c518fe60dc
+    vpcId: vpc-10889e77
+
