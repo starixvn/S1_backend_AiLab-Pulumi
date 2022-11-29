@@ -4,7 +4,9 @@ runtime: dotnet
 
 config:
   aws:region: ap-southeast-1
-  ConfigService:name: config
-  ConfigService:registry: 13.213.82.69/configservice/configservice
+  ConfigService:Name: Config
+  ConfigService:Registry: 13.213.82.69/configservice/configservice
+  ConfigService:VpcId: vpc-10889e77
+  ConfigService:IamRole: arn:aws:iam::761771912479:user/ailab-EC2
 
 

@@ -1,61 +1,102 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
+
 using Pulumi;
+using Pulumi.Aws.Ec2;
+using Pulumi.Aws.Ecs.Inputs;
+using Pulumi.Awsx.Awsx.Inputs;
+using Pulumi.Awsx.Ecs.Inputs;
 using Aws = Pulumi.Aws;
 using Awsx = Pulumi.Awsx;
 
 return await Deployment.RunAsync(() =>
 {
     //todo:取得外部傳入的參數
-    var brand = $"ailab";
+    var siteId = 1;
+    var brand = $"AI{siteId}";
     var env = "DEV";
     var version = $"3772c1b";
 
     //設定執行參數
     var config = new Config();
-    var name = config.Require("name");
-    var registry = config.Require("registry");
+    var name = config.Require("Name");
+    var registry = config.Require("Registry");
+    var vpcId = config.Require("VpcId");
+    var iamRole = config.Require("IamRole");
+
     var network = config.RequireObject<JsonElement>("network");
-    var vpcId = network.GetProperty("vpcId").GetRawText();
+
+    var vpc = Vpc.Get(vpcId, vpcId);
+
     var subnets = new InputList<string>();
-    foreach (var subnet in network.GetProperty("subnets").EnumerateArray())
+    foreach (var subnet in network.GetProperty("Subnets").EnumerateArray())
     {
-        var subnetName = subnet.GetRawText();
+        var subnetName = subnet.GetString();
         if (!string.IsNullOrEmpty(subnetName))
         {
             subnets.Add(subnetName);
-        }    
+        }
+    }
+
+    var securityGroups = new InputList<string>();
+    foreach (var securityGroup in network.GetProperty("SecurityGroups").EnumerateArray())
+    {
+        var securityGroupId = securityGroup.GetString();
+        if (!string.IsNullOrEmpty(securityGroupId))
+        {
+            securityGroups.Add(securityGroupId);
+        }
     }
 
     var containerPort = config.GetInt32("containerPort") ?? 80;
     var cpu = config.GetInt32("cpu") ?? 4;
     var memory = config.GetInt32("memory") ?? 2;
     var desiredCount = config.GetInt32("desiredCount") ?? 1;
-
-    var imageUri = $"{registry}:{version}";
     var serviceName = $"{brand}-{env}-{name}-{version}";
-    var cluster = new Aws.Ecs.Cluster($"{brand}-{env}");
-    var loadbalancer = new Awsx.Lb.ApplicationLoadBalancer($"{brand}-{env}-LB");
-    var repo = new Awsx.Ecr.Repository("repo");
-    var image = new Awsx.Ecr.Image("image", new()
+
+    //var imageUri = $"{registry}:{version}";
+    //var image = Pulumi.Docker.RegistryImage.Get(imageUri, imageUri);
+    //Log.Info($"imageUri:{image.Urn}");
+    var repo = new Awsx.Ecr.Repository("test");
+    var image = new Awsx.Ecr.Image("test", new Awsx.Ecr.ImageArgs
     {
         RepositoryUrl = repo.Url,
         Path = "./app",
     });
 
-    //建立服務
+
+    //建立TargetGroup服務
+    var targetGroup = new Aws.LB.TargetGroup($"{brand}-{env}-{name}-TG", new()
+    {
+        Port = containerPort,
+        Protocol = "HTTP",
+        VpcId = vpc.Id,
+        TargetType = "instance"
+    });
+
+    //建立ECS服務
     var service = new Awsx.Ecs.EC2Service(serviceName, new()
     {
-        Cluster = cluster.Arn,
+        Cluster = $"{brand}-{env}",
+        IamRole = iamRole,
         DesiredCount = desiredCount,
-        NetworkConfiguration = new Aws.Ecs.Inputs.ServiceNetworkConfigurationArgs
+        LoadBalancers = new[]
+        {
+            new ServiceLoadBalancerArgs
+            {
+                TargetGroupArn = targetGroup.Arn,
+                ContainerName = serviceName,
+                ContainerPort = containerPort,
+            },
+        },
+        NetworkConfiguration = new ServiceNetworkConfigurationArgs
         {
             Subnets = subnets,
-            SecurityGroups =  new InputList<string> { "sg-08231292e5f0287c9" }
+            SecurityGroups = securityGroups
         },
-        TaskDefinitionArgs = new Awsx.Ecs.Inputs.EC2ServiceTaskDefinitionArgs
+        TaskDefinitionArgs = new EC2ServiceTaskDefinitionArgs
         {
-            Container = new Awsx.Ecs.Inputs.TaskDefinitionContainerDefinitionArgs
+            Container = new TaskDefinitionContainerDefinitionArgs
             {
                 Name = serviceName,
                 Image = image.ImageUri,
@@ -64,25 +105,33 @@ return await Deployment.RunAsync(() =>
                 Essential = true,
                 PortMappings = new[]
                 {
-                    new Awsx.Ecs.Inputs.TaskDefinitionPortMappingArgs
+                    new TaskDefinitionPortMappingArgs
                     {
                         ContainerPort = containerPort,
-                        ////TargetGroup =  new Aws.LB.TargetGroup($"{env}-{name}-{version}-TG", new()
-                        //{
-                        //    Port = 80,
-                        //    Protocol = "HTTP",
-                        //    VpcId = vpcId
-                        //}),
-                        TargetGroup = loadbalancer.DefaultTargetGroup  
+                        TargetGroup =  targetGroup,
                     },
                 },
+            },
+            LogGroup = new DefaultLogGroupArgs
+            {
+                Skip = true
+            },
+            TaskRole = new DefaultRoleWithPolicyArgs
+            {
+                Skip = true,
+            },
+            ExecutionRole = new DefaultRoleWithPolicyArgs
+            {
+                Skip = true,
             },
         },
     });
 
     return new Dictionary<string, object?>
     {
-        ["serviceName"] = service.GetResourceName(),
+        ["Image"] = image.GetResourceName(),
+        ["ServiceName"] = service.GetResourceName(),
+        ["TargetGroup"] = targetGroup.GetResourceName(),
     };
 });
 
