@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 using Pulumi;
@@ -24,29 +25,9 @@ return await Deployment.RunAsync(() =>
     var vpcId = config.Require("VpcId");
     var iamRole = config.Require("IamRole");
 
-    var network = config.RequireObject<JsonElement>("network");
-
     var vpc = Vpc.Get(vpcId, vpcId);
-
-    var subnets = new InputList<string>();
-    foreach (var subnet in network.GetProperty("Subnets").EnumerateArray())
-    {
-        var subnetName = subnet.GetString();
-        if (!string.IsNullOrEmpty(subnetName))
-        {
-            subnets.Add(subnetName);
-        }
-    }
-
-    var securityGroups = new InputList<string>();
-    foreach (var securityGroup in network.GetProperty("SecurityGroups").EnumerateArray())
-    {
-        var securityGroupId = securityGroup.GetString();
-        if (!string.IsNullOrEmpty(securityGroupId))
-        {
-            securityGroups.Add(securityGroupId);
-        }
-    }
+    var subnets = config.RequireObject<JsonElement>("Subnets").EnumerateArray().Select(i => i.GetString()).ToArray();
+    var securityGroups = config.RequireObject<JsonElement>("SecurityGroups").EnumerateArray().Select(i => i.GetString()).ToArray();
 
     var containerPort = config.GetInt32("containerPort") ?? 80;
     var cpu = config.GetInt32("cpu") ?? 4;
@@ -58,12 +39,11 @@ return await Deployment.RunAsync(() =>
     //var image = Pulumi.Docker.RegistryImage.Get(imageUri, imageUri);
     //Log.Info($"imageUri:{image.Urn}");
     var repo = new Awsx.Ecr.Repository("test");
-    var image = new Awsx.Ecr.Image("test", new Awsx.Ecr.ImageArgs
+    var image = new Awsx.Ecr.Image(serviceName, new Awsx.Ecr.ImageArgs
     {
         RepositoryUrl = repo.Url,
         Path = "./app",
     });
-
 
     //建立TargetGroup服務
     var targetGroup = new Aws.LB.TargetGroup($"{brand}-{env}-{name}-TG", new()
@@ -78,17 +58,17 @@ return await Deployment.RunAsync(() =>
     var service = new Awsx.Ecs.EC2Service(serviceName, new()
     {
         Cluster = $"{brand}-{env}",
-        IamRole = iamRole,
+        //IamRole = iamRole,
         DesiredCount = desiredCount,
-        LoadBalancers = new[]
-        {
-            new ServiceLoadBalancerArgs
-            {
-                TargetGroupArn = targetGroup.Arn,
-                ContainerName = serviceName,
-                ContainerPort = containerPort,
-            },
-        },
+        //LoadBalancers = new[]
+        //{
+        //    new ServiceLoadBalancerArgs
+        //    {
+        //        TargetGroupArn = targetGroup.Arn,
+        //        ContainerName = serviceName,
+        //        ContainerPort = containerPort,
+        //    },
+        //},
         NetworkConfiguration = new ServiceNetworkConfigurationArgs
         {
             Subnets = subnets,
@@ -108,7 +88,7 @@ return await Deployment.RunAsync(() =>
                     new TaskDefinitionPortMappingArgs
                     {
                         ContainerPort = containerPort,
-                        TargetGroup =  targetGroup,
+                        TargetGroup =  targetGroup
                     },
                 },
             },
@@ -124,8 +104,48 @@ return await Deployment.RunAsync(() =>
             {
                 Skip = true,
             },
+            NetworkMode = "bridge",
         },
     });
+
+
+
+
+
+    //var autoScalingGroup = new Aws.AutoScaling.Group("testGroup", new()
+    //{
+    //    Tags = new[]
+    //{
+    //        new Aws.AutoScaling.Inputs.GroupTagArgs
+    //        {
+    //            Key = "AmazonECSManaged",
+    //            Value = "true",
+    //            PropagateAtLaunch = true,
+    //        },
+    //    },
+    //});
+
+    //var capacityProvider = new Aws.Ecs.CapacityProvider("testCapacityProvider", new()
+    //{
+    //    AutoScalingGroupProvider = new CapacityProviderAutoScalingGroupProviderArgs
+    //    {
+    //        AutoScalingGroupArn = autoScalingGroup.Arn,
+    //        ManagedTerminationProtection = "ENABLED",
+    //        ManagedScaling = new CapacityProviderAutoScalingGroupProviderManagedScalingArgs
+    //        {
+    //            MaximumScalingStepSize = 3,
+    //            MinimumScalingStepSize = 1,
+    //            Status = "ENABLED",
+    //            TargetCapacity = 10,
+    //        },
+    //    },
+    //});
+
+
+
+
+
+
 
     return new Dictionary<string, object?>
     {

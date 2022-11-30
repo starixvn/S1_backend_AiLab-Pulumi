@@ -3,11 +3,10 @@ config:
   ConfigService:cpu: "4"
   ConfigService:desiredCount: "1"
   ConfigService:memory: "2"
-  ConfigService:network:
-    SecurityGroups:
+  ConfigService:SecurityGroups:
     - sg-0c98649099677665b
     - sg-070f508e34d6a96d3
-    Subnets:
+  ConfigService:Subnets:
     - subnet-01e7e7bda293d8785
     - subnet-0d918c212f9ba2a81
     - subnet-0e3a2c7c694c8601b

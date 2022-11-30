@@ -1,0 +1,11 @@
+name: AutoScalingGroup
+description: Create EC2 AutoScalingGroup.
+runtime: dotnet
+
+config:
+  AutoScalingGroup:Region: ap-southeast-1
+  AutoScalingGroup:ImageId: ami-0b91f3efad17de577
+  AutoScalingGroup:AvailabilityZones:
+    - ap-southeast-1a
+    - ap-southeast-1b
+    - ap-southeast-1c
