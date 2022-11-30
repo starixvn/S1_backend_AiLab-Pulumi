@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Pulumi;
@@ -18,7 +19,7 @@ return await Deployment.RunAsync(() =>
     var instanceType = config.Require("InstanceType");
     var launchTemplate = new Aws.Ec2.LaunchTemplate($"{shortName}-LT", new()
     {
-        NamePrefix = namePrefix,
+        NamePrefix = shortName,
         ImageId = imageId,
         InstanceType = instanceType,
     });
@@ -48,11 +49,31 @@ return await Deployment.RunAsync(() =>
                 Value = "true",
                 PropagateAtLaunch = true,
             },
+            new Aws.AutoScaling.Inputs.GroupTagArgs
+            {
+                Key = "Name",
+                Value = shortName,
+                PropagateAtLaunch = true,
+            },
+            new Aws.AutoScaling.Inputs.GroupTagArgs
+            {
+                Key = "Create-By",
+                Value = "Pulumi",
+                PropagateAtLaunch = true,
+            },
+            new Aws.AutoScaling.Inputs.GroupTagArgs
+            {
+                Key = "Create-Time",
+                Value = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm"),
+                PropagateAtLaunch = true,
+            },
         },
     });
 
-    //ECS Capacity Provider
-    var capacityProvider = new Aws.Ecs.CapacityProvider($"{shortName}-Provider", new()
+    //ECS Cluster
+    var cluster = new Aws.Ecs.Cluster($"{shortName}-Cluster");
+
+    var capacityProvider = new Aws.Ecs.CapacityProvider($"{shortName}-CP", new()
     {
         AutoScalingGroupProvider = new CapacityProviderAutoScalingGroupProviderArgs
         {
@@ -67,15 +88,31 @@ return await Deployment.RunAsync(() =>
         },
     });
 
-    //ECS Cluster
-    var cluster = new Aws.Ecs.Cluster($"{shortName}-Cluster");
+    var ClusterCapacityProviders = new Aws.Ecs.ClusterCapacityProviders($"{shortName}-CCP", new()
+    {
+        ClusterName = cluster.Name,
+        CapacityProviders = new[]
+        {
+            capacityProvider.Name,
+        },
+        DefaultCapacityProviderStrategies = new[]
+        {
+            new ClusterCapacityProvidersDefaultCapacityProviderStrategyArgs
+            {
+                Base = 1,
+                Weight = 100,
+                CapacityProvider = capacityProvider.Name,
+            },
+        },
+    });
 
     return new Dictionary<string, object?>
     {
         ["LaunchTemplate"] = launchTemplate.GetResourceName(),
-        ["AutoScalingGroup"] = autoScalingGroup.GetResourceName(),
-        ["CapacityProvider"] = capacityProvider.GetResourceName(),
+        ["AutoScalingGroup"] = autoScalingGroup.GetResourceName(),   
         ["Cluster"] = cluster.GetResourceName(),
+        ["CapacityProvider"] = capacityProvider.GetResourceName(),
+        ["ClusterCapacityProviders"] = ClusterCapacityProviders.GetResourceName(),
     };
 });
 
