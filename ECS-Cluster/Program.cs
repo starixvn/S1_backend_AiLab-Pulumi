@@ -59,7 +59,6 @@ return await Deployment.RunAsync(() =>
         AutoScalingGroupProvider = new CapacityProviderAutoScalingGroupProviderArgs
         {
             AutoScalingGroupArn = autoScalingGroup.Arn,
-            ManagedTerminationProtection = "ENABLED",
             ManagedScaling = new CapacityProviderAutoScalingGroupProviderManagedScalingArgs
             {
                 MaximumScalingStepSize = maxSize,
@@ -75,7 +74,6 @@ return await Deployment.RunAsync(() =>
 
     return new Dictionary<string, object?>
     {
-        ["Config"] = config,
         ["LaunchTemplate"] = launchTemplate.GetResourceName(),
         ["AutoScalingGroup"] = autoScalingGroup.GetResourceName(),
         ["CapacityProvider"] = capacityProvider.GetResourceName(),
