@@ -1,6 +1,7 @@
 config:
   ECS-Cluster:NamePrefix: AI1
   ECS-Cluster:ENV: DEV
+  ECS-Cluster:ImageId: ami-0b91f3efad17de577
   ECS-Cluster:InstanceType: t3a.medium
   ECS-Cluster:MaxSize: 3
   ECS-Cluster:MinSize: 1

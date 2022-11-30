@@ -1,11 +1,4 @@
 name: ECS-Cluster
 description: Create ECS-Cluster & EC2-ASG & EC2-LaunchTemplate.
 runtime: dotnet
-
-config:
-  ECS-Cluster:Region: ap-southeast-1
-  ECS-Cluster:ImageId: ami-0b91f3efad17de577
-  ECS-Cluster:AvailabilityZones:
-    - ap-southeast-1a
-    - ap-southeast-1b
-    - ap-southeast-1c
+  

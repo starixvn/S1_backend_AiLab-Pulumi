@@ -24,15 +24,13 @@ return await Deployment.RunAsync(() =>
     });
 
     //EC2 AutoScalingGroup
-    var availabilityZones = config.RequireObject<JsonElement>("AvailabilityZones").EnumerateArray().Select(i => i.GetString()).ToArray();
-    //var subnets = config.RequireObject<JsonElement>("Subnets").EnumerateArray().Select(i => i.GetString()).ToArray();
+    var subnets = config.RequireObject<JsonElement>("Subnets").EnumerateArray().Select(i => i.GetString()).ToArray();
     var maxSize = config.GetInt32("MaxSize") ?? 3;
     var minSize = config.GetInt32("MinSize") ?? 1;
     var desired = config.GetInt32("Desired") ?? 1;
     var autoScalingGroup = new Aws.AutoScaling.Group($"{shortName}-ASG", new()
     {
-        AvailabilityZones = availabilityZones,
-        //VpcZoneIdentifiers = subnets,
+        VpcZoneIdentifiers = subnets,
         DesiredCapacity = desired,
         MaxSize = maxSize,
         MinSize = minSize,
