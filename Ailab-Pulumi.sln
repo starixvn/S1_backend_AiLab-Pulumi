@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigService", "ConfigService\ConfigService.csproj", "{739D0510-08B4-4D38-BAF4-8902F4EB06EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoScalingGroup", "AutoScalingGroup\AutoScalingGroup.csproj", "{5D02DFA1-BDC5-4BC3-A247-1A264F339E36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS-Cluster", "ECS-Cluster\ECS-Cluster.csproj", "{1C1120D2-A4EA-4F47-BC9E-4897C2B42F4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ECS-Service", "ECS-Service", "{B31137A9-AE78-4E60-8113-8DD50BE75F65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +19,16 @@ Global
 		{739D0510-08B4-4D38-BAF4-8902F4EB06EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{739D0510-08B4-4D38-BAF4-8902F4EB06EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{739D0510-08B4-4D38-BAF4-8902F4EB06EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D02DFA1-BDC5-4BC3-A247-1A264F339E36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D02DFA1-BDC5-4BC3-A247-1A264F339E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D02DFA1-BDC5-4BC3-A247-1A264F339E36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D02DFA1-BDC5-4BC3-A247-1A264F339E36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C1120D2-A4EA-4F47-BC9E-4897C2B42F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1120D2-A4EA-4F47-BC9E-4897C2B42F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1120D2-A4EA-4F47-BC9E-4897C2B42F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1120D2-A4EA-4F47-BC9E-4897C2B42F4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{739D0510-08B4-4D38-BAF4-8902F4EB06EC} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}

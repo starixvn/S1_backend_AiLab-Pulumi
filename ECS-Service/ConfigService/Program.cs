@@ -18,6 +18,7 @@ return await Deployment.RunAsync(() =>
     var env = "DEV";
     var version = $"3772c1b";
 
+
     //設定執行參數
     var config = new Config();
     var name = config.Require("Name");
@@ -107,45 +108,6 @@ return await Deployment.RunAsync(() =>
             NetworkMode = "bridge",
         },
     });
-
-
-
-
-
-    //var autoScalingGroup = new Aws.AutoScaling.Group("testGroup", new()
-    //{
-    //    Tags = new[]
-    //{
-    //        new Aws.AutoScaling.Inputs.GroupTagArgs
-    //        {
-    //            Key = "AmazonECSManaged",
-    //            Value = "true",
-    //            PropagateAtLaunch = true,
-    //        },
-    //    },
-    //});
-
-    //var capacityProvider = new Aws.Ecs.CapacityProvider("testCapacityProvider", new()
-    //{
-    //    AutoScalingGroupProvider = new CapacityProviderAutoScalingGroupProviderArgs
-    //    {
-    //        AutoScalingGroupArn = autoScalingGroup.Arn,
-    //        ManagedTerminationProtection = "ENABLED",
-    //        ManagedScaling = new CapacityProviderAutoScalingGroupProviderManagedScalingArgs
-    //        {
-    //            MaximumScalingStepSize = 3,
-    //            MinimumScalingStepSize = 1,
-    //            Status = "ENABLED",
-    //            TargetCapacity = 10,
-    //        },
-    //    },
-    //});
-
-
-
-
-
-
 
     return new Dictionary<string, object?>
     {

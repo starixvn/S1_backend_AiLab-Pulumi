@@ -1,0 +1,11 @@
+config:
+  ECS-Cluster:NamePrefix: AI1
+  ECS-Cluster:ENV: DEV
+  ECS-Cluster:InstanceType: t3a.medium
+  ECS-Cluster:MaxSize: 3
+  ECS-Cluster:MinSize: 1
+  ECS-Cluster:Desired: 1
+  ECS-Cluster:Subnets:
+    - subnet-01e7e7bda293d8785
+    - subnet-0d918c212f9ba2a81
+    - subnet-0e3a2c7c694c8601b
