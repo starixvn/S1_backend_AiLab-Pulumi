@@ -12,6 +12,13 @@ return await Deployment.RunAsync(() =>
     var env = config.Require("ENV");
     var namePrefix = config.Require("NamePrefix");
     var shortName = $"{env}-{namePrefix}";
+    var tags = new InputMap<string>()
+    {
+         { "AmazonECSManaged", "true"},
+         { "Name", shortName},
+         { "Create-By", "Pulumi"},
+         { "Create-Time", DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm")},
+    };
 
     //EC2 LaunchTemplate
     var awsConfig = new AILabAwsConfig(env);
@@ -78,13 +85,7 @@ return await Deployment.RunAsync(() =>
     //ECS Cluster
     var cluster = new Aws.Ecs.Cluster($"{shortName}-Cluster", new Aws.Ecs.ClusterArgs()
     {
-        Tags =
-        {
-            { "AmazonECSManaged", "true"},
-            { "Name", shortName},
-            { "Create-By", "Pulumi"},
-            { "Create-Time", DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm")},
-        }
+        Tags = tags
     });
 
     var capacityProvider = new Aws.Ecs.CapacityProvider($"{shortName}-CP", new()
@@ -100,6 +101,7 @@ return await Deployment.RunAsync(() =>
                 TargetCapacity = desired,
             },
         },
+        Tags = tags
     });
 
     var ClusterCapacityProviders = new Aws.Ecs.ClusterCapacityProviders($"{shortName}-CCP", new()
@@ -115,9 +117,9 @@ return await Deployment.RunAsync(() =>
             {
                 Base = 1,
                 Weight = 100,
-                CapacityProvider = capacityProvider.Name,
+                CapacityProvider = capacityProvider.Name,        
             },
-        },
+        },     
     });
 
     return new Dictionary<string, object?>

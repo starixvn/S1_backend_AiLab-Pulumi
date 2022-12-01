@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using AILabConfig;
@@ -17,33 +18,38 @@ return await Deployment.RunAsync(() =>
     var env = config.Require("ENV");
     var namePrefix = config.Require("NamePrefix");
     var serviceName = config.Require("ServiceName");
-    var shortName = $"{env}-{namePrefix}-{serviceName}";
-    var version = config.Require("Version");
-    
-    var awsConfig = new AILabAwsConfig(env);
-     
-    var imagePath = config.Require("ImagePath");
-    var containerPort = config.GetInt32("containerPort") ?? 80;
-    var cpu = config.GetInt32("cpu") ?? 4;
-    var memory = config.GetInt32("memory") ?? 2;
-    var desiredCount = config.GetInt32("desiredCount") ?? 1;
-    
-    var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
-    
+    var shortName = $"{env}-{namePrefix}-{serviceName}"; 
+    var tags = new InputMap<string>()
+    {
+         { "Name", shortName},
+         { "Create-By", "Pulumi"},
+         { "Create-Time", DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm")},
+    };   
+
     var vpcConfig = new AILabVpcConfig(env);
     var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
+    var containerPort = config.GetInt32("containerPort") ?? 80;
     //建立TargetGroup服務
     var targetGroup = new Aws.LB.TargetGroup($"{shortName}-TG", new()
     {
         Port = containerPort,
-        Protocol = "HTTP",
+        Protocol = "TCP",
         VpcId = vpc.Id,
-        TargetType = "instance"
+        TargetType = "alb",
+        Tags = tags
     });
 
     var clusterName = config.Require("Cluster");
     var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
     var securityGroupConfig = new AILabSecurityGroupConfig(env);
+
+    var awsConfig = new AILabAwsConfig(env);
+    var imagePath = config.Require("ImagePath");
+    var version = config.Require("Version");
+    var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";  
+    var cpu = config.GetInt32("cpu") ?? 4;
+    var memory = config.GetInt32("memory") ?? 2;
+    var desiredCount = config.GetInt32("desiredCount") ?? 1;
 
     //建立ECS服務
     var service = new Awsx.Ecs.EC2Service(serviceName, new()
@@ -85,9 +91,11 @@ return await Deployment.RunAsync(() =>
             {
                 Skip = true,
             },
-            NetworkMode = "bridge",
+            //NetworkMode = "bridge",
         },
+        Tags = tags
     });
+
     return new Dictionary<string, object?>
     {
         ["ServiceName"] = service.GetResourceName(),
