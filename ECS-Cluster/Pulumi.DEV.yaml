@@ -1,11 +1,15 @@
 config:
   ECS-Cluster:NamePrefix: AI1
   ECS-Cluster:ENV: DEV
+  ECS-Cluster:KeyName: ailab-linux
   ECS-Cluster:ImageId: ami-0b91f3efad17de577
-  ECS-Cluster:InstanceType: t3a.medium
+  ECS-Cluster:InstanceType: t2.micro
   ECS-Cluster:MaxSize: 3
   ECS-Cluster:MinSize: 1
   ECS-Cluster:Desired: 1
+  ECS-Cluster:SecurityGroups:
+    - sg-0c98649099677665b
+    - sg-070f508e34d6a96d3
   ECS-Cluster:Subnets:
     - subnet-01e7e7bda293d8785
     - subnet-0d918c212f9ba2a81

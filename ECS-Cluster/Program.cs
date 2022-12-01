@@ -17,11 +17,15 @@ return await Deployment.RunAsync(() =>
     //EC2 LaunchTemplate
     var imageId = config.Require("ImageId");
     var instanceType = config.Require("InstanceType");
+    var keyName = config.Require("KeyName");
+    var securityGroup = config.RequireObject<JsonElement>("SecurityGroups").EnumerateArray().Select(i => i.GetString()).ToArray();
     var launchTemplate = new Aws.Ec2.LaunchTemplate($"{shortName}-LT", new()
     {
+        KeyName = keyName,
         NamePrefix = shortName,
         ImageId = imageId,
         InstanceType = instanceType,
+        VpcSecurityGroupIds = securityGroup,
     });
 
     //EC2 AutoScalingGroup
@@ -64,7 +68,7 @@ return await Deployment.RunAsync(() =>
             new Aws.AutoScaling.Inputs.GroupTagArgs
             {
                 Key = "Create-Time",
-                Value = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm"),
+                Value = DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm"),
                 PropagateAtLaunch = true,
             },
         },
