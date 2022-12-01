@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ECS-Service", "ECS-Service"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigService", "ECS-Service\ConfigService\ConfigService.csproj", "{247D7BDC-4387-4F9D-B4C4-0665C1F10269}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EC2-LoadBalancer", "EC2-LoadBalancer\EC2-LoadBalancer.csproj", "{F3C10631-B9BE-4EA3-994E-5FB7963A8750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AILabConfig", "Config\AILabConfig.csproj", "{FB4C985D-2FD8-4D38-89FE-3A7147372B01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{247D7BDC-4387-4F9D-B4C4-0665C1F10269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{247D7BDC-4387-4F9D-B4C4-0665C1F10269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{247D7BDC-4387-4F9D-B4C4-0665C1F10269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C10631-B9BE-4EA3-994E-5FB7963A8750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C10631-B9BE-4EA3-994E-5FB7963A8750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C10631-B9BE-4EA3-994E-5FB7963A8750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C10631-B9BE-4EA3-994E-5FB7963A8750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

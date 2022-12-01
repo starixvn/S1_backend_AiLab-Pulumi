@@ -11,4 +11,8 @@
     <PackageReference Include="Pulumi.Aws" Version="5.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Config\AILabConfig.csproj" />
+  </ItemGroup>
+
 </Project>

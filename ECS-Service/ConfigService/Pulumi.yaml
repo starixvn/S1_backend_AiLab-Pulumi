@@ -1,12 +1,3 @@
 name: ConfigService
-description: Deploy ConfigService to AWS-ECS.
+description: Deploy ConfigService to ECS-Cluster.
 runtime: dotnet
-
-config:
-  aws:region: ap-southeast-1
-  ConfigService:Name: Config
-  ConfigService:Registry: 13.213.82.69/configservice/configservice
-  ConfigService:VpcId: vpc-10889e77
-  ConfigService:IamRole: arn:aws:iam::761771912479:user/ailab-EC2
-
-

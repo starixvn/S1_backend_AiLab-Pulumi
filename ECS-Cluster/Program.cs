@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
+using AILabConfig;
 using Pulumi;
 using Pulumi.Aws.Ecs.Inputs;
 using Aws = Pulumi.Aws;
@@ -15,27 +14,29 @@ return await Deployment.RunAsync(() =>
     var shortName = $"{env}-{namePrefix}";
 
     //EC2 LaunchTemplate
-    var imageId = config.Require("ImageId");
-    var instanceType = config.Require("InstanceType");
-    var keyName = config.Require("KeyName");
-    var securityGroup = config.RequireObject<JsonElement>("SecurityGroups").EnumerateArray().Select(i => i.GetString()).ToArray();
+    var awsConfig = new AILabAwsConfig(env);
+    var imageId = awsConfig.ImageId;
+    var instanceType = awsConfig.InstanceType;
+    var keyName = awsConfig.KeyName;
+
+    var securityGroupConfig = new AILabSecurityGroupConfig(env);
     var launchTemplate = new Aws.Ec2.LaunchTemplate($"{shortName}-LT", new()
     {
         KeyName = keyName,
         NamePrefix = shortName,
         ImageId = imageId,
         InstanceType = instanceType,
-        VpcSecurityGroupIds = securityGroup,
+        VpcSecurityGroupIds = securityGroupConfig.SecurityGroupIds,
     });
 
     //EC2 AutoScalingGroup
-    var subnets = config.RequireObject<JsonElement>("Subnets").EnumerateArray().Select(i => i.GetString()).ToArray();
+    var vpcConfig = new AILabVpcConfig(env);
     var maxSize = config.GetInt32("MaxSize") ?? 3;
     var minSize = config.GetInt32("MinSize") ?? 1;
     var desired = config.GetInt32("Desired") ?? 1;
     var autoScalingGroup = new Aws.AutoScaling.Group($"{shortName}-ASG", new()
     {
-        VpcZoneIdentifiers = subnets,
+        VpcZoneIdentifiers = vpcConfig.Subnets,
         DesiredCapacity = desired,
         MaxSize = maxSize,
         MinSize = minSize,
@@ -75,7 +76,16 @@ return await Deployment.RunAsync(() =>
     });
 
     //ECS Cluster
-    var cluster = new Aws.Ecs.Cluster($"{shortName}-Cluster");
+    var cluster = new Aws.Ecs.Cluster($"{shortName}-Cluster", new Aws.Ecs.ClusterArgs()
+    {
+        Tags =
+        {
+            { "AmazonECSManaged", "true"},
+            { "Name", shortName},
+            { "Create-By", "Pulumi"},
+            { "Create-Time", DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm")},
+        }
+    });
 
     var capacityProvider = new Aws.Ecs.CapacityProvider($"{shortName}-CP", new()
     {
@@ -113,7 +123,7 @@ return await Deployment.RunAsync(() =>
     return new Dictionary<string, object?>
     {
         ["LaunchTemplate"] = launchTemplate.GetResourceName(),
-        ["AutoScalingGroup"] = autoScalingGroup.GetResourceName(),   
+        ["AutoScalingGroup"] = autoScalingGroup.GetResourceName(),
         ["Cluster"] = cluster.GetResourceName(),
         ["CapacityProvider"] = capacityProvider.GetResourceName(),
         ["ClusterCapacityProviders"] = ClusterCapacityProviders.GetResourceName(),
