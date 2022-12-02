@@ -17,7 +17,7 @@
                 return EnvironmentName.Equals("PRD") ? PRD_InstanceType : DEV_InstanceType;
             }
         }
-        private static readonly string DEV_InstanceType = "t2.micro";
+        private static readonly string DEV_InstanceType = "t3a.medium";
         private static readonly string PRD_InstanceType = "t3a.medium";
     }
 }

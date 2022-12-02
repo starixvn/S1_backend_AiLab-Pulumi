@@ -3,9 +3,9 @@ config:
   ConfigService:ENV: DEV
   ConfigService:ServiceName: Config
   ConfigService:Version: 3772c1b
-  ConfigService:Cluster: DEV-AI1-Cluster-208ec17
+  ConfigService:Cluster: DEV-AI1-Cluster-b9c0959
   ConfigService:ImagePath: /configservice/configservice
-  ConfigService:containerPort: "80"
-  ConfigService:cpu: "4"
-  ConfigService:desiredCount: "1"
-  ConfigService:memory: "2"
+  ConfigService:containerPort: 80
+  ConfigService:cpu: 512
+  ConfigService:memory: 512
+  ConfigService:desiredCount: 2

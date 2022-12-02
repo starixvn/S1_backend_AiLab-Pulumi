@@ -34,23 +34,25 @@ return await Deployment.RunAsync(() =>
         ImageId = imageId,
         InstanceType = instanceType,
         VpcSecurityGroupIds = securityGroupConfig.SecurityGroupIds,
+        Tags = tags,
     });
 
     //EC2 AutoScalingGroup
     var vpcConfig = new AILabVpcConfig(env);
     var maxSize = config.GetInt32("MaxSize") ?? 3;
     var minSize = config.GetInt32("MinSize") ?? 1;
-    var desired = config.GetInt32("Desired") ?? 1;
+    var desired = config.GetInt32("Desired") ?? 2;
     var autoScalingGroup = new Aws.AutoScaling.Group($"{shortName}-ASG", new()
     {
         VpcZoneIdentifiers = vpcConfig.Subnets,
         DesiredCapacity = desired,
+        WaitForCapacityTimeout = "0",
         MaxSize = maxSize,
         MinSize = minSize,
         LaunchTemplate = new Aws.AutoScaling.Inputs.GroupLaunchTemplateArgs
         {
             Id = launchTemplate.Id,
-            Version = "$Latest",
+            Version = "$Latest",    
         },
         NamePrefix = shortName,
         Tags = new[]
@@ -80,6 +82,29 @@ return await Deployment.RunAsync(() =>
                 PropagateAtLaunch = true,
             },
         },
+        EnabledMetrics = new[] 
+        {
+            "GroupMinSize",
+            "GroupMaxSize",
+            "GroupDesiredCapacity",
+            "GroupInServiceInstances",
+            "GroupPendingInstances",
+            "GroupStandbyInstances",
+            "GroupTerminatingInstances",
+            "GroupTotalInstances",
+            "GroupInServiceCapacity",
+            "GroupPendingCapacity",
+            "GroupStandbyCapacity",
+            "GroupTerminatingCapacity",
+            "GroupTotalCapacity",
+            "WarmPoolDesiredCapacity",
+            "WarmPoolWarmedCapacity",
+            "WarmPoolPendingCapacity",
+            "WarmPoolTerminatingCapacity",
+            "WarmPoolTotalCapacity",
+            "GroupAndWarmPoolDesiredCapacity",
+            "GroupAndWarmPoolTotalCapacity"
+        }
     });
 
     //ECS Cluster
@@ -115,8 +140,6 @@ return await Deployment.RunAsync(() =>
         {
             new ClusterCapacityProvidersDefaultCapacityProviderStrategyArgs
             {
-                Base = 1,
-                Weight = 100,
                 CapacityProvider = capacityProvider.Name,        
             },
         },     

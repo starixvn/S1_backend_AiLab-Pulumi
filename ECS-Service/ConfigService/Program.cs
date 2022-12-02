@@ -33,10 +33,9 @@ return await Deployment.RunAsync(() =>
     var targetGroup = new Aws.LB.TargetGroup($"{shortName}-TG", new()
     {
         Port = containerPort,
-        Protocol = "TCP",
         VpcId = vpc.Id,
-        TargetType = "alb",
-        Tags = tags
+        Tags = tags,
+        Protocol = "HTTP",
     });
 
     var clusterName = config.Require("Cluster");
@@ -50,6 +49,24 @@ return await Deployment.RunAsync(() =>
     var cpu = config.GetInt32("cpu") ?? 4;
     var memory = config.GetInt32("memory") ?? 2;
     var desiredCount = config.GetInt32("desiredCount") ?? 1;
+
+
+
+    var loadBalancer = Aws.Alb.LoadBalancer.Get("arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-915ab89/05ee80393a271460", "arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-915ab89/05ee80393a271460");
+    var listener = new Aws.LB.Listener("DEV-AI1-Listener", new()
+    {
+        LoadBalancerArn = loadBalancer.Arn,
+        Port = 80,
+        Protocol = "HTTP",
+        DefaultActions = new[]
+            {
+                new Aws.LB.Inputs.ListenerDefaultActionArgs
+                {
+                    Type = "forward",
+                    TargetGroupArn = targetGroup.Arn,
+                },
+            },
+    });
 
     //建立ECS服務
     var service = new Awsx.Ecs.EC2Service(serviceName, new()
@@ -91,7 +108,8 @@ return await Deployment.RunAsync(() =>
             {
                 Skip = true,
             },
-            //NetworkMode = "bridge",
+            NetworkMode = "bridge",
+            Tags = tags
         },
         Tags = tags
     });

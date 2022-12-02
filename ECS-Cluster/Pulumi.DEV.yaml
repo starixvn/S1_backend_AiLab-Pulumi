@@ -1,6 +1,6 @@
 config:
   ECS-Cluster:NamePrefix: AI1
   ECS-Cluster:ENV: DEV
-  ECS-Cluster:MaxSize: 3
-  ECS-Cluster:MinSize: 1
-  ECS-Cluster:Desired: 1
+  ECS-Cluster:MaxSize: 2
+  ECS-Cluster:MinSize: 2
+  ECS-Cluster:Desired: 2
