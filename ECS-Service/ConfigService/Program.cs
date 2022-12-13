@@ -38,7 +38,8 @@ return await Deployment.RunAsync(() =>
         TargetType = "ip",
         HealthCheck = new TargetGroupHealthCheckArgs
         {
-            Enabled = false
+            Enabled = true,
+            Path = "/"
         }
     });
 
