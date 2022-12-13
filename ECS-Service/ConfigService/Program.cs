@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using AILabConfig;
 using Pulumi;
+using Pulumi.Aws.LB.Inputs;
 using Pulumi.Aws.Ec2;
 using Pulumi.Aws.Ecs.Inputs;
 using Pulumi.Awsx.Awsx.Inputs;
@@ -36,6 +35,11 @@ return await Deployment.RunAsync(() =>
         VpcId = vpc.Id,
         Tags = tags,
         Protocol = "HTTP",
+        TargetType = "ip",
+        HealthCheck = new TargetGroupHealthCheckArgs
+        {
+            Enabled = false
+        }
     });
 
     var clusterName = config.Require("Cluster");
@@ -50,22 +54,20 @@ return await Deployment.RunAsync(() =>
     var memory = config.GetInt32("memory") ?? 2;
     var desiredCount = config.GetInt32("desiredCount") ?? 1;
 
-
-
-    var loadBalancer = Aws.Alb.LoadBalancer.Get("arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-915ab89/05ee80393a271460", "arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-915ab89/05ee80393a271460");
+    var loadBalancer = config.Require("LoadBalancer");
     var listener = new Aws.LB.Listener("DEV-AI1-Listener", new()
     {
-        LoadBalancerArn = loadBalancer.Arn,
-        Port = 80,
+        LoadBalancerArn = loadBalancer,
+        Port = containerPort,
         Protocol = "HTTP",
         DefaultActions = new[]
+        {
+            new ListenerDefaultActionArgs
             {
-                new Aws.LB.Inputs.ListenerDefaultActionArgs
-                {
-                    Type = "forward",
-                    TargetGroupArn = targetGroup.Arn,
-                },
+                Type = "forward",
+                TargetGroupArn = targetGroup.Arn,
             },
+        },
     });
 
     //建立ECS服務
@@ -108,7 +110,7 @@ return await Deployment.RunAsync(() =>
             {
                 Skip = true,
             },
-            NetworkMode = "bridge",
+            //NetworkMode = "awsvpc",
             Tags = tags
         },
         Tags = tags
