@@ -20,7 +20,8 @@
         private static readonly string[] DEV_SecurityGroupIds = 
         { 
             "sg-0c98649099677665b", 
-            "sg-070f508e34d6a96d3" 
+            "sg-070f508e34d6a96d3",
+            "sg-086bfaeffae40cd56" //測試全開
         };
 
         private static readonly string[] PRD_SecurityGroupIds = 

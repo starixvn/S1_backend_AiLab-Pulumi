@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AILabConfig;
 using Pulumi;
 using Aws = Pulumi.Aws;
+using Awsx = Pulumi.Awsx;
 
 return await Deployment.RunAsync(() =>
 {
@@ -19,10 +20,10 @@ return await Deployment.RunAsync(() =>
     };
 
     var vpcConfig = new AILabVpcConfig(env);
-    var SubnetMappings = new InputList<Aws.Alb.Inputs.LoadBalancerSubnetMappingArgs>();
+    var SubnetMappings = new InputList<Aws.LB.Inputs.LoadBalancerSubnetMappingArgs>();
     foreach (var subnet in vpcConfig.Subnets)
     {
-        var mapping = new Aws.Alb.Inputs.LoadBalancerSubnetMappingArgs
+        var mapping = new Aws.LB.Inputs.LoadBalancerSubnetMappingArgs
         {
             SubnetId = subnet,
         };
@@ -30,14 +31,13 @@ return await Deployment.RunAsync(() =>
     }
 
     var securityGroupConfig = new AILabSecurityGroupConfig(env);
-    var loadBalancer = new Aws.Alb.LoadBalancer($"{shortName}-ALB", new()
+    var loadBalancer = new Awsx.Lb.ApplicationLoadBalancer($"{shortName}-ALB", new()
     {
-        LoadBalancerType = "application",
         SubnetMappings = SubnetMappings,
         Tags = tags,
         SecurityGroups = securityGroupConfig.SecurityGroupIds
     });
-
+    
     return new Dictionary<string, object?>
     {
         ["loadBalancer"] = loadBalancer.GetResourceName(),

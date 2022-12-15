@@ -3,8 +3,8 @@ config:
   ConfigService:ENV: DEV
   ConfigService:ServiceName: Config
   ConfigService:Version: 3772c1b
-  ConfigService:Cluster: DEV-AI1-Cluster-0b6320f
-  ConfigService:LoadBalancer: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-367664a/58c3cd332b729a27
+  ConfigService:Cluster: DEV-AI1-Cluster-c5fefef
+  ConfigService:LoadBalancer: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-e690d01/371dc49690b35d2f
   ConfigService:ImagePath: /configservice/configservice
   ConfigService:containerPort: 80
   ConfigService:cpu: 512

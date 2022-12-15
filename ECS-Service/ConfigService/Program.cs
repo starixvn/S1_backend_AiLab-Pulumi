@@ -4,7 +4,6 @@ using AILabConfig;
 using Pulumi;
 using Pulumi.Aws.LB.Inputs;
 using Pulumi.Aws.Ec2;
-using Pulumi.Aws.Ecs.Inputs;
 using Pulumi.Awsx.Awsx.Inputs;
 using Pulumi.Awsx.Ecs.Inputs;
 using Aws = Pulumi.Aws;
@@ -28,32 +27,16 @@ return await Deployment.RunAsync(() =>
     var vpcConfig = new AILabVpcConfig(env);
     var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
     var containerPort = config.GetInt32("containerPort") ?? 80;
+
     //建立TargetGroup服務
     var targetGroup = new Aws.LB.TargetGroup($"{shortName}-TG", new()
     {
         Port = containerPort,
         VpcId = vpc.Id,
         Tags = tags,
-        Protocol = "HTTP",
         TargetType = "ip",
-        HealthCheck = new TargetGroupHealthCheckArgs
-        {
-            Enabled = true,
-            Path = "/"
-        }
+        Protocol= "HTTP",
     });
-
-    var clusterName = config.Require("Cluster");
-    var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
-    var securityGroupConfig = new AILabSecurityGroupConfig(env);
-
-    var awsConfig = new AILabAwsConfig(env);
-    var imagePath = config.Require("ImagePath");
-    var version = config.Require("Version");
-    var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";  
-    var cpu = config.GetInt32("cpu") ?? 4;
-    var memory = config.GetInt32("memory") ?? 2;
-    var desiredCount = config.GetInt32("desiredCount") ?? 1;
 
     var loadBalancer = config.Require("LoadBalancer");
     var listener = new Aws.LB.Listener("DEV-AI1-Listener", new()
@@ -71,22 +54,27 @@ return await Deployment.RunAsync(() =>
         },
     });
 
+    var clusterName = config.Require("Cluster");
+    var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
+    
+    var awsConfig = new AILabAwsConfig(env);
+    var cpu = config.GetInt32("cpu") ?? 4;
+    var memory = config.GetInt32("memory") ?? 2;
+    var desiredCount = config.GetInt32("desiredCount") ?? 1;
+
+    var imagePath = config.Require("ImagePath");
+    var version = config.Require("Version");
+    var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
     //建立ECS服務
-    var service = new Awsx.Ecs.EC2Service(serviceName, new()
+    var service = new Awsx.Ecs.FargateService(serviceName, new()
     {
-        Cluster = cluster.Arn,    
+        Cluster = cluster.Arn,
         DesiredCount = desiredCount,
-        NetworkConfiguration = new ServiceNetworkConfigurationArgs
-        {
-            Subnets = vpcConfig.Subnets,
-            SecurityGroups = securityGroupConfig.SecurityGroupIds
-        },
-        TaskDefinitionArgs = new EC2ServiceTaskDefinitionArgs
+        TaskDefinitionArgs = new FargateServiceTaskDefinitionArgs
         {
             Container = new TaskDefinitionContainerDefinitionArgs
             {
-                Name = $"{shortName}-{version}",
-                Image = "nginx:latest",
+                Image = imageUri,              
                 Cpu = cpu,
                 Memory = memory,
                 Essential = true,
@@ -94,8 +82,7 @@ return await Deployment.RunAsync(() =>
                 {
                     new TaskDefinitionPortMappingArgs
                     {
-                        ContainerPort = containerPort,
-                        TargetGroup =  targetGroup
+                        TargetGroup = targetGroup,
                     },
                 },
             },
@@ -111,11 +98,8 @@ return await Deployment.RunAsync(() =>
             {
                 Skip = true,
             },
-            //NetworkMode = "awsvpc",
-            Tags = tags
         },
-        Tags = tags
-    });
+    }) ;
 
     return new Dictionary<string, object?>
     {
