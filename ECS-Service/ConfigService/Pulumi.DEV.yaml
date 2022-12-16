@@ -5,7 +5,7 @@ config:
   ConfigService:Version: 3772c1b
   ConfigService:Cluster: DEV-AI1-Cluster-c5fefef
   ConfigService:LoadBalancer: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/DEV-AI1-ALB-e690d01/371dc49690b35d2f
-  ConfigService:ImagePath: /configservice/configservice
+  ConfigService:ImagePath: configservice/configservice
   ConfigService:containerPort: 80
   ConfigService:cpu: 512
   ConfigService:memory: 512

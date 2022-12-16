@@ -9,23 +9,25 @@
 
         public string EnvironmentName { get; }
 
-        public string KeyName { get; } = "ailab-linux";
+        public string DockerRegistry { get; } = "http://13.213.82.69";
 
-        public string ImageId { get; } = "ami-0b91f3efad17de577";
+        public string DockerUsername { get; } = "ailab-aws";
 
-        public string DockerRegistry { get; } = "13.213.82.69";
+        public string DockerPassword { get; } = "1ye7Bu46";
 
-        public string InstanceType
+        public string ASPNETCORE_ENVIRONMENT
         {
             get
             {
-                return EnvironmentName.Equals("PRD") ? PRD_InstanceType : DEV_InstanceType;
+                return EnvironmentName switch
+                {
+                    "PRD" => "Production",
+                    "RLS" => "Release",
+                    "DEV" => "Development",             
+                    _ => EnvironmentName
+                };
             }
         }
-
-        private static readonly string DEV_InstanceType = "t3a.medium";
-
-        private static readonly string PRD_InstanceType = "t3a.medium";
     }
 }
 
