@@ -7,14 +7,12 @@ using Pulumi.Aws.Ec2;
 using Pulumi.Awsx.Awsx.Inputs;
 using Pulumi.Awsx.Ecs.Inputs;
 using Aws = Pulumi.Aws;
-using Awsx = Pulumi.Awsx;
-using Pulumi.Docker.Inputs;
 using Pulumi.Awsx.Ecs;
 
 return await Deployment.RunAsync(() =>
 {
     //Config
-    var config = new Pulumi.Config();
+    var config = new Config();
     var env = config.Require("ENV");
     var namePrefix = config.Require("NamePrefix");
     var serviceName = config.Require("ServiceName");
@@ -68,50 +66,6 @@ return await Deployment.RunAsync(() =>
     var version = config.Require("Version");
     var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
 
-    //var registryInfo = new Pulumi.Docker.ImageRegistry
-    //{
-    //    Server = awsConfig.DockerRegistry,
-    //    Username = awsConfig.DockerUsername,
-    //    Password = awsConfig.DockerPassword
-    //};
-
-    //var img = GetRegistryImage.Invoke(new()
-    //{
-    //    Name = $"{imagePath}:{version}",
-    //    InsecureSkipVerify = true
-    //});
-
-    //var remoteImage = new RemoteImage("remoteImage", new()
-    //{
-    //    Name = img.Apply(getRegistryImageResult => getRegistryImageResult.Name),
-    //    PullTriggers = new[]
-    //    {
-    //        img.Apply(getRegistryImageResult => getRegistryImageResult.Sha256Digest),
-    //    },
-    //});
-
-    //Log.Info($"imageUri:{imageUri}");
-
-    //var image = new RemoteImage($"{serviceName}-Image",new()
-    //{
-    //    Name = imageUri,
-    //});
-    //Log.Info($"image:{image.Name}");
-
-    var provider = new Pulumi.Docker.Provider(awsConfig.DockerRegistry, new()
-    {
-        Host = awsConfig.DockerRegistry,
-        RegistryAuth = new[]
-        {
-            new ProviderRegistryAuthArgs()
-            {
-                Address = awsConfig.DockerRegistry,
-                Username = awsConfig.DockerUsername,
-                Password = awsConfig.DockerPassword,
-            }
-        }
-    });
-
     //建立ECS服務
     var service = new FargateService(
         name: shortName,
@@ -123,6 +77,7 @@ return await Deployment.RunAsync(() =>
             {
                 Container = new TaskDefinitionContainerDefinitionArgs
                 {
+                    Name = serviceName,
                     Image = imageUri,
                     Cpu = cpu,
                     Memory = memory,
@@ -142,14 +97,12 @@ return await Deployment.RunAsync(() =>
                             Value = awsConfig.ASPNETCORE_ENVIRONMENT
                         }
                     },
-                    Privileged = true,
-                    Secrets = new[]
-                    { 
-                        new TaskDefinitionSecretArgs
-                        { 
-                            Name = "harbor.ailabpte.co"
-                        }
-                    }
+                    RepositoryCredentials = new TaskDefinitionRepositoryCredentialsArgs
+                    {
+                       CredentialsParameter = awsConfig.AWSSecretsManagerName,
+                    },
+                    EntryPoint = Array.Empty<string>(),           
+                    Command = Array.Empty<string>(),
                 },
                 LogGroup = new DefaultLogGroupArgs
                 {
@@ -157,19 +110,15 @@ return await Deployment.RunAsync(() =>
                 },
                 TaskRole = new DefaultRoleWithPolicyArgs
                 {
-                    RoleArn = "arn:aws:iam::761771912479:role/ecsTaskExecutionRole"
+                    RoleArn = awsConfig.TaskRoleArn
                 },
                 ExecutionRole = new DefaultRoleWithPolicyArgs
                 {
-                    RoleArn = "arn:aws:iam::761771912479:role/ecsTaskExecutionRole"
+                    RoleArn = awsConfig.TaskRoleArn
                 },
                 Tags = tags,
             },
             EnableEcsManagedTags = true,
-        },
-        options: new ComponentResourceOptions()
-        {
-            Provider = provider
         });
 
     return new Dictionary<string, object?>

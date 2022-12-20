@@ -9,11 +9,11 @@
 
         public string EnvironmentName { get; }
 
-        public string DockerRegistry { get; } = "http://13.213.82.69";
+        public string DockerRegistry { get; } = "harbor.ailabpte.co";
 
-        public string DockerUsername { get; } = "ailab-aws";
+        public string AWSSecretsManagerName { get; } = "harbor.ailabpte.co";
 
-        public string DockerPassword { get; } = "1ye7Bu46";
+        public string TaskRoleArn { get; } = "arn:aws:iam::761771912479:role/ecsTaskExecutionRole";
 
         public string ASPNETCORE_ENVIRONMENT
         {
