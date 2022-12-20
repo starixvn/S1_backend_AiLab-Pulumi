@@ -28,9 +28,9 @@
 
         private static readonly string[] PRD_Subnets = 
         {
-            "subnet-01e7e7bda293d8785", 
-            "subnet-0d918c212f9ba2a81", 
-            "subnet-0e3a2c7c694c8601b" 
+            "subnet-09332247c64aff074",
+            "subnet-01756b250ebae0fae",
+            "subnet-0ea1391c518fe60dc"
         };
     }
 }

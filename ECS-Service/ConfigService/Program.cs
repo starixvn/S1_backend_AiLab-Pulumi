@@ -8,6 +8,7 @@ using Pulumi.Awsx.Awsx.Inputs;
 using Pulumi.Awsx.Ecs.Inputs;
 using Aws = Pulumi.Aws;
 using Pulumi.Awsx.Ecs;
+using Pulumi.Aws.Ecs.Inputs;
 
 return await Deployment.RunAsync(() =>
 {
@@ -119,6 +120,10 @@ return await Deployment.RunAsync(() =>
                 Tags = tags,
             },
             EnableEcsManagedTags = true,
+            NetworkConfiguration = new ServiceNetworkConfigurationArgs
+            {
+                Subnets = vpcConfig.Subnets
+            }
         });
 
     return new Dictionary<string, object?>
