@@ -83,9 +83,9 @@
             {
                 return new string[]
                 {
-                    "sg-0aa374e8834bd57ee",//AUTOUPDATE-SDG
-                    "sg-0b08ff7630cea124c",//AUTOUPDATE-9WB
-                    "sg-0eccc9411cdd48c41",//AUTOUPDATE-GGU
+                    "sg-034243fc6be6b0111",//CLOUDFRONT80-Q6G
+                    "sg-05b9a3f218549f98a",//CLOUDFRONT80-IOQ
+                    "sg-0fb825317deb8fe65",//CLOUDFRONT80-QUY
                 };
             }
         }

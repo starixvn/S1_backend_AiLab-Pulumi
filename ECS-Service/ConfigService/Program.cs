@@ -27,7 +27,7 @@ return await Deployment.RunAsync(() =>
 
     var vpcConfig = new AILabVpcConfig(env);
     var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
-    var containerPort = config.GetInt32("containerPort") ?? 80;
+    var containerPort = config.GetInt32("ContainerPort") ?? 80;
 
     //建立Public服務
     var publicTargetGroup = new Aws.LB.TargetGroup($"Public-{shortName}", new()
@@ -105,10 +105,10 @@ return await Deployment.RunAsync(() =>
 
     var securityGroupConfig = new AILabSecurityGroupConfig(env);
     //建立ECS服務
-    var service = new FargateService(
-        name: shortName,
-        args: new FargateServiceArgs()
+    var service = new FargateService(shortName,
+        new FargateServiceArgs
         {
+            HealthCheckGracePeriodSeconds = 60,
             LoadBalancers = new[]
             {
                  new ServiceLoadBalancerArgs
@@ -136,8 +136,11 @@ return await Deployment.RunAsync(() =>
                         {
                             Command = new string[]
                             {
-                                "curl -f http://localhost/ || exit 1",
+                                "CMD-SHELL",
+                                "curl -f http://localhost/ || exit 1"
+                                //$"curl -f http://localhost:{containerPort}/health || exit 0",
                             },
+                            //StartPeriod = 60,
                             StartPeriod = 300,
                             Interval = 300,
                             Retries = 10,
