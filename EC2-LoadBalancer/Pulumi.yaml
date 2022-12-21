@@ -1,4 +1,4 @@
 name: EC2-LoadBalancer
-description: Create EC2-LoadBalancer.
+description: Create EC2 Public & Internal LoadBalancer.
 runtime: dotnet
   

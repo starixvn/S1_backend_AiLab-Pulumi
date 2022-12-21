@@ -9,25 +9,69 @@
 
         public string EnvironmentName { get; }
 
-        public string[] SecurityGroupIds
+        public string[] OfficeIds
         {
             get
             {
-                return EnvironmentName.Equals("PRD") ? PRD_SecurityGroupIds : DEV_SecurityGroupIds;
+                return new string[]
+                {
+                    "sg-07de3ec96d717730d", //Taipei-Office-Linux
+                };
             }
         }
 
-        private static readonly string[] DEV_SecurityGroupIds = 
+        public string[] ApiServiceIds
+        {
+            get
+            {
+                return EnvironmentName.Equals("PRD") ? PRD_ApiServiceIds : DEV_ApiServiceIds;
+            }
+        }
+
+        private static readonly string[] DEV_ApiServiceIds = 
         { 
-            "sg-0c98649099677665b", 
-            "sg-070f508e34d6a96d3",
-            "sg-086bfaeffae40cd56" //測試全開
+            "sg-0c98649099677665b", //LinuxService
         };
 
-        private static readonly string[] PRD_SecurityGroupIds = 
+        private static readonly string[] PRD_ApiServiceIds = 
         { 
-            "sg-0c98649099677665b", 
-            "sg-070f508e34d6a96d3" 
+            "sg-0c98649099677665b", //LinuxService
         };
+
+        /// <summary>
+        /// 開放AWS內部網段All TCP Port
+        /// </summary>
+        public string[] InternalEcsIds
+        {
+            get
+            {
+                return EnvironmentName.Equals("PRD") ? PRD_InternalEcsIds : DEV_InternalEcsIds;
+            }
+        }
+
+        private static readonly string[] DEV_InternalEcsIds =
+        {
+            "sg-0d90cb7044517daad"  //Internal-DEV-ECS
+        };
+
+        private static readonly string[] PRD_InternalEcsIds =
+        {
+            "sg-0d90cb7044517daad"  //Internal-DEV-ECS
+        };
+
+
+        /// <summary>
+        /// 開放AWS外部網段All TCP Port
+        /// </summary>
+        public string[] PublicEcsIds
+        {
+            get
+            {
+                return new string[]
+              {
+                    "sg-00dd4cbf31d5356fa", //Public-DEV-ECS
+              };
+            }
+        }
     }
 }

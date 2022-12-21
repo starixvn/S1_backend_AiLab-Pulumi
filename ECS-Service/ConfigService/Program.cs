@@ -29,20 +29,25 @@ return await Deployment.RunAsync(() =>
     var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
     var containerPort = config.GetInt32("containerPort") ?? 80;
 
-    //建立TargetGroup服務
-    var targetGroup = new Aws.LB.TargetGroup($"{shortName}-TG", new()
+    //建立Public服務
+    var publicTargetGroup = new Aws.LB.TargetGroup($"Pub-{shortName}-TG", new()
     {
         Port = containerPort,
         VpcId = vpc.Id,
         Tags = tags,
         TargetType = "ip",
         Protocol = "HTTP",
+        HealthCheck = new TargetGroupHealthCheckArgs
+        {
+            Enabled = true,
+            Path = "/health",
+            Interval = 300,
+            Timeout = 60,
+        }
     });
-
-    var loadBalancer = config.Require("LoadBalancer");
-    var listener = new Aws.LB.Listener("DEV-AI1-Listener", new()
+    var publicListener = new Aws.LB.Listener($"Public-{shortName}-Listener", new()
     {
-        LoadBalancerArn = loadBalancer,
+        LoadBalancerArn = config.Require("PublicLoadBalancerArn"),
         Port = containerPort,
         Protocol = "HTTP",
         DefaultActions = new[]
@@ -50,7 +55,38 @@ return await Deployment.RunAsync(() =>
             new ListenerDefaultActionArgs
             {
                 Type = "forward",
-                TargetGroupArn = targetGroup.Arn,
+                TargetGroupArn = publicTargetGroup.Arn,
+            },
+        },
+    });
+
+    //建立Private服務
+    var privateTargetGroup = new Aws.LB.TargetGroup($"Pri-{shortName}-TG", new()
+    {
+        Port = containerPort,
+        VpcId = vpc.Id,
+        Tags = tags,
+        TargetType = "ip",
+        Protocol = "HTTP",
+        HealthCheck = new TargetGroupHealthCheckArgs
+        {
+            Enabled = true,
+            Path = "/health",
+            Interval = 300,
+            Timeout = 60,
+        }
+    });
+    var privateListener = new Aws.LB.Listener($"Private-{shortName}-Listener", new()
+    {
+        LoadBalancerArn = config.Require("PrivateLoadBalancerArn"),
+        Port = containerPort,
+        Protocol = "HTTP",
+        DefaultActions = new[]
+        {
+            new ListenerDefaultActionArgs
+            {
+                Type = "forward",
+                TargetGroupArn = privateTargetGroup.Arn,
             },
         },
     });
@@ -67,43 +103,73 @@ return await Deployment.RunAsync(() =>
     var version = config.Require("Version");
     var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
 
+    var securityGroupConfig = new AILabSecurityGroupConfig(env);
     //建立ECS服務
     var service = new FargateService(
         name: shortName,
         args: new FargateServiceArgs()
         {
+            LoadBalancers = new[]
+            {
+                 new ServiceLoadBalancerArgs
+                 {
+                    ContainerName = serviceName,
+                    ContainerPort = containerPort,
+                    TargetGroupArn = publicTargetGroup.Arn
+                 },
+                 new ServiceLoadBalancerArgs
+                 {
+                    ContainerName = serviceName,
+                    ContainerPort = containerPort,
+                    TargetGroupArn = privateTargetGroup.Arn
+                 },
+            },
             Cluster = cluster.Arn,
             DesiredCount = desiredCount,
             TaskDefinitionArgs = new FargateServiceTaskDefinitionArgs
             {
-                Container = new TaskDefinitionContainerDefinitionArgs
+                Containers = new Dictionary<string, TaskDefinitionContainerDefinitionArgs>()
                 {
-                    Name = serviceName,
-                    Image = imageUri,
-                    Cpu = cpu,
-                    Memory = memory,
-                    Essential = true,
-                    PortMappings = new[]
+                    [serviceName] = new TaskDefinitionContainerDefinitionArgs()
                     {
-                        new TaskDefinitionPortMappingArgs
+                        HealthCheck = new TaskDefinitionHealthCheckArgs
                         {
-                            TargetGroup = targetGroup,
+                            Command = new string[]
+                                {
+                                   "curl -f http://localhost/ || exit 1",
+                                },
+                            StartPeriod = 300,
+                            Interval = 300,
+                            Retries = 10,
+                            Timeout = 60,
                         },
-                    },
-                    Environment = new[]
-                    {
-                        new TaskDefinitionKeyValuePairArgs
+                        Name = serviceName,
+                        Image = imageUri,
+                        Cpu = cpu,
+                        Memory = memory,
+                        Essential = true,
+                        PortMappings = new[]
+                            {
+                                new TaskDefinitionPortMappingArgs
+                                {
+                                    ContainerPort = containerPort,
+                                },
+                            },
+                        Environment = new[]
+                            {
+                                new TaskDefinitionKeyValuePairArgs
+                                {
+                                    Name = "ASPNETCORE_ENVIRONMENT",
+                                    Value = awsConfig.ASPNETCORE_ENVIRONMENT
+                                }
+                            },
+                        RepositoryCredentials = new TaskDefinitionRepositoryCredentialsArgs
                         {
-                            Name = "ASPNETCORE_ENVIRONMENT",
-                            Value = awsConfig.ASPNETCORE_ENVIRONMENT
-                        }
-                    },
-                    RepositoryCredentials = new TaskDefinitionRepositoryCredentialsArgs
-                    {
-                       CredentialsParameter = awsConfig.AWSSecretsManagerName,
-                    },
-                    EntryPoint = Array.Empty<string>(),           
-                    Command = Array.Empty<string>(),
+                            CredentialsParameter = awsConfig.AWSSecretsManagerName,
+                        },
+                        EntryPoint = Array.Empty<string>(),
+                        Command = Array.Empty<string>(),
+                    }
                 },
                 LogGroup = new DefaultLogGroupArgs
                 {
@@ -122,14 +188,20 @@ return await Deployment.RunAsync(() =>
             EnableEcsManagedTags = true,
             NetworkConfiguration = new ServiceNetworkConfigurationArgs
             {
-                Subnets = vpcConfig.Subnets
-            }
+                Subnets = vpcConfig.PrivateSubnets,
+                SecurityGroups = new InputList<string>
+                {
+                    securityGroupConfig.PublicEcsIds,
+                    securityGroupConfig.InternalEcsIds,                  
+                } 
+            },
         });
 
     return new Dictionary<string, object?>
     {
         ["ServiceName"] = service.GetResourceName(),
-        ["TargetGroup"] = targetGroup.GetResourceName(),
+        ["PublicTargetGroup"] = publicTargetGroup.GetResourceName(),
+        ["PrivateTargetGroup"] = privateTargetGroup.GetResourceName(),
     };
 });
 
