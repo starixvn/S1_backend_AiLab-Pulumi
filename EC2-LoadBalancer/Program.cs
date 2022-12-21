@@ -20,16 +20,9 @@ return await Deployment.RunAsync(() =>
     };
 
     var vpcConfig = new AILabVpcConfig(env);
-    var privateSubnetMappings = new InputList<Aws.LB.Inputs.LoadBalancerSubnetMappingArgs>();
-    foreach (var subnet in vpcConfig.PrivateSubnets)
-    {
-        var mapping = new Aws.LB.Inputs.LoadBalancerSubnetMappingArgs
-        {
-            SubnetId = subnet,
-        };
-        privateSubnetMappings.Add(mapping);
-    }
+    var securityGroupConfig = new AILabSecurityGroupConfig(env);
 
+    //Public
     var publicSubnetMappings = new InputList<Aws.LB.Inputs.LoadBalancerSubnetMappingArgs>();
     foreach (var subnet in vpcConfig.PublicSubnets)
     {
@@ -38,27 +31,35 @@ return await Deployment.RunAsync(() =>
             SubnetId = subnet,
         };
         publicSubnetMappings.Add(mapping);
-    }
-
-    var securityGroupConfig = new AILabSecurityGroupConfig(env);
-
-    //Public
-    var publicLoadBalancer = new Awsx.Lb.ApplicationLoadBalancer($"Public-{shortName}-ALB", new()
+    }  
+    var publicLoadBalancer = new Aws.LB.LoadBalancer($"Public-{shortName}-ALB", new()
     {
         SubnetMappings = publicSubnetMappings,
         Tags = tags,
-        SecurityGroups = securityGroupConfig.OfficeIds,
-        DefaultTargetGroup = null,
+        SecurityGroups = new InputList<string>
+        {
+            securityGroupConfig.CloudFrontIds,
+            securityGroupConfig.CloudflareIds,
+            securityGroupConfig.OfficeIds,
+        },
     }) ;
-
+    
     //Private
-    var privateLoadBalancer = new Awsx.Lb.ApplicationLoadBalancer($"Private-{shortName}-ALB", new()
+    var privateSubnetMappings = new InputList<Aws.LB.Inputs.LoadBalancerSubnetMappingArgs>();
+    foreach (var subnet in vpcConfig.PrivateSubnets)
+    {
+        var mapping = new Aws.LB.Inputs.LoadBalancerSubnetMappingArgs
+        {
+            SubnetId = subnet,
+        };
+        privateSubnetMappings.Add(mapping);
+    }   
+    var privateLoadBalancer = new Aws.LB.LoadBalancer($"Private-{shortName}-ALB", new()
     {
         SubnetMappings = privateSubnetMappings,
         Tags = tags,
         SecurityGroups = securityGroupConfig.InternalEcsIds,
         Internal = true,
-        DefaultTargetGroup = null,
     });
 
     return new Dictionary<string, object?>

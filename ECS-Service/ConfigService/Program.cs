@@ -30,7 +30,7 @@ return await Deployment.RunAsync(() =>
     var containerPort = config.GetInt32("containerPort") ?? 80;
 
     //建立Public服務
-    var publicTargetGroup = new Aws.LB.TargetGroup($"Pub-{shortName}-TG", new()
+    var publicTargetGroup = new Aws.LB.TargetGroup($"Public-{shortName}", new()
     {
         Port = containerPort,
         VpcId = vpc.Id,
@@ -41,8 +41,8 @@ return await Deployment.RunAsync(() =>
         {
             Enabled = true,
             Path = "/health",
-            Interval = 300,
-            Timeout = 60,
+            Interval = 30,
+            Timeout = 15,
         }
     });
     var publicListener = new Aws.LB.Listener($"Public-{shortName}-Listener", new()
@@ -61,7 +61,7 @@ return await Deployment.RunAsync(() =>
     });
 
     //建立Private服務
-    var privateTargetGroup = new Aws.LB.TargetGroup($"Pri-{shortName}-TG", new()
+    var privateTargetGroup = new Aws.LB.TargetGroup($"Private-{shortName}", new()
     {
         Port = containerPort,
         VpcId = vpc.Id,
@@ -72,8 +72,8 @@ return await Deployment.RunAsync(() =>
         {
             Enabled = true,
             Path = "/health",
-            Interval = 300,
-            Timeout = 60,
+            Interval = 30,
+            Timeout = 15,
         }
     });
     var privateListener = new Aws.LB.Listener($"Private-{shortName}-Listener", new()
@@ -135,9 +135,9 @@ return await Deployment.RunAsync(() =>
                         HealthCheck = new TaskDefinitionHealthCheckArgs
                         {
                             Command = new string[]
-                                {
-                                   "curl -f http://localhost/ || exit 1",
-                                },
+                            {
+                                "curl -f http://localhost/ || exit 1",
+                            },
                             StartPeriod = 300,
                             Interval = 300,
                             Retries = 10,
@@ -149,20 +149,20 @@ return await Deployment.RunAsync(() =>
                         Memory = memory,
                         Essential = true,
                         PortMappings = new[]
+                        {
+                            new TaskDefinitionPortMappingArgs
                             {
-                                new TaskDefinitionPortMappingArgs
-                                {
-                                    ContainerPort = containerPort,
-                                },
+                                ContainerPort = containerPort,
                             },
+                        },
                         Environment = new[]
+                        {
+                            new TaskDefinitionKeyValuePairArgs
                             {
-                                new TaskDefinitionKeyValuePairArgs
-                                {
-                                    Name = "ASPNETCORE_ENVIRONMENT",
-                                    Value = awsConfig.ASPNETCORE_ENVIRONMENT
-                                }
-                            },
+                                Name = "ASPNETCORE_ENVIRONMENT",
+                                Value = awsConfig.ASPNETCORE_ENVIRONMENT
+                            }
+                        },
                         RepositoryCredentials = new TaskDefinitionRepositoryCredentialsArgs
                         {
                             CredentialsParameter = awsConfig.AWSSecretsManagerName,
@@ -192,8 +192,8 @@ return await Deployment.RunAsync(() =>
                 SecurityGroups = new InputList<string>
                 {
                     securityGroupConfig.PublicEcsIds,
-                    securityGroupConfig.InternalEcsIds,                  
-                } 
+                    securityGroupConfig.InternalEcsIds,
+                }
             },
         });
 

@@ -73,5 +73,31 @@
               };
             }
         }
+
+        /// <summary>
+        /// CloudFront SG
+        /// </summary>
+        public string[] CloudFrontIds
+        {
+            get
+            {
+                return new string[]
+                {
+                    "sg-0aa374e8834bd57ee",//AUTOUPDATE-SDG
+                    "sg-0b08ff7630cea124c",//AUTOUPDATE-9WB
+                    "sg-0eccc9411cdd48c41",//AUTOUPDATE-GGU
+                };
+            }
+        }
+        public string[] CloudflareIds
+        {
+            get
+            {
+                return new string[]
+                {
+                    "sg-07de57958c88b7c9f", //Cloudflare
+                };
+            }
+        }
     }
 }
