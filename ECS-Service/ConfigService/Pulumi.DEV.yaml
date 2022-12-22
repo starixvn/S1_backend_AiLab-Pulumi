@@ -3,10 +3,11 @@ config:
   ConfigService:ENV: DEV
   ConfigService:ServiceName: Config
   ConfigService:Version: b5cbf5b
-  ConfigService:Cluster: DEV-AI1-Cluster-170d525
+  ConfigService:Cluster: AI1-DEV-Cluster-d89a0dd
   ConfigService:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-DEV-AI1-ALB-8c3d25b/cdfeb02a739aec0f
   ConfigService:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-DEV-AI1-ALB-ccb58c5/54942981bac7485c
   ConfigService:ImagePath: configservice/configservice
+  ConfigService:ServiceType: API # API OR Worker
   ConfigService:ContainerPort: 7242
   ConfigService:cpu: 128
   ConfigService:memory: 128

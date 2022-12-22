@@ -3,12 +3,12 @@ config:
   MemberSite:ENV: DEV-APP
   MemberSite:ServiceName: Member
   MemberSite:Version: d53bdf6
-  MemberSite:Cluster: DEV-AI1-Cluster-170d525
+  MemberSite:Cluster: AI1-DEV-Cluster-d89a0dd
   MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-DEV-AI1-ALB-8c3d25b/cdfeb02a739aec0f
   MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-DEV-AI1-ALB-ccb58c5/54942981bac7485c
   MemberSite:ImagePath: membersite/membersite
   MemberSite:ServiceType: API # API OR Worker
   MemberSite:ContainerPort: 5069
-  MemberSite:cpu: 512
-  MemberSite:memory: 512
-  MemberSite:desiredCount: 2
+  MemberSite:cpu: 256
+  MemberSite:memory: 256
+  MemberSite:desiredCount: 1

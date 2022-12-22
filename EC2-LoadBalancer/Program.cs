@@ -11,7 +11,7 @@ return await Deployment.RunAsync(() =>
     var config = new Config();
     var env = config.Require("ENV");
     var namePrefix = config.Require("NamePrefix");
-    var shortName = $"{env}-{namePrefix}";
+    var shortName = $"{namePrefix}-{env}";
     var tags = new InputMap<string>()
     {
          { "Name", shortName},

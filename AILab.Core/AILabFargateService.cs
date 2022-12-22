@@ -21,7 +21,7 @@ namespace AILab.Core
                 var env = config.Require("ENV");
                 var namePrefix = config.Require("NamePrefix");
                 var serviceName = config.Require("ServiceName");
-                var shortName = $"{env}-{namePrefix}-{serviceName}";
+                var shortName = $"{namePrefix}-{serviceName}-{env}";
                 var tags = new InputMap<string>()
                 {
                      { "Name", shortName},
@@ -114,18 +114,18 @@ namespace AILab.Core
                     HealthCheckGracePeriodSeconds = 60,
                     LoadBalancers = new[]
                     {
-                            new ServiceLoadBalancerArgs
-                            {
+                        new ServiceLoadBalancerArgs
+                        {
                             ContainerName = serviceName,
                             ContainerPort = containerPort,
                             TargetGroupArn = publicTargetGroup.Arn
-                            },
-                            new ServiceLoadBalancerArgs
-                            {
+                        },
+                        new ServiceLoadBalancerArgs
+                        {
                             ContainerName = serviceName,
                             ContainerPort = containerPort,
                             TargetGroupArn = privateTargetGroup.Arn
-                            },
+                        },
                     },
                     Cluster = cluster.Arn,
                     DesiredCount = desiredCount,
@@ -139,8 +139,8 @@ namespace AILab.Core
                                 {
                                     Command = new string[]
                                     {
-                            "CMD-SHELL",
-                            $"curl -f http://localhost:{containerPort}/health || exit 0",
+                                        "CMD-SHELL",
+                                        $"curl -f http://localhost:{containerPort}/health || exit 0",
                                     },
                                     StartPeriod = 60,
                                 },
@@ -151,18 +151,23 @@ namespace AILab.Core
                                 Essential = true,
                                 PortMappings = new[]
                                 {
-                        new TaskDefinitionPortMappingArgs
-                        {
-                            ContainerPort = containerPort,
-                        },
+                                    new TaskDefinitionPortMappingArgs
+                                    {
+                                        ContainerPort = containerPort,
+                                    },
                                 },
                                 Environment = new[]
                                 {
-                        new TaskDefinitionKeyValuePairArgs
-                        {
-                            Name = "ASPNETCORE_ENVIRONMENT",
-                            Value = awsConfig.ASPNETCORE_ENVIRONMENT
-                        }
+                                    new TaskDefinitionKeyValuePairArgs
+                                    {
+                                        Name = "ASPNETCORE_ENVIRONMENT",
+                                        Value = awsConfig.ASPNETCORE_ENVIRONMENT
+                                    },
+                                    new TaskDefinitionKeyValuePairArgs
+                                    {
+                                        Name = "ServiceType",
+                                        Value = config.Require("ServiceType")
+                                    }
                                 },
                                 RepositoryCredentials = new TaskDefinitionRepositoryCredentialsArgs
                                 {
