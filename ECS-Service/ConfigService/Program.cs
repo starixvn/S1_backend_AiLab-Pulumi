@@ -136,15 +136,10 @@ return await Deployment.RunAsync(() =>
                         {
                             Command = new string[]
                             {
-                                "CMD-SHELL",
-                                "curl -f http://localhost/ || exit 1"
-                                //$"curl -f http://localhost:{containerPort}/health || exit 0",
+                                "CMD-SHELL",                                
+                                $"curl -f http://localhost:{containerPort}/health || exit 0",
                             },
-                            //StartPeriod = 60,
-                            StartPeriod = 300,
-                            Interval = 300,
-                            Retries = 10,
-                            Timeout = 60,
+                            StartPeriod = 60,
                         },
                         Name = serviceName,
                         Image = imageUri,
