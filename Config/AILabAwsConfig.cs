@@ -23,7 +23,9 @@
                 {
                     "PRD" => "Production",
                     "RLS" => "Release",
-                    "DEV" => "Development",             
+                    "DEV" => "Development",
+                    "DEV-APP" => "Development.APP",
+                    "PRD-APP" => "Production.APP",
                     _ => EnvironmentName
                 };
             }

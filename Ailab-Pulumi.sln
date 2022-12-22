@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigService", "ECS-Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EC2-LoadBalancer", "EC2-LoadBalancer\EC2-LoadBalancer.csproj", "{F3C10631-B9BE-4EA3-994E-5FB7963A8750}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AILabConfig", "Config\AILabConfig.csproj", "{FB4C985D-2FD8-4D38-89FE-3A7147372B01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AILab.Config", "Config\AILab.Config.csproj", "{FB4C985D-2FD8-4D38-89FE-3A7147372B01}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberSite", "ECS-Service\MemberSite\MemberSite.csproj", "{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AILab.Core", "AILab.Core\AILab.Core.csproj", "{5D6D3574-C519-4576-82E4-4809F98CA943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +39,21 @@ Global
 		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB4C985D-2FD8-4D38-89FE-3A7147372B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6D3574-C519-4576-82E4-4809F98CA943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6D3574-C519-4576-82E4-4809F98CA943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6D3574-C519-4576-82E4-4809F98CA943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6D3574-C519-4576-82E4-4809F98CA943}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{247D7BDC-4387-4F9D-B4C4-0665C1F10269} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}

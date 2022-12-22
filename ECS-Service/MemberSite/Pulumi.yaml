@@ -1,0 +1,3 @@
+name: MemberSite
+description: Deploy MemberSite to ECS-Cluster.
+runtime: dotnet
