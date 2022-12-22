@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using AILabConfig;
 using Pulumi;
-using Aws = Pulumi.Aws;
-using Awsx = Pulumi.Awsx;
-
+using Pulumi.Aws.LB;
+using Pulumi.Aws.LB.Inputs;
 return await Deployment.RunAsync(() =>
 {
     //Config
@@ -23,16 +22,16 @@ return await Deployment.RunAsync(() =>
     var securityGroupConfig = new AILabSecurityGroupConfig(env);
 
     //Public
-    var publicSubnetMappings = new InputList<Aws.LB.Inputs.LoadBalancerSubnetMappingArgs>();
+    var publicSubnetMappings = new InputList<LoadBalancerSubnetMappingArgs>();
     foreach (var subnet in vpcConfig.PublicSubnets)
     {
-        var mapping = new Aws.LB.Inputs.LoadBalancerSubnetMappingArgs
+        var mapping = new LoadBalancerSubnetMappingArgs
         {
             SubnetId = subnet,
         };
         publicSubnetMappings.Add(mapping);
-    }  
-    var publicLoadBalancer = new Aws.LB.LoadBalancer($"Public-{shortName}-ALB", new()
+    }
+    var publicLoadBalancer = new LoadBalancer($"Public-{shortName}-ALB", new()
     {
         SubnetMappings = publicSubnetMappings,
         Tags = tags,
@@ -42,19 +41,19 @@ return await Deployment.RunAsync(() =>
             securityGroupConfig.CloudflareIds,
             securityGroupConfig.OfficeIds,
         },
-    }) ;
-    
+    });
+
     //Private
-    var privateSubnetMappings = new InputList<Aws.LB.Inputs.LoadBalancerSubnetMappingArgs>();
+    var privateSubnetMappings = new InputList<LoadBalancerSubnetMappingArgs>();
     foreach (var subnet in vpcConfig.PrivateSubnets)
     {
-        var mapping = new Aws.LB.Inputs.LoadBalancerSubnetMappingArgs
+        var mapping = new LoadBalancerSubnetMappingArgs
         {
             SubnetId = subnet,
         };
         privateSubnetMappings.Add(mapping);
-    }   
-    var privateLoadBalancer = new Aws.LB.LoadBalancer($"Private-{shortName}-ALB", new()
+    }
+    var privateLoadBalancer = new LoadBalancer($"Private-{shortName}-ALB", new()
     {
         SubnetMappings = privateSubnetMappings,
         Tags = tags,

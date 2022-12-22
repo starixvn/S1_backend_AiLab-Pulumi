@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using AILabConfig;
 using Pulumi;
-using Pulumi.Aws.Ecs.Inputs;
-using Aws = Pulumi.Aws;
-using Awsx = Pulumi.Awsx;
-
-
+using Pulumi.Aws.Ecs;
 
 return await Deployment.RunAsync(() =>
 {
@@ -24,7 +18,7 @@ return await Deployment.RunAsync(() =>
     };
 
     //Create ECS Cluster
-    var cluster = new Aws.Ecs.Cluster($"{shortName}-Cluster", new Aws.Ecs.ClusterArgs()
+    var cluster = new Cluster($"{shortName}-Cluster", new ClusterArgs()
     {
         Tags = tags
     });
