@@ -30,6 +30,19 @@
                 };
             }
         }
+
+        public string EFSFileSystemId
+        {
+            get
+            {
+                return EnvironmentName.Equals("PRD") ? PRD_EFSFileSystemId : DEV_EFSFileSystemId;
+            }
+        }
+
+        private static readonly string DEV_EFSFileSystemId = "fs-04693ed0dab2989a9";//efs-ecs-dev
+
+        private static readonly string PRD_EFSFileSystemId = "fs-04693ed0dab2989a9";//efs-ecs-dev
+
     }
 }
 

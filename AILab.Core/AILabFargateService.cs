@@ -104,6 +104,7 @@ namespace AILab.Core
                 var desiredCount = config.GetInt32("desiredCount") ?? 1;
 
                 var imagePath = config.Require("ImagePath");
+                var logPath = config.Require("LogPath");
                 var version = config.Require("Version");
                 var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
 
@@ -175,7 +176,27 @@ namespace AILab.Core
                                 },
                                 EntryPoint = Array.Empty<string>(),
                                 Command = Array.Empty<string>(),
+                                MountPoints = new[]
+                                {
+                                    new TaskDefinitionMountPointArgs
+                                    {
+                                        ContainerPath = logPath,
+                                        SourceVolume = "efs"
+                                    }
+                                }
                             }
+                        },
+                        Volumes = new[]
+                        {
+                          new TaskDefinitionVolumeArgs()
+                          {
+                               Name = "efs",
+                               EfsVolumeConfiguration = new TaskDefinitionVolumeEfsVolumeConfigurationArgs()
+                               {
+                                   FileSystemId = awsConfig.EFSFileSystemId,
+                                   RootDirectory = logPath
+                               }
+                          }
                         },
                         LogGroup = new DefaultLogGroupArgs
                         {

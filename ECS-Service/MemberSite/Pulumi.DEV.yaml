@@ -7,6 +7,7 @@ config:
   MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB-01916d2/e51e9625ac2871c3
   MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB-7a4cdfd/72ee731cd2db2658
   MemberSite:ImagePath: membersite/membersite
+  MemberSite:LogPath: /membersite
   MemberSite:ServiceType: API # API OR Worker
   MemberSite:ContainerPort: 5068
   MemberSite:cpu: 256
