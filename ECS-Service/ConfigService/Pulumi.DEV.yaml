@@ -9,6 +9,6 @@ config:
   ConfigService:ImagePath: configservice/configservice
   ConfigService:ServiceType: API # API OR Worker
   ConfigService:ContainerPort: 7242
-  ConfigService:cpu: 128
-  ConfigService:memory: 128
-  ConfigService:desiredCount: 1
+  ConfigService:Cpu: 128
+  ConfigService:Memory: 128
+  ConfigService:DesiredCount: 1

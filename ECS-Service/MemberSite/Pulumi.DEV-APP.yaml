@@ -10,6 +10,8 @@ config:
   MemberSite:LogPath: /membersiteApp
   MemberSite:ServiceType: API # API OR Worker
   MemberSite:ContainerPort: 5069
-  MemberSite:cpu: 256
-  MemberSite:memory: 256
-  MemberSite:desiredCount: 1
+  MemberSite:Cpu: 256
+  MemberSite:Memory: 256
+  MemberSite:DesiredCount: 2
+  MemberSite:MinCapacity: 1
+  MemberSite:MaxCapacity: 3

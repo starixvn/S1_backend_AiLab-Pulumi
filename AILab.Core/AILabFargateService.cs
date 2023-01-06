@@ -7,6 +7,7 @@ using Pulumi.Awsx.Ecs.Inputs;
 using Aws = Pulumi.Aws;
 using Pulumi.Awsx.Ecs;
 using Pulumi.Aws.Ecs.Inputs;
+using Pulumi.Aws.AppAutoScaling.Inputs;
 
 namespace AILab.Core
 {
@@ -99,9 +100,11 @@ namespace AILab.Core
                 var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
 
                 var awsConfig = new AILabAwsConfig(env);
-                var cpu = config.GetInt32("cpu") ?? 512;
-                var memory = config.GetInt32("memory") ?? 512;
-                var desiredCount = config.GetInt32("desiredCount") ?? 1;
+                var cpu = config.GetInt32("Cpu") ?? 512;
+                var memory = config.GetInt32("Memory") ?? 512;
+                var desiredCount = config.GetInt32("DesiredCount") ?? 1;
+                var minCapacity = config.GetInt32("MinCapacity") ?? 1;
+                var maxCapacity = config.GetInt32("MaxCapacity") ?? 1;
 
                 var imagePath = config.Require("ImagePath");
                 var logPath = config.Require("LogPath");
@@ -110,7 +113,7 @@ namespace AILab.Core
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
-                var service = new FargateService(shortName, new FargateServiceArgs
+                var service = new FargateService($"{shortName}-ecsService", new FargateServiceArgs
                 {
                     HealthCheckGracePeriodSeconds = 60,
                     LoadBalancers = new[]
@@ -222,6 +225,50 @@ namespace AILab.Core
                             securityGroupConfig.InternalEcsIds,
                         }
                     },
+                });
+
+                //設定Auto Scaling
+                var ecsTarget = new Aws.AppAutoScaling.Target($"{shortName}-ecsTarget", new()
+                {
+                    MaxCapacity = maxCapacity,
+                    MinCapacity = minCapacity,
+                    ResourceId = service.Urn,
+                    ScalableDimension = "ecs:service:DesiredCount",
+                    ServiceNamespace = "ecs",
+                });
+                var ECSCpuPolicy = new Aws.AppAutoScaling.Policy($"{shortName}-ECSCPUPolicy", new()
+                {
+                    PolicyType = "TargetTrackingScaling",
+                    ResourceId = ecsTarget.ResourceId,
+                    ScalableDimension = ecsTarget.ScalableDimension,
+                    ServiceNamespace = ecsTarget.ServiceNamespace,
+                    TargetTrackingScalingPolicyConfiguration = new PolicyTargetTrackingScalingPolicyConfigurationArgs
+                    {
+                        ScaleInCooldown = 300,
+                        ScaleOutCooldown = 300,
+                        PredefinedMetricSpecification =  new PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs
+                        { 
+                            PredefinedMetricType = "ECSServiceAverageCPUUtilization",                  
+                        },
+                        TargetValue = 75,
+                    }
+                });
+                var ECSMemoryPolicy = new Aws.AppAutoScaling.Policy($"{shortName}-ECSMemoryPolicy", new()
+                {
+                    PolicyType = "TargetTrackingScaling",
+                    ResourceId = ecsTarget.ResourceId,
+                    ScalableDimension = ecsTarget.ScalableDimension,
+                    ServiceNamespace = ecsTarget.ServiceNamespace,
+                    TargetTrackingScalingPolicyConfiguration = new PolicyTargetTrackingScalingPolicyConfigurationArgs
+                    {
+                        ScaleInCooldown = 300,
+                        ScaleOutCooldown = 300,
+                        PredefinedMetricSpecification = new PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs
+                        {
+                            PredefinedMetricType = "ECSServiceAverageMemoryUtilization ",
+                        },
+                        TargetValue = 75,
+                    }
                 });
 
                 return new Dictionary<string, object?>
