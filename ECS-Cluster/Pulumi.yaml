@@ -1,4 +1,7 @@
 name: ECS-Cluster
 description: Create ECS-Cluster & EC2-ASG & EC2-LaunchTemplate.
 runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1
   
