@@ -18,8 +18,10 @@ return await Deployment.RunAsync(() =>
     };
 
     //Create ECS Cluster
-    var cluster = new Cluster($"{shortName}-Cluster", new ClusterArgs()
+    var name = $"{shortName}-Cluster";
+    var cluster = new Cluster(name, new ClusterArgs()
     {
+        Name = name,
         Tags = tags
     });
 

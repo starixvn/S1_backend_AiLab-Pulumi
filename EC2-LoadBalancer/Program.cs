@@ -31,8 +31,11 @@ return await Deployment.RunAsync(() =>
         };
         publicSubnetMappings.Add(mapping);
     }
-    var publicLoadBalancer = new LoadBalancer($"Public-{shortName}-ALB", new()
+
+    var publicName = $"Public-{shortName}-ALB";
+    var publicLoadBalancer = new LoadBalancer(publicName, new()
     {
+        Name = publicName,
         SubnetMappings = publicSubnetMappings,
         Tags = tags,
         SecurityGroups = new InputList<string>
@@ -53,8 +56,10 @@ return await Deployment.RunAsync(() =>
         };
         privateSubnetMappings.Add(mapping);
     }
-    var privateLoadBalancer = new LoadBalancer($"Private-{shortName}-ALB", new()
+    var privateName = $"Private-{shortName}-ALB";
+    var privateLoadBalancer = new LoadBalancer(privateName, new()
     {
+        Name = privateName,
         SubnetMappings = privateSubnetMappings,
         Tags = tags,
         SecurityGroups = securityGroupConfig.InternalEcsIds,

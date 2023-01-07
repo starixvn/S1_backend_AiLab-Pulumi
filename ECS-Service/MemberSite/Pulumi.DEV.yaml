@@ -3,9 +3,9 @@ config:
   MemberSite:ENV: DEV
   MemberSite:ServiceName: Member
   MemberSite:Version: d53bdf6
-  MemberSite:Cluster: AI1-DEV-Cluster-d89a0dd
-  MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB-01916d2/e51e9625ac2871c3
-  MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB-7a4cdfd/72ee731cd2db2658
+  MemberSite:Cluster: AI1-DEV-Cluster
+  MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/4983fca864f7d7ee
+  MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
   MemberSite:ImagePath: membersite/membersite
   MemberSite:LogPath: /membersite
   MemberSite:ServiceType: API # API OR Worker
@@ -13,5 +13,7 @@ config:
   MemberSite:Cpu: 256
   MemberSite:Memory: 256
   MemberSite:DesiredCount: 2
+  #For AutoScaling
+  MemberSite:HaveAutoScaling: True # True OR False
   MemberSite:MinCapacity: 1
   MemberSite:MaxCapacity: 3

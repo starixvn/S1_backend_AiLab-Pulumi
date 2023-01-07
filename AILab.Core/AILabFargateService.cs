@@ -227,49 +227,57 @@ namespace AILab.Core
                     },
                 });
 
+
                 //設定Auto Scaling
-                var ecsTarget = new Aws.AppAutoScaling.Target($"{shortName}-ecsTarget", new()
+                if (config.GetBoolean("HaveAutoScaling") ?? false)
                 {
-                    MaxCapacity = maxCapacity,
-                    MinCapacity = minCapacity,
-                    ResourceId = service.Urn,
-                    ScalableDimension = "ecs:service:DesiredCount",
-                    ServiceNamespace = "ecs",
-                });
-                var ECSCpuPolicy = new Aws.AppAutoScaling.Policy($"{shortName}-ECSCPUPolicy", new()
-                {
-                    PolicyType = "TargetTrackingScaling",
-                    ResourceId = ecsTarget.ResourceId,
-                    ScalableDimension = ecsTarget.ScalableDimension,
-                    ServiceNamespace = ecsTarget.ServiceNamespace,
-                    TargetTrackingScalingPolicyConfiguration = new PolicyTargetTrackingScalingPolicyConfigurationArgs
+                    var resourceId = $"service/{clusterName}/{shortName}";
+                    Log.Info(resourceId);
+                    var ecsTarget = new Aws.AppAutoScaling.Target($"{shortName}-ecsTarget", new()
                     {
-                        ScaleInCooldown = 300,
-                        ScaleOutCooldown = 300,
-                        PredefinedMetricSpecification =  new PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs
-                        { 
-                            PredefinedMetricType = "ECSServiceAverageCPUUtilization",                  
-                        },
-                        TargetValue = 75,
-                    }
-                });
-                var ECSMemoryPolicy = new Aws.AppAutoScaling.Policy($"{shortName}-ECSMemoryPolicy", new()
-                {
-                    PolicyType = "TargetTrackingScaling",
-                    ResourceId = ecsTarget.ResourceId,
-                    ScalableDimension = ecsTarget.ScalableDimension,
-                    ServiceNamespace = ecsTarget.ServiceNamespace,
-                    TargetTrackingScalingPolicyConfiguration = new PolicyTargetTrackingScalingPolicyConfigurationArgs
+                        MaxCapacity = maxCapacity,
+                        MinCapacity = minCapacity,
+                        ResourceId = resourceId,
+                        ScalableDimension = "ecs:service:DesiredCount",
+                        ServiceNamespace = "ecs",
+                    });
+
+                    var ECSCpuPolicy = new Aws.AppAutoScaling.Policy($"{shortName}-ECSCPUPolicy", new()
                     {
-                        ScaleInCooldown = 300,
-                        ScaleOutCooldown = 300,
-                        PredefinedMetricSpecification = new PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs
+                        ResourceId = ecsTarget.ResourceId,
+                        ScalableDimension = ecsTarget.ScalableDimension,
+                        ServiceNamespace = ecsTarget.ServiceNamespace,
+                        PolicyType = "TargetTrackingScaling",
+                        TargetTrackingScalingPolicyConfiguration = new PolicyTargetTrackingScalingPolicyConfigurationArgs
                         {
-                            PredefinedMetricType = "ECSServiceAverageMemoryUtilization ",
+                            ScaleInCooldown = 300,
+                            ScaleOutCooldown = 300,
+                            PredefinedMetricSpecification = new PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs
+                            {
+                                PredefinedMetricType = "ECSServiceAverageCPUUtilization",
+                            },
+                            TargetValue = 75,
                         },
-                        TargetValue = 75,
-                    }
-                });
+                    });
+                    var ECSMemoryPolicy = new Aws.AppAutoScaling.Policy($"{shortName}-ECSMemoryPolicy", new()
+                    {
+                        PolicyType = "TargetTrackingScaling",
+                        ResourceId = ecsTarget.ResourceId,
+                        ScalableDimension = ecsTarget.ScalableDimension,
+                        ServiceNamespace = ecsTarget.ServiceNamespace,
+                        TargetTrackingScalingPolicyConfiguration = new PolicyTargetTrackingScalingPolicyConfigurationArgs
+                        {
+                            ScaleInCooldown = 300,
+                            ScaleOutCooldown = 300,
+                            PredefinedMetricSpecification = new PolicyTargetTrackingScalingPolicyConfigurationPredefinedMetricSpecificationArgs
+                            {
+                                PredefinedMetricType = "ECSServiceAverageMemoryUtilization",
+                            },
+                            TargetValue = 75,
+                        }
+                    });
+                }
+                
 
                 return new Dictionary<string, object?>
                 {
