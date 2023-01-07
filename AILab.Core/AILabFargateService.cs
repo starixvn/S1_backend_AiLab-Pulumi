@@ -105,10 +105,12 @@ namespace AILab.Core
                 var desiredCount = config.GetInt32("DesiredCount") ?? 1;
                 var maxCapacity = config.GetInt32("MaxCapacity") ?? 1;
 
-                var imagePath = config.Require("ImagePath");
-                var logPath = config.Require("LogPath");
+                var imagePath = config.Require("ImagePath");              
                 var version = config.Require("Version");
                 var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
+
+                var containerPath = config.Require("ContainerPath");
+                var volumePath = config.Require("VolumePath");
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
@@ -182,7 +184,7 @@ namespace AILab.Core
                                 {
                                     new TaskDefinitionMountPointArgs
                                     {
-                                        ContainerPath = logPath,
+                                        ContainerPath = containerPath,
                                         SourceVolume = "efs"
                                     }
                                 }
@@ -196,7 +198,7 @@ namespace AILab.Core
                                EfsVolumeConfiguration = new TaskDefinitionVolumeEfsVolumeConfigurationArgs()
                                {
                                    FileSystemId = awsConfig.EFSFileSystemId,
-                                   RootDirectory = logPath
+                                   RootDirectory = volumePath
                                }
                           }
                         },
@@ -225,6 +227,7 @@ namespace AILab.Core
                         }
                     },
                 });
+                
                 //設定Auto Scaling
                 if (config.GetBoolean("AutoScaling") ?? false)
                 {

@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AILab.Core\AILab.Core.csproj" />
-    <ProjectReference Include="..\..\Config\AILab.Config.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,6 @@
+name: Desktop
+description: Deploy FrontEnd Desktop to ECS-Cluster.
+runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Config\AILab.Config.csproj" />
+    <ProjectReference Include="..\AILab.Config\AILab.Config.csproj" />
   </ItemGroup>
 
 </Project>
