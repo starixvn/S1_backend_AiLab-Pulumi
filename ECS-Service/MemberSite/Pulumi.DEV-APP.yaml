@@ -8,12 +8,11 @@ config:
   MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
   MemberSite:ImagePath: membersite/membersite
   MemberSite:LogPath: /membersiteApp
-  MemberSite:ServiceType: API # API OR Worker
+  MemberSite:ServiceType: API # API or Worker
   MemberSite:ContainerPort: 5069
   MemberSite:Cpu: 256
   MemberSite:Memory: 256
-  MemberSite:DesiredCount: 2
+  MemberSite:DesiredCount: 1
   #For AutoScaling
-  MemberSite:HaveAutoScaling: True # True OR False
-  MemberSite:MinCapacity: 1
+  MemberSite:AutoScaling: true # True or False
   MemberSite:MaxCapacity: 3

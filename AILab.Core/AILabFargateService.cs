@@ -103,7 +103,6 @@ namespace AILab.Core
                 var cpu = config.GetInt32("Cpu") ?? 512;
                 var memory = config.GetInt32("Memory") ?? 512;
                 var desiredCount = config.GetInt32("DesiredCount") ?? 1;
-                var minCapacity = config.GetInt32("MinCapacity") ?? 1;
                 var maxCapacity = config.GetInt32("MaxCapacity") ?? 1;
 
                 var imagePath = config.Require("ImagePath");
@@ -113,7 +112,7 @@ namespace AILab.Core
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
-                var service = new FargateService($"{shortName}-ecsService", new FargateServiceArgs
+                var service = new FargateService($"{shortName}", new FargateServiceArgs
                 {
                     HealthCheckGracePeriodSeconds = 60,
                     LoadBalancers = new[]
@@ -226,18 +225,15 @@ namespace AILab.Core
                         }
                     },
                 });
-
-
                 //設定Auto Scaling
-                if (config.GetBoolean("HaveAutoScaling") ?? false)
+                if (config.GetBoolean("AutoScaling") ?? false)
                 {
-                    var resourceId = $"service/{clusterName}/{shortName}";
-                    Log.Info(resourceId);
+                    var fargateServiceName = service.Service.Apply(i => i.Name);
                     var ecsTarget = new Aws.AppAutoScaling.Target($"{shortName}-ecsTarget", new()
                     {
                         MaxCapacity = maxCapacity,
-                        MinCapacity = minCapacity,
-                        ResourceId = resourceId,
+                        MinCapacity = desiredCount,
+                        ResourceId = Output.Format($"service/{clusterName}/{fargateServiceName}"),
                         ScalableDimension = "ecs:service:DesiredCount",
                         ServiceNamespace = "ecs",
                     });
@@ -277,7 +273,6 @@ namespace AILab.Core
                         }
                     });
                 }
-                
 
                 return new Dictionary<string, object?>
                 {

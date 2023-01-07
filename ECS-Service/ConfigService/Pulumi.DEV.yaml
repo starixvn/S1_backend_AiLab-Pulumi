@@ -8,7 +8,7 @@ config:
   ConfigService:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
   ConfigService:ImagePath: configservice/configservice
   ConfigService:LogPath: /configservice
-  ConfigService:ServiceType: API # API OR Worker
+  ConfigService:ServiceType: API # API or Worker
   ConfigService:ContainerPort: 7242
   ConfigService:Cpu: 128
   ConfigService:Memory: 128
