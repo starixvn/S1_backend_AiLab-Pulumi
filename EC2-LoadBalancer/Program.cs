@@ -44,6 +44,7 @@ return await Deployment.RunAsync(() =>
             securityGroupConfig.CloudflareIds,
             securityGroupConfig.OfficeIds,
         },
+        EnableDeletionProtection = true,
     });
 
     //Private
@@ -63,6 +64,7 @@ return await Deployment.RunAsync(() =>
         SubnetMappings = privateSubnetMappings,
         Tags = tags,
         SecurityGroups = securityGroupConfig.InternalEcsIds,
+        EnableDeletionProtection = true,
         Internal = true,
     });
 
