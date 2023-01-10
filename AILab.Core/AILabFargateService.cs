@@ -33,6 +33,8 @@ namespace AILab.Core
                 var vpcConfig = new AILabVpcConfig(env);
                 var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
                 var containerPort = config.GetInt32("ContainerPort") ?? 80;
+                var healthCheckPath = config.Get("HealthCheckPath") ?? "/health";
+                var serviceType= config.Get("ServiceType") ?? "API";
 
                 //建立Public服務
                 var publicTargetGroup = new Aws.LB.TargetGroup($"P-{shortName}-TG", new()
@@ -45,7 +47,7 @@ namespace AILab.Core
                     HealthCheck = new TargetGroupHealthCheckArgs
                     {
                         Enabled = true,
-                        Path = "/health",
+                        Path = healthCheckPath,
                         Interval = 30,
                         Timeout = 15,
                     }
@@ -76,7 +78,7 @@ namespace AILab.Core
                     HealthCheck = new TargetGroupHealthCheckArgs
                     {
                         Enabled = true,
-                        Path = "/health",
+                        Path = healthCheckPath,
                         Interval = 30,
                         Timeout = 15,
                     }
@@ -111,6 +113,7 @@ namespace AILab.Core
 
                 var containerPath = config.Require("ContainerPath");
                 var volumePath = config.Require("VolumePath");
+                
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
@@ -145,7 +148,7 @@ namespace AILab.Core
                                     Command = new string[]
                                     {
                                         "CMD-SHELL",
-                                        $"curl -f http://localhost:{containerPort}/health || exit 0",
+                                        $"curl -f http://localhost:{containerPort}{healthCheckPath} || exit 0",
                                     },
                                     StartPeriod = 60,
                                 },
@@ -171,7 +174,7 @@ namespace AILab.Core
                                     new TaskDefinitionKeyValuePairArgs
                                     {
                                         Name = "ServiceType",
-                                        Value = config.Require("ServiceType")
+                                        Value = serviceType
                                     }
                                 },
                                 RepositoryCredentials = new TaskDefinitionRepositoryCredentialsArgs

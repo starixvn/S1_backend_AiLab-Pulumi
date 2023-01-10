@@ -2,18 +2,11 @@ config:
   ConfigService:Cluster: AI1-DEV-Cluster
   ConfigService:NamePrefix: AI1
   ConfigService:ENV: DEV
-  ConfigService:ServiceName: Config
+  ConfigService:Version: b5cbf5b
   #for Load Balancers
   ConfigService:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/4983fca864f7d7ee
   ConfigService:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
-  #for docker img
-  ConfigService:ImagePath: configservice/configservice
-  ConfigService:Version: b5cbf5b
-  #for log or config
-  ConfigService:ContainerPath: /configservice
-  ConfigService:VolumePath: /configservice
   ConfigService:ContainerPort: 7242
-  ConfigService:ServiceType: API # API or Worker 
   ConfigService:Cpu: 128
   ConfigService:Memory: 128
   ConfigService:DesiredCount: 1

@@ -2,18 +2,11 @@ config:
   MemberSite:Cluster: AI1-DEV-Cluster
   MemberSite:NamePrefix: AI1
   MemberSite:ENV: DEV-APP
-  MemberSite:ServiceName: Member
+  MemberSite:Version: d53bdf6
   #for Load Balancers
   MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/4983fca864f7d7ee
   MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
-  #for docker img
-  MemberSite:ImagePath: membersite/membersite
-  MemberSite:Version: d53bdf6
-  #for log or config
-  MemberSite:ContainerPath: /membersite
-  MemberSite:VolumePath: /membersite
   MemberSite:ContainerPort: 5069
-  MemberSite:ServiceType: API # API or Worker 
   MemberSite:Cpu: 256
   MemberSite:Memory: 256
   MemberSite:DesiredCount: 1
