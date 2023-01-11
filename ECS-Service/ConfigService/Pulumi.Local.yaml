@@ -4,8 +4,8 @@ config:
   ConfigService:ENV: Local
   ConfigService:Version: b5cbf5b
   #for Load Balancers
-  ConfigService:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/4983fca864f7d7ee
-  ConfigService:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
+  ConfigService:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/92b1f389d581ea15
+  ConfigService:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/2b77a18c5fa11bc7
   ConfigService:ContainerPort: 7243
   ConfigService:Cpu: 128
   ConfigService:Memory: 128

@@ -1,5 +1,5 @@
 name: ECS-Cluster
-description: Create ECS-Cluster & EC2-ASG & EC2-LaunchTemplate.
+description: Create ECS-Cluster.
 runtime: dotnet
 
 config:

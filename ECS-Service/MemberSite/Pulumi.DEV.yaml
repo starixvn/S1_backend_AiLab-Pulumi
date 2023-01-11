@@ -4,8 +4,8 @@ config:
   MemberSite:ENV: DEV
   MemberSite:Version: d53bdf6
   #for Load Balancers
-  MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/4983fca864f7d7ee
-  MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/d3710bd23b03431b
+  MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/92b1f389d581ea15
+  MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/2b77a18c5fa11bc7
   MemberSite:ContainerPort: 5068
   MemberSite:Cpu: 256
   MemberSite:Memory: 256

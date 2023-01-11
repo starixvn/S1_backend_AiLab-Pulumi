@@ -7,4 +7,4 @@ config:
  MemberSite:ServiceName: Member
  MemberSite:ImagePath: membersite/membersite
  MemberSite:ContainerPath: /membersite
- MemberSite:VolumePath: /membersite
+ MemberSite:VolumePath: /logs/membersite

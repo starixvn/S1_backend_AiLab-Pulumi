@@ -86,6 +86,9 @@
                     "sg-034243fc6be6b0111",//CLOUDFRONT80-Q6G
                     "sg-05b9a3f218549f98a",//CLOUDFRONT80-IOQ
                     "sg-0fb825317deb8fe65",//CLOUDFRONT80-QUY
+                    "sg-085ab505f3b7ea468",//CLOUDFRONT8080-VUY
+                    "sg-0e9badb3cf5aee170",//CLOUDFRONT8080-VC5
+                    "sg-0fb825317deb8fe65",//CLOUDFRONT80-QUY
                 };
             }
         }
