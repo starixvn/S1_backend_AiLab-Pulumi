@@ -51,6 +51,7 @@ namespace AILab.Core
                         Timeout = 15,
                     }
                 });
+
                 var publicListener = new Aws.LB.Listener($"Public-{shortName}-Listener", new()
                 {
                     LoadBalancerArn = config.Require("PublicLoadBalancerArn"),
@@ -65,7 +66,7 @@ namespace AILab.Core
                         },
                     },
                 });
-
+                
                 //建立Private服務
                 var privateTargetGroup = new Aws.LB.TargetGroup($"I-{shortName}-TG", new()
                 {
@@ -96,6 +97,12 @@ namespace AILab.Core
                         },
                     },
                 });
+
+                //add 80 port rule
+                if (containerPort == 80)
+                {
+                    AILabListenerRule.Add80PortListenerRule(publicListener.Arn,publicTargetGroup.Arn);
+                }
 
                 var clusterName = config.Require("Cluster");
                 var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
