@@ -17,10 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberSite", "ECS-Service\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AILab.Core", "AILab.Core\AILab.Core.csproj", "{5D6D3574-C519-4576-82E4-4809F98CA943}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ECS-FrontEnd", "ECS-FrontEnd", "{F215FBD9-94CA-4688-A267-002877ACB1BC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Desktop", "ECS-FrontEnd\Desktop\Desktop.csproj", "{629BB119-8EEF-4A4F-8EA3-EDBA1A29E610}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,10 +47,6 @@ Global
 		{5D6D3574-C519-4576-82E4-4809F98CA943}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D6D3574-C519-4576-82E4-4809F98CA943}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D6D3574-C519-4576-82E4-4809F98CA943}.Release|Any CPU.Build.0 = Release|Any CPU
-		{629BB119-8EEF-4A4F-8EA3-EDBA1A29E610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{629BB119-8EEF-4A4F-8EA3-EDBA1A29E610}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{629BB119-8EEF-4A4F-8EA3-EDBA1A29E610}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{629BB119-8EEF-4A4F-8EA3-EDBA1A29E610}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,7 +54,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{247D7BDC-4387-4F9D-B4C4-0665C1F10269} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
-		{629BB119-8EEF-4A4F-8EA3-EDBA1A29E610} = {F215FBD9-94CA-4688-A267-002877ACB1BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}

@@ -220,6 +220,7 @@ namespace AILab.Core
                         Tags = tags,
                     },
                     EnableEcsManagedTags = true,
+                    ForceNewDeployment = true,
                     NetworkConfiguration = new ServiceNetworkConfigurationArgs
                     {
                         Subnets = vpcConfig.PrivateSubnets,

@@ -1,9 +1,0 @@
-name: Desktop
-description: Deploy FrontEnd Desktop to ECS-Cluster.
-runtime: dotnet
-
-config:
- aws:region: ap-southeast-1
- Desktop:ContainerPath: /etc/nginx
- Desktop:VolumePath: /nginx/membersite
- Desktop:HealthCheckPath: /
