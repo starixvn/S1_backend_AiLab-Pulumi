@@ -1,7 +1,6 @@
 config:
   ConfigService:Cluster: AI1-DEV-Cluster
   ConfigService:NamePrefix: AI1
-  ConfigService:ENV: DEV
   ConfigService:Version: b5cbf5b
   #for Load Balancers
   ConfigService:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/92b1f389d581ea15

@@ -19,7 +19,7 @@ namespace AILab.Core
             {
                 //Config
                 var config = new Config();
-                var env = config.Require("ENV");
+                var env = Deployment.Instance.StackName;
                 var namePrefix = config.Require("NamePrefix");
                 var serviceName = config.Require("ServiceName");
                 var shortName = $"{namePrefix}-{serviceName}-{env}";
@@ -29,7 +29,6 @@ namespace AILab.Core
                      { "Create-By", "Pulumi"},
                      { "Create-Time", DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm")},
                 };
-
                 var vpcConfig = new AILabVpcConfig(env);
                 var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
                 var containerPort = config.GetInt32("ContainerPort") ?? 80;

@@ -1,7 +1,6 @@
 config:
   MemberSite:Cluster: AI1-DEV-Cluster
   MemberSite:NamePrefix: AI1
-  MemberSite:ENV: DEV-APP
   MemberSite:Version: d53bdf6
   #for Load Balancers
   MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/92b1f389d581ea15
