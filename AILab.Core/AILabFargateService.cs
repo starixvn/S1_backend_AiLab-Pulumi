@@ -19,7 +19,7 @@ namespace AILab.Core
             {
                 //Config
                 var config = new Config();
-                var env = Deployment.Instance.StackName;
+                var env = config.Require("ENV"); //Deployment.Instance.StackName;
                 var namePrefix = config.Require("NamePrefix");
                 var serviceName = config.Require("ServiceName");
                 var shortName = $"{namePrefix}-{serviceName}-{env}";
@@ -30,79 +30,9 @@ namespace AILab.Core
                      { "Create-Time", DateTimeOffset.UtcNow.ToOffset(new TimeSpan(8,0,0)).ToString("yyyy-MM-dd HH:mm")},
                 };
                 var vpcConfig = new AILabVpcConfig(env);
-                var vpc = Vpc.Get(vpcConfig.VpcId, vpcConfig.VpcId);
                 var containerPort = config.GetInt32("ContainerPort") ?? 80;
                 var healthCheckPath = config.Get("HealthCheckPath") ?? "/health";
                 var serviceType= config.Get("ServiceType") ?? "API";
-
-                //建立Public服務
-                var publicTargetGroup = new Aws.LB.TargetGroup($"P-{shortName}-TG", new()
-                {
-                    Port = containerPort,
-                    VpcId = vpc.Id,
-                    Tags = tags,
-                    TargetType = "ip",
-                    Protocol = "HTTP",
-                    HealthCheck = new TargetGroupHealthCheckArgs
-                    {
-                        Enabled = true,
-                        Path = healthCheckPath,
-                        Interval = 30,
-                        Timeout = 15,
-                    }
-                });
-
-                var publicListener = new Aws.LB.Listener($"Public-{shortName}-Listener", new()
-                {
-                    LoadBalancerArn = config.Require("PublicLoadBalancerArn"),
-                    Port = containerPort,
-                    Protocol = "HTTP",
-                    DefaultActions = new[]
-                    {
-                        new ListenerDefaultActionArgs
-                        {
-                            Type = "forward",
-                            TargetGroupArn = publicTargetGroup.Arn,
-                        },
-                    },
-                });
-                
-                //建立Private服務
-                var privateTargetGroup = new Aws.LB.TargetGroup($"I-{shortName}-TG", new()
-                {
-                    Port = containerPort,
-                    VpcId = vpc.Id,
-                    Tags = tags,
-                    TargetType = "ip",
-                    Protocol = "HTTP",
-                    HealthCheck = new TargetGroupHealthCheckArgs
-                    {
-                        Enabled = true,
-                        Path = healthCheckPath,
-                        Interval = 30,
-                        Timeout = 15,
-                    }
-                });
-                var privateListener = new Aws.LB.Listener($"Private-{shortName}-Listener", new()
-                {
-                    LoadBalancerArn = config.Require("PrivateLoadBalancerArn"),
-                    Port = containerPort,
-                    Protocol = "HTTP",
-                    DefaultActions = new[]
-                    {
-                        new ListenerDefaultActionArgs
-                        {
-                            Type = "forward",
-                            TargetGroupArn = privateTargetGroup.Arn,
-                        },
-                    },
-                });
-
-                //add 80 port rule
-                if (containerPort == 80)
-                {
-                    AILabListenerRule.Add80PortListenerRule(publicListener.Arn,publicTargetGroup.Arn);
-                }
 
                 var clusterName = config.Require("Cluster");
                 var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
@@ -111,7 +41,7 @@ namespace AILab.Core
                 var cpu = config.GetInt32("Cpu") ?? 512;
                 var memory = config.GetInt32("Memory") ?? 512;
                 var desiredCount = config.GetInt32("DesiredCount") ?? 1;
-                var maxCapacity = config.GetInt32("MaxCapacity") ?? 1;
+                var maxCapacity = config.GetInt32("MaxCapacity") ?? desiredCount;
 
                 var imagePath = config.Require("ImagePath");              
                 var version = config.Require("Version");
@@ -119,7 +49,9 @@ namespace AILab.Core
 
                 var containerPath = config.Require("ContainerPath");
                 var volumePath = config.Require("VolumePath");
-                
+
+                var publicTargetGroupArn = config.Require("PublicTargetGroupArn");
+                var privateTargetGroupArn = config.Require("PrivateTargetGroupArn");
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
@@ -132,13 +64,13 @@ namespace AILab.Core
                         {
                             ContainerName = serviceName,
                             ContainerPort = containerPort,
-                            TargetGroupArn = publicTargetGroup.Arn
+                            TargetGroupArn = publicTargetGroupArn
                         },
                         new ServiceLoadBalancerArgs
                         {
                             ContainerName = serviceName,
                             ContainerPort = containerPort,
-                            TargetGroupArn = privateTargetGroup.Arn
+                            TargetGroupArn = privateTargetGroupArn
                         },
                     },
                     Cluster = cluster.Arn,
@@ -239,7 +171,7 @@ namespace AILab.Core
                 });
                 
                 //設定Auto Scaling
-                if (config.GetBoolean("AutoScaling") ?? false)
+                if (maxCapacity > desiredCount)
                 {
                     var fargateServiceName = service.Service.Apply(i => i.Name);
                     var ecsTarget = new Aws.AppAutoScaling.Target($"{shortName}-ecsTarget", new()
@@ -290,8 +222,6 @@ namespace AILab.Core
                 return new Dictionary<string, object?>
                 {
                     ["ServiceName"] = service.GetResourceName(),
-                    ["PublicTargetGroup"] = publicTargetGroup.GetResourceName(),
-                    ["PrivateTargetGroup"] = privateTargetGroup.GetResourceName(),
                 };
             };
         }

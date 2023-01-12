@@ -1,0 +1,6 @@
+name: EC2-TargetGroup
+description: Create EC2 TargetGroup & Port Listener & ListenerRule.
+runtime: dotnet
+  
+config:
+ aws:region: ap-southeast-1

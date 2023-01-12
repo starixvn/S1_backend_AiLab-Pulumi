@@ -1,14 +1,13 @@
-config:
-  MemberSite:Cluster: AI1-DEV-Cluster
+﻿config:
   MemberSite:NamePrefix: AI1
+  MemberSite:ENV: DEV-APP
+  MemberSite:Cluster: AI1-DEV-Cluster
   MemberSite:Version: d53bdf6
   #for Load Balancers
-  MemberSite:PublicLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Public-AI1-DEV-ALB/92b1f389d581ea15
-  MemberSite:PrivateLoadBalancerArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:loadbalancer/app/Private-AI1-DEV-ALB/2b77a18c5fa11bc7
+  MemberSite:PublicTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Public-AI1-Member-APP-DEV-TG/6fca00f61529748e
+  MemberSite:PrivateTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Private-AI1-Member-APP-DEV-TG/df87b38e45ae2e8d
   MemberSite:ContainerPort: 5069
   MemberSite:Cpu: 256
   MemberSite:Memory: 256
   MemberSite:DesiredCount: 1
-  #For AutoScaling
-  MemberSite:AutoScaling: true # True or False
-  MemberSite:MaxCapacity: 3
+  MemberSite:MaxCapacity: 3  #大於DesiredCount會建立AutoScaling
