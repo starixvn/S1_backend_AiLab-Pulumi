@@ -1,11 +1,9 @@
 ﻿config:
   Nginx:NamePrefix: AI1
   Nginx:ENV: DEV
-  Nginx:Cluster: AI1-DEV-Cluster
-  Nginx:Version: latest
-  #for Load Balancers
-  Nginx:PublicTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Public-AI1-Nginx-DEV-TG/66cf53648ab4119b
-  Nginx:PrivateTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Private-AI1-Nginx-DEV-TG/3e4aba5579504a66
+  Nginx:Version: 1.18.0
+  Nginx:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  Nginx:TargetGroupStack: Nginx-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   Nginx:ContainerPort: 80
   Nginx:Cpu: 256
   Nginx:Memory: 256

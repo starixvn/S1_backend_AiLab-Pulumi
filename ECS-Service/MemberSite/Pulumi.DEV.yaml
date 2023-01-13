@@ -1,11 +1,9 @@
 ﻿config:
   MemberSite:NamePrefix: AI1
   MemberSite:ENV: DEV
-  MemberSite:Cluster: AI1-DEV-Cluster
   MemberSite:Version: d53bdf6
-  #for Load Balancers
-  MemberSite:PublicTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Public-AI1-Member-DEV-TG/681acb3e26239cb7
-  MemberSite:PrivateTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Private-AI1-Member-DEV-TG/e12178f5ece6ce15
+  MemberSite:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  MemberSite:TargetGroupStack: Member-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   MemberSite:ContainerPort: 5068
   MemberSite:Cpu: 256
   MemberSite:Memory: 256

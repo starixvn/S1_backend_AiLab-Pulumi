@@ -1,7 +1,5 @@
 ﻿using AILabConfig;
 using Pulumi;
-using Pulumi.Aws.LB.Inputs;
-using Pulumi.Aws.Ec2;
 using Pulumi.Awsx.Awsx.Inputs;
 using Pulumi.Awsx.Ecs.Inputs;
 using Aws = Pulumi.Aws;
@@ -19,7 +17,7 @@ namespace AILab.Core
             {
                 //Config
                 var config = new Config();
-                var env = config.Require("ENV"); //Deployment.Instance.StackName;
+                var env = config.Require("ENV");
                 var namePrefix = config.Require("NamePrefix");
                 var serviceName = config.Require("ServiceName");
                 var shortName = $"{namePrefix}-{serviceName}-{env}";
@@ -32,10 +30,7 @@ namespace AILab.Core
                 var vpcConfig = new AILabVpcConfig(env);
                 var containerPort = config.GetInt32("ContainerPort") ?? 80;
                 var healthCheckPath = config.Get("HealthCheckPath") ?? "/health";
-                var serviceType= config.Get("ServiceType") ?? "API";
-
-                var clusterName = config.Require("Cluster");
-                var cluster = Aws.Ecs.Cluster.Get(clusterName, clusterName);
+                var serviceType = config.Get("ServiceType") ?? "API";
 
                 var awsConfig = new AILabAwsConfig(env);
                 var cpu = config.GetInt32("Cpu") ?? 512;
@@ -43,15 +38,24 @@ namespace AILab.Core
                 var desiredCount = config.GetInt32("DesiredCount") ?? 1;
                 var maxCapacity = config.GetInt32("MaxCapacity") ?? desiredCount;
 
-                var imagePath = config.Require("ImagePath");              
+                var imagePath = config.Require("ImagePath");
                 var version = config.Require("Version");
                 var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
 
                 var containerPath = config.Require("ContainerPath");
                 var volumePath = config.Require("VolumePath");
 
-                var publicTargetGroupArn = config.Require("PublicTargetGroupArn");
-                var privateTargetGroupArn = config.Require("PrivateTargetGroupArn");
+                //Get Cluster
+                var clusterStack = config.Require("ClusterStack");
+                var clusterReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.ECSClusterProject}/{clusterStack}");
+                var clusterName = clusterReference.RequireOutput("Cluster").Apply(v => v.ToString());
+                var clusterArn = clusterReference.RequireOutput("ClusterArn").Apply(v => v.ToString());
+
+                //Get TargetGroup
+                var targetGroupStack = config.Require("TargetGroupStack");
+                var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{targetGroupStack}");
+                var publicTargetGroupArn = reference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+                var privateTargetGroupArn = reference.RequireOutput("PrivateTargetGroupArn").Apply(v => v.ToString());
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
@@ -73,7 +77,7 @@ namespace AILab.Core
                             TargetGroupArn = privateTargetGroupArn
                         },
                     },
-                    Cluster = cluster.Arn,
+                    Cluster = clusterArn,
                     DesiredCount = desiredCount,
                     TaskDefinitionArgs = new FargateServiceTaskDefinitionArgs
                     {
@@ -128,7 +132,7 @@ namespace AILab.Core
                                         ContainerPath = containerPath,
                                         SourceVolume = "efs"
                                     }
-                                }
+                                },
                             }
                         },
                         Volumes = new[]
@@ -168,8 +172,9 @@ namespace AILab.Core
                             securityGroupConfig.InternalEcsIds,
                         }
                     },
+                    Tags = tags
                 });
-                
+
                 //設定Auto Scaling
                 if (maxCapacity > desiredCount)
                 {

@@ -1,11 +1,9 @@
-config:
+﻿config:
   ConfigService:NamePrefix: AI1
   ConfigService:ENV: DEV
-  ConfigService:Cluster: AI1-DEV-Cluster
   ConfigService:Version: b5cbf5b
-  #for Load Balancers
-  ConfigService:PublicTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Public-AI1-Config-DEV-TG/e570a81ac4187935
-  ConfigService:PrivateTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Private-AI1-Config-DEV-TG/8f613240cc741bf2
+  ConfigService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  ConfigService:TargetGroupStack: Config-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   ConfigService:ContainerPort: 7242
   ConfigService:Cpu: 128
   ConfigService:Memory: 128

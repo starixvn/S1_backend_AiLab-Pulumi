@@ -28,6 +28,7 @@ return await Deployment.RunAsync(() =>
     return new Dictionary<string, object?>
     {
         ["Cluster"] = cluster.GetResourceName(),
+        ["ClusterArn"] = cluster.Arn,
     };
 });
 

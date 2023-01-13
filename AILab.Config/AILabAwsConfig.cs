@@ -15,6 +15,26 @@
 
         public string TaskRoleArn { get; } = "arn:aws:iam::761771912479:role/ecsTaskExecutionRole";
 
+        /// <summary>
+        /// Pulumi執行帳號的Account ID
+        /// </summary>
+        public string PulumiOrganization { get; } = "ailab-backend";
+
+        /// <summary>
+        /// Pulumi的EC2-LoadBalancer專案名稱
+        /// </summary>
+        public string LoadBalancerProject { get; } = "EC2-LoadBalancer";
+
+        /// <summary>
+        /// Pulumi的EC2-TargetGroup專案名稱
+        /// </summary>
+        public string TargetGroupProject { get; } = "EC2-TargetGroup";
+
+        /// <summary>
+        /// Pulumi的ECS-Cluster專案名稱
+        /// </summary>
+        public string ECSClusterProject { get; } = "ECS-Cluster";
+
         public string ASPNETCORE_ENVIRONMENT
         {
             get

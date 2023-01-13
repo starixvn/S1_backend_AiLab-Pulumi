@@ -25,6 +25,14 @@ return await Deployment.RunAsync(() =>
     var containerPort = config.GetInt32("ContainerPort") ?? 80;
     var healthCheckPath = config.Get("HealthCheckPath") ?? "/health";
 
+    //Get LoadBalancer
+    var awsConfig = new AILabAwsConfig(env);
+    var stack = config.Require("LoadBalancerStack");
+    var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.LoadBalancerProject}/{stack}");
+    var publicLoadBalancerArn = reference.RequireOutput("PublicLoadBalancerArn").Apply(v => v.ToString());
+    var privateLoadBalancerArn = reference.RequireOutput("PrivateLoadBalancerArn").Apply(v => v.ToString());
+
+
     //建立Public服務
     var publicName = $"Public-{shortName}-TG";
     var publicTargetGroup = new TargetGroup(publicName, new()
@@ -45,7 +53,7 @@ return await Deployment.RunAsync(() =>
     });
     var publicListener = new Listener($"Public-{shortName}-Listener", new()
     {
-        LoadBalancerArn = config.Require("PublicLoadBalancerArn"),
+        LoadBalancerArn = publicLoadBalancerArn,
         Port = containerPort,
         Protocol = "HTTP",
         DefaultActions = new[]
@@ -79,7 +87,7 @@ return await Deployment.RunAsync(() =>
     });
     var privateListener = new Listener($"Private-{shortName}-Listener", new()
     {
-        LoadBalancerArn = config.Require("PrivateLoadBalancerArn"),
+        LoadBalancerArn = privateLoadBalancerArn,
         Port = containerPort,
         Protocol = "HTTP",
         DefaultActions = new[]
@@ -243,7 +251,9 @@ return await Deployment.RunAsync(() =>
     return new Dictionary<string, object?>
     {
         ["PublicTargetGroup"] = publicTargetGroup.GetResourceName(),
+        ["PublicTargetGroupArn"] = publicTargetGroup.Arn,
         ["PrivateTargetGroup"] = privateTargetGroup.GetResourceName(),
+        ["PrivateTargetGroupArn"] = privateTargetGroup.Arn,
     };
 });
 

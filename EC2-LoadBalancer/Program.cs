@@ -71,7 +71,9 @@ return await Deployment.RunAsync(() =>
     return new Dictionary<string, object?>
     {
         ["PublicLoadBalancer"] = publicLoadBalancer.GetResourceName(),
+        ["PublicLoadBalancerArn"] = publicLoadBalancer.Arn,
         ["PrivateLoadBalancer"] = privateLoadBalancer.GetResourceName(),
+        ["PrivateLoadBalancerArn"] = privateLoadBalancer.Arn,
     };
 });
 
