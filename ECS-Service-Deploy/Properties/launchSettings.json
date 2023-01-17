@@ -2,7 +2,7 @@
   "profiles": {
     "ECS-Service-Deploy": {
       "commandName": "Project",
-      "commandLineArgs": "DEV Nginx 1.18.0"
+      "commandLineArgs": "Local ConfigService 6f3c7f9"
     }
   }
 }

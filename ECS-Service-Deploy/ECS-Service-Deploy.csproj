@@ -9,14 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Pulumi.Automation" Version="3.*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ECS-Service\ConfigService\ConfigService.csproj" />
-    <ProjectReference Include="..\ECS-Service\MemberSite\MemberSite.csproj" />
-    <ProjectReference Include="..\ECS-Service\Nginx\Nginx.csproj" />
   </ItemGroup>
 
 </Project>
