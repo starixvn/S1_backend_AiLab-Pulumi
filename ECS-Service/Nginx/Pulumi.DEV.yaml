@@ -1,11 +1,11 @@
-﻿config:
-  Nginx:NamePrefix: AI1
-  Nginx:ENV: DEV
-  Nginx:Version: 1.18.0
+config:
   Nginx:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  Nginx:ContainerPort: "80"
+  Nginx:Cpu: "256"
+  Nginx:DesiredCount: "1"
+  Nginx:ENV: DEV
+  Nginx:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  Nginx:Memory: "256"
+  Nginx:NamePrefix: AI1
   Nginx:TargetGroupStack: Nginx-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
-  Nginx:ContainerPort: 80
-  Nginx:Cpu: 256
-  Nginx:Memory: 256
-  Nginx:DesiredCount: 1
-  Nginx:MaxCapacity: 3  #大於DesiredCount會建立AutoScaling
+  Nginx:Version: 1.18.0
