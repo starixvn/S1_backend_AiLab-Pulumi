@@ -1,11 +1,11 @@
-﻿config:
-  MemberSite:NamePrefix: AI1
-  MemberSite:ENV: DEV-APP
-  MemberSite:Version: d53bdf6
+config:
   MemberSite:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  MemberSite:ContainerPort: "5069"
+  MemberSite:Cpu: "256"
+  MemberSite:DesiredCount: "1"
+  MemberSite:ENV: DEV-APP
+  MemberSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  MemberSite:Memory: "256"
+  MemberSite:NamePrefix: AI1
   MemberSite:TargetGroupStack: Member-APP-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
-  MemberSite:ContainerPort: 5069
-  MemberSite:Cpu: 256
-  MemberSite:Memory: 256
-  MemberSite:DesiredCount: 1
-  MemberSite:MaxCapacity: 3  #大於DesiredCount會建立AutoScaling
+  MemberSite:Version: 48d9449
