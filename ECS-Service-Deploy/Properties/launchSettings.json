@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ECS-Service-Deploy": {
+      "commandName": "Project",
+      "commandLineArgs": "DEV MemberSite"
+    }
+  }
+}

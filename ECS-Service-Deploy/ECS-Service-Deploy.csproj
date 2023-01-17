@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>ECSServiceDeploy</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pulumi.Automation" Version="3.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECS-Service\ConfigService\ConfigService.csproj" />
+    <ProjectReference Include="..\ECS-Service\MemberSite\MemberSite.csproj" />
+    <ProjectReference Include="..\ECS-Service\Nginx\Nginx.csproj" />
+  </ItemGroup>
+
+</Project>
