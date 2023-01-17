@@ -2,7 +2,7 @@
   "profiles": {
     "ECS-Service-Deploy": {
       "commandName": "Project",
-      "commandLineArgs": "DEV MemberSite 48d9449"
+      "commandLineArgs": "DEV ConfigService 6f3c7f9"
     }
   }
 }
