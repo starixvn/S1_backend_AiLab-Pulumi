@@ -6,5 +6,6 @@ config:
   ConfigService:ENV: Local
   ConfigService:Memory: "128"
   ConfigService:NamePrefix: AI1
+
   ConfigService:TargetGroupStack: Config-Local #透過Pulumi Service取回EC2-TargetGroup的Output
   ConfigService:Version: 6f3c7f9

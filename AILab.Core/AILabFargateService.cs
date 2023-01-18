@@ -6,6 +6,7 @@ using Aws = Pulumi.Aws;
 using Pulumi.Awsx.Ecs;
 using Pulumi.Aws.Ecs.Inputs;
 using Pulumi.Aws.AppAutoScaling.Inputs;
+using System.Text.Json;
 
 namespace AILab.Core
 {
@@ -42,8 +43,37 @@ namespace AILab.Core
                 var version = config.Require("Version");
                 var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
 
-                var containerPath = config.Require("ContainerPath");
-                var volumePath = config.Require("VolumePath");
+                //設定Volumes
+                var containerPaths = new InputList<TaskDefinitionMountPointArgs>();
+                var volumePaths = new InputList<TaskDefinitionVolumeArgs>();
+                var paths = config.GetObject<JsonElement>("Paths");
+                if (!paths.Equals(default(JsonElement)))
+                {
+                    var i = 1;
+                    foreach (var path in paths.EnumerateArray())
+                    {                 
+                        var name = $"efs-{i}";
+                        var containerPath = path.GetProperty("ContainerPath").ToString();
+                        var taskDefinitionMountPointArgs = new TaskDefinitionMountPointArgs
+                        {
+                            ContainerPath = containerPath,
+                            SourceVolume = name
+                        };
+                        containerPaths.Add(taskDefinitionMountPointArgs);                       
+                        var volumePath = path.GetProperty("VolumePath").ToString();
+                        var taskDefinitionVolumeArgs = new TaskDefinitionVolumeArgs()
+                        {
+                            Name = name,
+                            EfsVolumeConfiguration = new TaskDefinitionVolumeEfsVolumeConfigurationArgs()
+                            {
+                                FileSystemId = awsConfig.EFSFileSystemId,
+                                RootDirectory = volumePath
+                            }
+                        };
+                        volumePaths.Add(taskDefinitionVolumeArgs);
+                        i++;
+                    }
+                }
 
                 //Get Cluster
                 var clusterStack = config.Require("ClusterStack");
@@ -125,28 +155,10 @@ namespace AILab.Core
                                 },
                                 EntryPoint = Array.Empty<string>(),
                                 Command = Array.Empty<string>(),
-                                MountPoints = new[]
-                                {
-                                    new TaskDefinitionMountPointArgs
-                                    {
-                                        ContainerPath = containerPath,
-                                        SourceVolume = "efs"
-                                    }
-                                },
+                                MountPoints = containerPaths,
                             }
                         },
-                        Volumes = new[]
-                        {
-                          new TaskDefinitionVolumeArgs()
-                          {
-                               Name = "efs",
-                               EfsVolumeConfiguration = new TaskDefinitionVolumeEfsVolumeConfigurationArgs()
-                               {
-                                   FileSystemId = awsConfig.EFSFileSystemId,
-                                   RootDirectory = volumePath
-                               }
-                          }
-                        },
+                        Volumes = volumePaths,
                         LogGroup = new DefaultLogGroupArgs
                         {
                             Skip = true
