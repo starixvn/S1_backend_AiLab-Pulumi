@@ -32,8 +32,9 @@ namespace AILab.Core
                 var containerPort = config.GetInt32("ContainerPort") ?? 80;
                 var healthCheckPath = config.Get("HealthCheckPath") ?? "/health";
                 var serviceType = config.Get("ServiceType") ?? "API";
-
-                var awsConfig = new AILabAwsConfig(env);
+                
+                var isApp = serviceName.Contains("APP");
+                var awsConfig = new AILabAwsConfig(env, isApp);
                 var cpu = config.GetInt32("Cpu") ?? 512;
                 var memory = config.GetInt32("Memory") ?? 512;
                 var desiredCount = config.GetInt32("DesiredCount") ?? 1;

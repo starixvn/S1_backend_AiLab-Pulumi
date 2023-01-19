@@ -2,9 +2,12 @@
 {
     public class AILabAwsConfig
     {
-        public AILabAwsConfig(string environmentName)
+        private bool IsApp { get; set; }
+
+        public AILabAwsConfig(string environmentName, bool isApp = false)
         {
             EnvironmentName = environmentName;
+            IsApp = isApp;
         }
 
         public string EnvironmentName { get; }
@@ -41,11 +44,9 @@
             {
                 return EnvironmentName switch
                 {
-                    "PRD" => "Production",
-                    "RLS" => "Release",
-                    "DEV" => "Development",
-                    "DEV-APP" => "Development.APP",
-                    "PRD-APP" => "Production.APP",
+                    "PRD" => $"Production{(IsApp ? ".APP" : string.Empty)}",
+                    "RLS" => $"Release{(IsApp ? ".APP" : string.Empty)}",
+                    "DEV" => $"Development{(IsApp ? ".APP" : string.Empty)}",
                     _ => EnvironmentName
                 };
             }
