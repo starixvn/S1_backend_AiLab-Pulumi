@@ -46,13 +46,13 @@ namespace AILab.Core
                 //設定Volumes
                 var containerPaths = new InputList<TaskDefinitionMountPointArgs>();
                 var volumePaths = new InputList<TaskDefinitionVolumeArgs>();
-                var paths = config.GetObject<JsonElement>("Volumes");
-                if (!paths.Equals(default(JsonElement)))
+                var volumes = config.GetObject<JsonElement>("Volumes");
+                if (!volumes.Equals(default(JsonElement)))
                 {
                     var i = 1;
-                    foreach (var path in paths.EnumerateArray())
+                    foreach (var path in volumes.EnumerateArray())
                     {                 
-                        var name = $"efs-{i}";
+                        var name = $"volume-{i}";
                         var containerPath = path.GetProperty("ContainerPath").ToString();
                         var taskDefinitionMountPointArgs = new TaskDefinitionMountPointArgs
                         {
