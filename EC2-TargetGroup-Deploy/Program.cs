@@ -7,6 +7,7 @@ var namePrefix = args.Any() ? args[1] : throw new ArgumentException("Please inpu
 var env = args.Any() ? args[2] : throw new ArgumentException("Please input EnvironmentName (DEV/RLS/PRD .... )");
 var loadBalancerStack = args.Any() ? args[3] : throw new ArgumentException("Please input LoadBalancerStack (EC2-TargetGroup Stack Name)");
 var port = args.Any() ? args[4] : throw new ArgumentException("Please input port for TargetGroup.");
+var isDestroy = args.Length > 5 && (args[5] == "true" || args[3] == "1");
 
 Console.WriteLine($"Deploy EC2-TargetGroup {env} - {namePrefix}-{serviceName}");
 
@@ -21,24 +22,27 @@ await stack.SetConfigAsync("ENV", new ConfigValue(env));
 await stack.SetConfigAsync("LoadBalancerStack", new ConfigValue(loadBalancerStack));
 await stack.SetConfigAsync("ContainerPort", new ConfigValue(port));
 
-Console.WriteLine($"Stack: {stackName} is refreshing ...");
-await stack.RefreshAsync(new RefreshOptions { OnStandardOutput = Console.WriteLine });
-Console.WriteLine($"Stack: {stackName} is refresh complete.");
-
-Console.WriteLine("updating stack...");
-var result = await stack.UpAsync(new UpOptions { OnStandardOutput = Console.WriteLine });
-
-if (result.Summary.ResourceChanges != null)
+if (isDestroy)
 {
-    Console.WriteLine("update summary:");
-    foreach (var change in result.Summary.ResourceChanges)
-    {
-        Console.WriteLine($"    {change.Key}: {change.Value}");
-    }      
+    Console.WriteLine("destroying stack...");
+    await stack.DestroyAsync(new DestroyOptions { OnStandardOutput = Console.WriteLine });
+    Console.WriteLine("stack destroy complete");
 }
-Console.WriteLine($"TargetGroupStack: {stackName}");
-Console.WriteLine($"PublicTargetGroup: {result.Outputs["PublicTargetGroup"].Value}");
-Console.WriteLine($"PrivateTargetGroup: {result.Outputs["PrivateTargetGroup"].Value}");
+else
+{
+    Console.WriteLine("updating stack...");
+    var result = await stack.UpAsync(new UpOptions { OnStandardOutput = Console.WriteLine });
 
-
+    if (result.Summary.ResourceChanges != null)
+    {
+        Console.WriteLine("update summary:");
+        foreach (var change in result.Summary.ResourceChanges)
+        {
+            Console.WriteLine($"    {change.Key}: {change.Value}");
+        }
+    }
+    Console.WriteLine($"TargetGroupStack: {stackName}");
+    Console.WriteLine($"PublicTargetGroup: {result.Outputs["PublicTargetGroup"].Value}");
+    Console.WriteLine($"PrivateTargetGroup: {result.Outputs["PrivateTargetGroup"].Value}");
+}
 
