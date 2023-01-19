@@ -10,3 +10,7 @@ config:
   MemberSite:TargetGroupStack: Member-APP-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   MemberSite:Version: 48d9449
   MemberSite:ServiceName: Member-APP
+  MemberSite:Volumes:
+    - ContainerPath: /membersiteApp
+      VolumePath: /logs/membersiteApp
+  
