@@ -22,6 +22,10 @@ await stack.SetConfigAsync("ENV", new ConfigValue(env));
 await stack.SetConfigAsync("LoadBalancerStack", new ConfigValue(loadBalancerStack));
 await stack.SetConfigAsync("ContainerPort", new ConfigValue(port));
 
+Console.WriteLine($"Stack: {stackName} is refreshing ...");
+await stack.RefreshAsync(new RefreshOptions { OnStandardOutput = Console.WriteLine });
+Console.WriteLine($"Stack: {stackName} is refresh complete.");
+
 if (isDestroy)
 {
     Console.WriteLine("destroying stack...");
