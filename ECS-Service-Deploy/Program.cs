@@ -6,7 +6,7 @@ var env = args.Any() ? args[0] : throw new ArgumentException("Please input Envir
 var projectName = args.Any() ? args[1] : throw new ArgumentException("Please input ProjectName (ConfigService/MemberSite .... )");
 var version = args.Any() ? args[2] : throw new ArgumentException("Please input version (docker image tag)");
 var isDestroy = args.Length > 3 && (args[3] == "true" || args[3] == "1");
-Console.WriteLine($"Deploy {env} - {projectName} - {version}");
+Console.WriteLine($"Deploy FargateService {env} - {projectName} - {version}");
 
 //設定LocalWorkspace的工作目錄
 var executingDir = new DirectoryInfo(Assembly.GetExecutingAssembly().Location).Parent.FullName;
@@ -49,9 +49,10 @@ foreach (var stackName in stacks.Select(i => i.Name))
             {
                 Console.WriteLine("update summary:");
                 foreach (var change in result.Summary.ResourceChanges)
+                {
                     Console.WriteLine($"    {change.Key}: {change.Value}");
+                }                    
             }
-
             Console.WriteLine($"ServiceName: {result.Outputs["ServiceName"].Value}");
         }
 

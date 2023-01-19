@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EC2-TargetGroup-Deploy": {
+      "commandName": "Project",
+      "commandLineArgs": "Bonus AI1 DEV DEV 50997"
+    }
+  }
+}
