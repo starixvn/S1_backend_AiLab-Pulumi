@@ -46,7 +46,7 @@ namespace AILab.Core
                 //設定Volumes
                 var containerPaths = new InputList<TaskDefinitionMountPointArgs>();
                 var volumePaths = new InputList<TaskDefinitionVolumeArgs>();
-                var paths = config.GetObject<JsonElement>("Paths");
+                var paths = config.GetObject<JsonElement>("Volumes");
                 if (!paths.Equals(default(JsonElement)))
                 {
                     var i = 1;
@@ -81,18 +81,16 @@ namespace AILab.Core
                 var clusterName = clusterReference.RequireOutput("Cluster").Apply(v => v.ToString());
                 var clusterArn = clusterReference.RequireOutput("ClusterArn").Apply(v => v.ToString());
 
-                //Get TargetGroup
-                var targetGroupStack = config.Require("TargetGroupStack");
-                var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{targetGroupStack}");
-                var publicTargetGroupArn = reference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
-                var privateTargetGroupArn = reference.RequireOutput("PrivateTargetGroupArn").Apply(v => v.ToString());
-
-                var securityGroupConfig = new AILabSecurityGroupConfig(env);
-                //建立ECS服務
-                var service = new FargateService($"{shortName}", new FargateServiceArgs
+                var loadBalancers = new InputList<ServiceLoadBalancerArgs>();
+                var isAPI = serviceType.Equals("API");
+                //設定Target Group
+                if (isAPI)
                 {
-                    HealthCheckGracePeriodSeconds = 60,
-                    LoadBalancers = new[]
+                    var targetGroupStack = config.Require("TargetGroupStack");
+                    var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{targetGroupStack}");
+                    var publicTargetGroupArn = reference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+                    var privateTargetGroupArn = reference.RequireOutput("PrivateTargetGroupArn").Apply(v => v.ToString());
+                    loadBalancers.AddRange(new[]
                     {
                         new ServiceLoadBalancerArgs
                         {
@@ -106,7 +104,15 @@ namespace AILab.Core
                             ContainerPort = containerPort,
                             TargetGroupArn = privateTargetGroupArn
                         },
-                    },
+                    });
+                }
+               
+                var securityGroupConfig = new AILabSecurityGroupConfig(env);
+                //建立ECS服務
+                var service = new FargateService(shortName, new FargateServiceArgs
+                {
+                    HealthCheckGracePeriodSeconds = isAPI ? 60 : null,
+                    LoadBalancers = loadBalancers,
                     Cluster = clusterArn,
                     DesiredCount = desiredCount,
                     TaskDefinitionArgs = new FargateServiceTaskDefinitionArgs

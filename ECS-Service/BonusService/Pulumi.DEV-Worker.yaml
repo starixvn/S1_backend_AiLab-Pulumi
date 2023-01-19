@@ -1,0 +1,11 @@
+config:
+  BonusService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  BonusService:ContainerPort: "50997"
+  BonusService:Cpu: "128"
+  BonusService:DesiredCount: "1"
+  BonusService:ENV: DEV
+  BonusService:Memory: "128"
+  BonusService:NamePrefix: AI1
+  BonusService:Version: 552c857
+  BonusService:ServiceType: Worker
+  BonusService:ServiceName: Bonus-Worker

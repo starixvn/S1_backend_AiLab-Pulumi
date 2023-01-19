@@ -7,7 +7,7 @@ config:
  Nginx:ServiceName: Nginx
  Nginx:ImagePath: infra/nginx
  Nginx:HealthCheckPath: /
- Nginx:Paths:
+ Nginx:Volumes:
     - ContainerPath: /etc/nginx
       VolumePath: /nginx/membersite
     - ContainerPath: /var

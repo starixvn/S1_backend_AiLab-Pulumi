@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS-Service-Deploy", "ECS-S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EC2-TargetGroup-Deploy", "EC2-TargetGroup-Deploy\EC2-TargetGroup-Deploy.csproj", "{8AFD898E-B15B-49A3-9D74-F46CBEB911FB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BonusService", "ECS-Service\BonusService\BonusService.csproj", "{8E9B86C3-220D-4566-8BB9-A6B41A84B1EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{8AFD898E-B15B-49A3-9D74-F46CBEB911FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AFD898E-B15B-49A3-9D74-F46CBEB911FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AFD898E-B15B-49A3-9D74-F46CBEB911FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E9B86C3-220D-4566-8BB9-A6B41A84B1EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E9B86C3-220D-4566-8BB9-A6B41A84B1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E9B86C3-220D-4566-8BB9-A6B41A84B1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E9B86C3-220D-4566-8BB9-A6B41A84B1EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{247D7BDC-4387-4F9D-B4C4-0665C1F10269} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{3EA6EA3B-249C-42D1-AB88-A9BA02DF6D27} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{FC1D451C-81CC-4877-9AC6-9A30D068529A} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{8E9B86C3-220D-4566-8BB9-A6B41A84B1EE} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}
