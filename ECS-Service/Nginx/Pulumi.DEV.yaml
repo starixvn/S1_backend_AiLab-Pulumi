@@ -8,4 +8,4 @@ config:
   Nginx:Memory: "256"
   Nginx:NamePrefix: AI1
   Nginx:TargetGroupStack: Nginx-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
-  Nginx:Version: 1.18.0
+  Nginx:Version: latest
