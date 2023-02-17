@@ -11,7 +11,7 @@ Console.WriteLine($"Deploy EC2-TargetGroup {stackName}");
 var executingDir = new DirectoryInfo(Assembly.GetExecutingAssembly().Location).Parent.FullName;
 var workDir = Path.Combine(executingDir, "..", "..", "..", "..", "EC2-TargetGroup");
 var stackArgs = new LocalProgramArgs(stackName, workDir);
-var stack = await LocalWorkspace.SelectStackAsync(stackArgs);
+var stack = await LocalWorkspace.CreateOrSelectStackAsync(stackArgs);
 
 Console.WriteLine($"Stack: {stackName} is refreshing ...");
 await stack.RefreshAsync(new RefreshOptions { OnStandardOutput = Console.WriteLine });
