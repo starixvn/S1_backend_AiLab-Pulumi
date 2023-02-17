@@ -8,7 +8,7 @@ config:
  Nginx:ImagePath: infra/nginx
  Nginx:HealthCheckPath: /
  Nginx:Volumes:
-    - ContainerPath: /etc/nginx
-      VolumePath: /nginx/membersite
+    - ContainerPath: /etc/nginx/log
+      VolumePath: /logs/nginx
     - ContainerPath: /var
       VolumePath: /var
