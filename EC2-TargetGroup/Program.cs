@@ -103,8 +103,13 @@ return await Deployment.RunAsync(() =>
     //add Nginx 80 port rule
     if (containerPort == 80)
     {
-        var memberSiteArn = config.Require("MemberSiteTargetGroupArn");
-        var memberSiteAppArn = config.Require("MemberSiteAppTargetGroupArn");
+        var memberSiteTargetGroupStack = config.Require("MemberSiteTargetGroupStack");
+        var memberSiteTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteTargetGroupStack}");
+        var memberSiteArn = memberSiteTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+
+        var memberSiteAppTargetGroupStack = config.Require("MemberSiteAppTargetGroupStack");
+        var MmemberSiteAppTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteAppTargetGroupStack}");
+        var memberSiteAppArn = MmemberSiteAppTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
 
         var hostRule = new ListenerRule($"80Host-listenerRule", new()
         {

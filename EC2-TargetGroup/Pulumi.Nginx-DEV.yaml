@@ -1,8 +1,8 @@
 ﻿config:
   EC2-TargetGroup:NamePrefix: AI1
   EC2-TargetGroup:ENV: DEV
-  EC2-TargetGroup:LoadBalancerStack: DEV # 透過Pulumi Service取回EC2-LoadBalancer的Output
+  EC2-TargetGroup:LoadBalancerStack: DEV	#透過Pulumi Service取回EC2-LoadBalancer的Output
   EC2-TargetGroup:ContainerPort: 80
   EC2-TargetGroup:HealthCheckPath: /
-  EC2-TargetGroup:MemberSiteTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Public-AI1-Member-DEV-TG/681acb3e26239cb7
-  EC2-TargetGroup:MemberSiteAppTargetGroupArn: arn:aws:elasticloadbalancing:ap-southeast-1:761771912479:targetgroup/Public-AI1-Member-APP-DEV-TG/6fca00f61529748e
+  EC2-TargetGroup:MemberSiteTargetGroupStack: Member-DEV			#透過Pulumi Service取回EC2-TargetGroup的Output
+  EC2-TargetGroup:MemberSiteAppTargetGroupStack: Member-APP-DEV		#透過Pulumi Service取回EC2-TargetGroup的Output
