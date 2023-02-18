@@ -1,5 +1,5 @@
 name: BonusService
-description: Deploy MemberSite to ECS-Cluster.
+description: Deploy BonusService to ECS-Cluster.
 runtime: dotnet
 
 config:

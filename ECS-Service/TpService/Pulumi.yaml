@@ -1,0 +1,11 @@
+name: TpService
+description: Deploy TpService to ECS-Cluster.
+runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1
+ TpService:ServiceName: TpService
+ TpService:ImagePath: integratedservice/thirdpartyservice
+ TpService:Volumes:
+    - ContainerPath: /tpservice
+      VolumePath: /logs/tpservice

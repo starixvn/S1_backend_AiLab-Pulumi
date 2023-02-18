@@ -1,0 +1,11 @@
+config:
+  TpService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  TpService:ContainerPort: "55996"
+  TpService:Cpu: "128"
+  TpService:DesiredCount: "1"
+  TpService:ENV: DEV
+  TpService:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  TpService:Memory: "128"
+  TpService:NamePrefix: AI1
+  TpService:TargetGroupStack: TpService-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
+  TpService:Version: 8a3f042
