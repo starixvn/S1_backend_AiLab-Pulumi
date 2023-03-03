@@ -1,0 +1,11 @@
+config:
+  MemberSite:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  MemberSite:ContainerPort: "5070"
+  MemberSite:Cpu: "256"
+  MemberSite:DesiredCount: "1"
+  MemberSite:ENV: DEV
+  MemberSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  MemberSite:Memory: "256"
+  MemberSite:NamePrefix: AI1
+  MemberSite:TargetGroupStack: Admin-API-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
+  MemberSite:Version: 12c03b0
