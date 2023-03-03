@@ -8,4 +8,4 @@ config:
   BackendSite:Memory: "256"
   BackendSite:NamePrefix: AI1
   BackendSite:TargetGroupStack: Admin-API-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
-  BackendSite:Version: 12c03b0
+  BackendSite:Version: 8572f3a
