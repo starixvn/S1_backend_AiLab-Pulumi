@@ -3,3 +3,4 @@
   EC2-TargetGroup:ENV: DEV
   EC2-TargetGroup:LoadBalancerStack: DEV # 透過Pulumi Service取回EC2-LoadBalancer的Output
   EC2-TargetGroup:ContainerPort: 5071
+  EC2-TargetGroup:HealthCheckPath: /login
