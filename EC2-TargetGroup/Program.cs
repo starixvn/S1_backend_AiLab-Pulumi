@@ -103,17 +103,6 @@ return await Deployment.RunAsync(() =>
     //add Nginx 80 port rule
     if (containerPort == 80)
     {
-        // MemberSite
-        var memberSiteTargetGroupStack = config.Require("MemberSiteTargetGroupStack");
-        var memberSiteTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteTargetGroupStack}");
-        var memberSiteArn = memberSiteTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
-
-        // MemberSite App
-        var memberSiteAppTargetGroupStack = config.Require("MemberSiteAppTargetGroupStack");
-        var MmemberSiteAppTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteAppTargetGroupStack}");
-        var memberSiteAppArn = MmemberSiteAppTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
-
-
         // AdminSite Web ALB Rule
         var adminSiteWebTargetGroupStack = config.Require("AdminSiteWebTargetGroupStack");
         var adminSiteWebTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{adminSiteWebTargetGroupStack}");
@@ -128,7 +117,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteWebHostRule = new ListenerRule($"80Host-listenerRule-AdminWeb", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 30,
+            Priority = 1,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -155,7 +144,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath1 = new ListenerRule($"80Path1-listenerRule-AdminApi1", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 31,
+            Priority = 3,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -195,7 +184,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath2 = new ListenerRule($"80Path1-listenerRule-AdminApi2", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 32,
+            Priority = 4,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -235,7 +224,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath3 = new ListenerRule($"80Path1-listenerRule-AdminApi3", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 33,
+            Priority = 5,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -275,7 +264,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath4 = new ListenerRule($"80Path1-listenerRule-AdminApi4", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 34,
+            Priority = 6,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -315,7 +304,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath5 = new ListenerRule($"80Path1-listenerRule-AdminApi5", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 35,
+            Priority = 7,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -355,7 +344,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath6 = new ListenerRule($"80Path1-listenerRule-AdminApi6", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 36,
+            Priority = 8,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -390,11 +379,21 @@ return await Deployment.RunAsync(() =>
             Tags = tags
         });
 
+        // MemberSite
+        var memberSiteTargetGroupStack = config.Require("MemberSiteTargetGroupStack");
+        var memberSiteTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteTargetGroupStack}");
+        var memberSiteArn = memberSiteTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+
+        // MemberSite App
+        var memberSiteAppTargetGroupStack = config.Require("MemberSiteAppTargetGroupStack");
+        var memberSiteAppTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteAppTargetGroupStack}");
+        var memberSiteAppArn = memberSiteAppTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+
         // MemberSite ALB Rule
         var hostRule = new ListenerRule($"80Host-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 1,
+            Priority = 2,
             Actions = new[]
                 {
                 new ListenerRuleActionArgs
@@ -421,7 +420,7 @@ return await Deployment.RunAsync(() =>
         var pathRule1 = new ListenerRule($"80Path1-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 2,
+            Priority = 9,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -451,7 +450,7 @@ return await Deployment.RunAsync(() =>
         var pathRule2 = new ListenerRule($"80Path2-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 3,
+            Priority = 10,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -479,7 +478,7 @@ return await Deployment.RunAsync(() =>
         var pathRule3 = new ListenerRule($"80Path3-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 4,
+            Priority = 11,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -507,7 +506,7 @@ return await Deployment.RunAsync(() =>
         var pathRule4 = new ListenerRule($"80Path4-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 5,
+            Priority = 12,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
