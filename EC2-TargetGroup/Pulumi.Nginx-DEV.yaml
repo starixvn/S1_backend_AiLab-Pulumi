@@ -6,3 +6,5 @@
   EC2-TargetGroup:HealthCheckPath: /
   EC2-TargetGroup:MemberSiteTargetGroupStack: Member-DEV			#透過Pulumi Service取回EC2-TargetGroup的Output
   EC2-TargetGroup:MemberSiteAppTargetGroupStack: Member-APP-DEV		#透過Pulumi Service取回EC2-TargetGroup的Output
+  EC2-TargetGroup:AdminSiteWebTargetGroupStack: Admin-WEB-DEV		#透過Pulumi Service取回EC2-TargetGroup的Output
+  EC2-TargetGroup:AdminSiteApiTargetGroupStack: Admin-API-DEV		#透過Pulumi Service取回EC2-TargetGroup的Output
