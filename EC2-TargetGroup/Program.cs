@@ -103,6 +103,8 @@ return await Deployment.RunAsync(() =>
     //add Nginx 80 port rule
     if (containerPort == 80)
     {
+        #region Get TargetGroupStack arn
+
         // AdminSite Web ALB Rule
         var adminSiteWebTargetGroupStack = config.Require("AdminSiteWebTargetGroupStack");
         var adminSiteWebTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{adminSiteWebTargetGroupStack}");
@@ -113,7 +115,20 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{adminSiteApiTargetGroupStack}");
         var adminSiteApiArn = adminSiteApiTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
 
-        // AdminSite Web & API ALB Rule
+        // MemberSite
+        var memberSiteTargetGroupStack = config.Require("MemberSiteTargetGroupStack");
+        var memberSiteTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteTargetGroupStack}");
+        var memberSiteArn = memberSiteTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+
+        // MemberSite App
+        var memberSiteAppTargetGroupStack = config.Require("MemberSiteAppTargetGroupStack");
+        var memberSiteAppTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteAppTargetGroupStack}");
+        var memberSiteAppArn = memberSiteAppTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+
+        #endregion
+
+        #region Host + path Rule Priority  要放最前面，編號 1 - 50
+
         var adminSiteApiHostWithPath1 = new ListenerRule($"80Path1-listenerRule-AdminApi1", new()
         {
             ListenerArn = publicListener.Arn,
@@ -311,10 +326,15 @@ return await Deployment.RunAsync(() =>
             },
             Tags = tags
         });
+
+        #endregion
+
+        #region Host Rule (依據 Host 到不同 Target group) Priority  放中間，編號 51 - 100
+
         var adminSiteWebHostRule = new ListenerRule($"80Host-listenerRule-AdminWeb", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 6,
+            Priority = 51,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -338,24 +358,12 @@ return await Deployment.RunAsync(() =>
             },
             Tags = tags
         });
-
-        // MemberSite
-        var memberSiteTargetGroupStack = config.Require("MemberSiteTargetGroupStack");
-        var memberSiteTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteTargetGroupStack}");
-        var memberSiteArn = memberSiteTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
-
-        // MemberSite App
-        var memberSiteAppTargetGroupStack = config.Require("MemberSiteAppTargetGroupStack");
-        var memberSiteAppTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{memberSiteAppTargetGroupStack}");
-        var memberSiteAppArn = memberSiteAppTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
-
-        // MemberSite ALB Rule
         var hostRule = new ListenerRule($"80Host-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 7,
+            Priority = 52,
             Actions = new[]
-                {
+            {
                 new ListenerRuleActionArgs
                 {
                     Type = "forward",
@@ -363,7 +371,7 @@ return await Deployment.RunAsync(() =>
                 },
             },
             Conditions = new[]
-                {
+            {
                 new ListenerRuleConditionArgs
                 {
                     HostHeader = new ListenerRuleConditionHostHeaderArgs
@@ -377,12 +385,17 @@ return await Deployment.RunAsync(() =>
             },
             Tags = tags
         });
+
+        #endregion
+
+        #region Path Rule (MemberSite) Priority  放最後，編號 101 - 150
+
         var pathRule1 = new ListenerRule($"80Path1-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 8,
+            Priority = 101,
             Actions = new[]
-            {
+          {
                 new ListenerRuleActionArgs
                 {
                     Type = "forward",
@@ -390,7 +403,7 @@ return await Deployment.RunAsync(() =>
                 },
             },
             Conditions = new[]
-            {
+          {
                 new ListenerRuleConditionArgs
                 {
                     PathPattern = new ListenerRuleConditionPathPatternArgs
@@ -410,7 +423,7 @@ return await Deployment.RunAsync(() =>
         var pathRule2 = new ListenerRule($"80Path2-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 9,
+            Priority = 102,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -438,7 +451,7 @@ return await Deployment.RunAsync(() =>
         var pathRule3 = new ListenerRule($"80Path3-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 10,
+            Priority = 103,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -466,7 +479,7 @@ return await Deployment.RunAsync(() =>
         var pathRule4 = new ListenerRule($"80Path4-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 11,
+            Priority = 104,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -490,8 +503,10 @@ return await Deployment.RunAsync(() =>
             },
             Tags = tags
         });
+
+        #endregion
     }
-    
+
     return new Dictionary<string, object?>
     {
         ["PublicTargetGroup"] = publicTargetGroup.GetResourceName(),
