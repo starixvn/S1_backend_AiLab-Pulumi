@@ -124,12 +124,11 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiTargetGroupReference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{adminSiteApiTargetGroupStack}");
         var adminSiteApiArn = adminSiteApiTargetGroupReference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
 
-   
         // AdminSite Web & API ALB Rule
         var adminSiteWebHostRule = new ListenerRule($"80Host-listenerRule-AdminWeb", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 1,
+            Priority = 30,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -156,7 +155,7 @@ return await Deployment.RunAsync(() =>
         var adminSiteApiHostWithPath1 = new ListenerRule($"80Path1-listenerRule-AdminApi1", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 2,
+            Priority = 31,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -176,6 +175,9 @@ return await Deployment.RunAsync(() =>
                             "admin.*",
                         },
                     },
+                },
+                new ListenerRuleConditionArgs
+                {
                     PathPattern = new ListenerRuleConditionPathPatternArgs
                     {
                         Values = new[]
@@ -186,14 +188,14 @@ return await Deployment.RunAsync(() =>
                             "/js/*",
                         },
                     },
-                },
+                }
             },
             Tags = tags
         });
         var adminSiteApiHostWithPath2 = new ListenerRule($"80Path1-listenerRule-AdminApi2", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 2,
+            Priority = 32,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -213,6 +215,9 @@ return await Deployment.RunAsync(() =>
                             "admin.*",
                         },
                     },
+                },
+                new ListenerRuleConditionArgs
+                {
                     PathPattern = new ListenerRuleConditionPathPatternArgs
                     {
                         Values = new[]
@@ -223,14 +228,14 @@ return await Deployment.RunAsync(() =>
                             "/BankFinancial/*",
                         },
                     },
-                },
+                }
             },
             Tags = tags
         });
         var adminSiteApiHostWithPath3 = new ListenerRule($"80Path1-listenerRule-AdminApi3", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 2,
+            Priority = 33,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -250,6 +255,9 @@ return await Deployment.RunAsync(() =>
                             "admin.*",
                         },
                     },
+                },
+                new ListenerRuleConditionArgs
+                {
                     PathPattern = new ListenerRuleConditionPathPatternArgs
                     {
                         Values = new[]
@@ -260,14 +268,14 @@ return await Deployment.RunAsync(() =>
                             "/Message/*",
                         },
                     },
-                },
+                }
             },
             Tags = tags
         });
         var adminSiteApiHostWithPath4 = new ListenerRule($"80Path1-listenerRule-AdminApi4", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 2,
+            Priority = 34,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -287,6 +295,9 @@ return await Deployment.RunAsync(() =>
                             "admin.*",
                         },
                     },
+                },
+                new ListenerRuleConditionArgs
+                {
                     PathPattern = new ListenerRuleConditionPathPatternArgs
                     {
                         Values = new[]
@@ -294,17 +305,17 @@ return await Deployment.RunAsync(() =>
                             "/Report/*",
                             "/ServerInfo/*",
                             "/common/*",
-                            "/resource/*",
+                            "/resource/*"
                         },
                     },
-                },
+                }
             },
             Tags = tags
         });
         var adminSiteApiHostWithPath5 = new ListenerRule($"80Path1-listenerRule-AdminApi5", new()
         {
             ListenerArn = publicListener.Arn,
-            Priority = 2,
+            Priority = 35,
             Actions = new[]
             {
                 new ListenerRuleActionArgs
@@ -324,20 +335,63 @@ return await Deployment.RunAsync(() =>
                             "admin.*",
                         },
                     },
+                },
+                new ListenerRuleConditionArgs
+                {
                     PathPattern = new ListenerRuleConditionPathPatternArgs
                     {
                         Values = new[]
                         {
-                            "/images/*"
+                            "/Report/*",
+                            "/ServerInfo/*",
+                            "/common/*",
+                            "/resource/*"
+                        },
+                    },
+                }
+            },
+            Tags = tags
+        });
+        var adminSiteApiHostWithPath6 = new ListenerRule($"80Path1-listenerRule-AdminApi6", new()
+        {
+            ListenerArn = publicListener.Arn,
+            Priority = 36,
+            Actions = new[]
+            {
+                new ListenerRuleActionArgs
+                {
+                    Type = "forward",
+                    TargetGroupArn = adminSiteApiArn,
+                },
+            },
+            Conditions = new[]
+            {
+                new ListenerRuleConditionArgs
+                {
+                    HostHeader = new ListenerRuleConditionHostHeaderArgs
+                    {
+                        Values = new[]
+                        {
+                            "admin.*",
                         },
                     },
                 },
+                new ListenerRuleConditionArgs
+                {
+                    PathPattern = new ListenerRuleConditionPathPatternArgs
+                    {
+                        Values = new[]
+                        {
+                            "/images/*",
+                        },
+                    },
+                }
             },
             Tags = tags
         });
 
         // MemberSite ALB Rule
-        var hostRule = new ListenerRule($"80Host-listenerRule-admin", new()
+        var hostRule = new ListenerRule($"80Host-listenerRule", new()
         {
             ListenerArn = publicListener.Arn,
             Priority = 1,
