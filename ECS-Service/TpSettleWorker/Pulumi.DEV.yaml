@@ -7,3 +7,4 @@ config:
   TpSettleWorker:Memory: "128"
   TpSettleWorker:NamePrefix: AI1
   TpSettleWorker:Version: b9c5b3e
+  TpSettleWorker:ServiceType: Worker
