@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendSite", "ECS-Service\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendSiteWeb", "ECS-Service\BackendSiteWeb\BackendSiteWeb.csproj", "{631FD30D-71F2-44C5-B4AD-CC3AE2071C4C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpSettleWorker", "ECS-Service\TpSettleWorker\TpSettleWorker.csproj", "{5C02F7A8-E7EA-41FF-881B-F83B2A944692}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{631FD30D-71F2-44C5-B4AD-CC3AE2071C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{631FD30D-71F2-44C5-B4AD-CC3AE2071C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{631FD30D-71F2-44C5-B4AD-CC3AE2071C4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C02F7A8-E7EA-41FF-881B-F83B2A944692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C02F7A8-E7EA-41FF-881B-F83B2A944692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C02F7A8-E7EA-41FF-881B-F83B2A944692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C02F7A8-E7EA-41FF-881B-F83B2A944692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{EF3398AA-CD69-4ACB-BD1F-ED018FA11B66} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{9552B43A-5557-4340-B6C2-3A9C579E0578} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{631FD30D-71F2-44C5-B4AD-CC3AE2071C4C} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{5C02F7A8-E7EA-41FF-881B-F83B2A944692} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}
