@@ -6,5 +6,4 @@ config:
   TpSettleWorker:ENV: DEV
   TpSettleWorker:Memory: "128"
   TpSettleWorker:NamePrefix: AI1
-  TpSettleWorker:TargetGroupStack: TpSettleJob-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   TpSettleWorker:Version: b9c5b3e
