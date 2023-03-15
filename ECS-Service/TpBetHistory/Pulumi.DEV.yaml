@@ -1,0 +1,10 @@
+config:
+  TpBetHistory:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  TpBetHistory:ContainerPort: "59168"
+  TpBetHistory:Cpu: "128"
+  TpBetHistory:DesiredCount: "1"
+  TpBetHistory:ENV: DEV
+  TpBetHistory:Memory: "128"
+  TpBetHistory:NamePrefix: AI1
+  TpBetHistory:Version: 02b2be6
+  TpBetHistory:ServiceType: Worker
