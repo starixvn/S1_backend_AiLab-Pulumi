@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpWager", "ECS-Service\TpWa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpBetHistory", "ECS-Service\TpBetHistory\TpBetHistory.csproj", "{C69BA3B0-78CF-4BBD-A034-9FA77DA42DDA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonService", "ECS-Service\CommonService\CommonService.csproj", "{BD5D830C-8583-482D-9D3F-83B986D4903A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{C69BA3B0-78CF-4BBD-A034-9FA77DA42DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C69BA3B0-78CF-4BBD-A034-9FA77DA42DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C69BA3B0-78CF-4BBD-A034-9FA77DA42DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD5D830C-8583-482D-9D3F-83B986D4903A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD5D830C-8583-482D-9D3F-83B986D4903A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD5D830C-8583-482D-9D3F-83B986D4903A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD5D830C-8583-482D-9D3F-83B986D4903A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +141,7 @@ Global
 		{5C02F7A8-E7EA-41FF-881B-F83B2A944692} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{E97146CD-D575-4526-A5C5-903321D41A3B} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{C69BA3B0-78CF-4BBD-A034-9FA77DA42DDA} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{BD5D830C-8583-482D-9D3F-83B986D4903A} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}
