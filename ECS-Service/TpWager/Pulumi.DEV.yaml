@@ -1,0 +1,10 @@
+config:
+  TpWager:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  TpWager:ContainerPort: "8888"
+  TpWager:Cpu: "128"
+  TpWager:DesiredCount: "1"
+  TpWager:ENV: DEV
+  TpWager:Memory: "128"
+  TpWager:NamePrefix: AI1
+  TpWager:Version: 912a800
+  TpWager:ServiceType: Worker

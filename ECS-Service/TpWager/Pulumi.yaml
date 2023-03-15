@@ -1,0 +1,11 @@
+name: TpWager
+description: Deploy TpWager to ECS-Cluster.
+runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1
+ TpWager:ServiceName: TpWager
+ TpWager:ImagePath: integratedservice/thirdpartywager
+ TpWager:Volumes:
+    - ContainerPath: /tpwager
+      VolumePath: /logs/tpwager
