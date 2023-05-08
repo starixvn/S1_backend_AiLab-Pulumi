@@ -83,7 +83,7 @@ namespace AILab.Core
                 var clusterArn = clusterReference.RequireOutput("ClusterArn").Apply(v => v.ToString());
 
                 var loadBalancers = new InputList<ServiceLoadBalancerArgs>();
-                var isAPI = serviceType.Equals("API");
+                var isAPI = serviceType.Equals("API") || serviceName.Contains("Hangfire");
                 //設定Target Group
                 if (isAPI)
                 {
