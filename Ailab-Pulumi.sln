@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonService", "ECS-Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentService", "ECS-Service\PaymentService\PaymentService.csproj", "{AD67710A-ADB0-4686-BF8C-779F13EDD77B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire", "ECS-Service\Hangfire\Hangfire.csproj", "{F2430AE7-09E4-4685-B3A7-C78207B247E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,10 @@ Global
 		{AD67710A-ADB0-4686-BF8C-779F13EDD77B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD67710A-ADB0-4686-BF8C-779F13EDD77B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD67710A-ADB0-4686-BF8C-779F13EDD77B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2430AE7-09E4-4685-B3A7-C78207B247E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2430AE7-09E4-4685-B3A7-C78207B247E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2430AE7-09E4-4685-B3A7-C78207B247E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2430AE7-09E4-4685-B3A7-C78207B247E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{C69BA3B0-78CF-4BBD-A034-9FA77DA42DDA} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{BD5D830C-8583-482D-9D3F-83B986D4903A} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{AD67710A-ADB0-4686-BF8C-779F13EDD77B} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{F2430AE7-09E4-4685-B3A7-C78207B247E5} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}

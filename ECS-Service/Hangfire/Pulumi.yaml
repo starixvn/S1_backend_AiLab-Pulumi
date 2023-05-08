@@ -1,0 +1,11 @@
+name: Hangfire
+description: Deploy HangfireService to ECS-Cluster.
+runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1
+ Hangfire:ServiceName: Hangfire
+ Hangfire:ImagePath: hangfireservice/hangfireservice
+ Hangfire:Volumes:
+    - ContainerPath: /hangfire
+      VolumePath: /logs/hangfire
