@@ -4,7 +4,7 @@ config:
   MemberSite:Cpu: "256"
   MemberSite:DesiredCount: "1"
   MemberSite:ENV: DEV
-  MemberSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  MemberSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling，沒設定會使用DesiredCount
   MemberSite:Memory: "256"
   MemberSite:NamePrefix: AI1
   MemberSite:TargetGroupStack: Member-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
