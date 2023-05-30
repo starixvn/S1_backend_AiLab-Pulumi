@@ -1,11 +1,11 @@
 config:
-  Store:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
-  Store:ContainerPort: "45678"
-  Store:Cpu: "128" # 0.5cpu
-  Store:DesiredCount: "1"
-  Store:ENV: DEV
-  Store:Memory: "128" # 1G
-  Store:NamePrefix: AI1
-  Store:ServiceType: API
-  Store:TargetGroupStack: Geoip-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
-  Store:Version: 8d2cb82
+  Geoip:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
+  Geoip:ContainerPort: "45678"
+  Geoip:Cpu: "128" # 0.5cpu
+  Geoip:DesiredCount: "1"
+  Geoip:ENV: DEV
+  Geoip:Memory: "128" # 1G
+  Geoip:NamePrefix: AI1
+  Geoip:ServiceType: API
+  Geoip:TargetGroupStack: Geoip-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
+  Geoip:Version: 8d2cb82
