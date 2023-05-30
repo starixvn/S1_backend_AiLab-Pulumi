@@ -1,0 +1,5 @@
+config:
+  EC2-TargetGroup:ContainerPort: "55688"
+  EC2-TargetGroup:ENV: DEV
+  EC2-TargetGroup:LoadBalancerStack: DEV
+  EC2-TargetGroup:NamePrefix: AI1

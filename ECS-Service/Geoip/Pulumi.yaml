@@ -1,0 +1,11 @@
+name: Geoip
+description: Deploy Geoip Service to ECS-Cluster.
+runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1
+ Store:ServiceName: Geoip
+ Store:ImagePath: geoip/geoip
+ Store:Volumes:
+    - ContainerPath: /geoip
+      VolumePath: /logs/geoip
