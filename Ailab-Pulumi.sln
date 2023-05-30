@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store", "ECS-Service\Store\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreHangfire", "ECS-Service\StoreHangfire\StoreHangfire.csproj", "{29F488C1-71CD-4904-A499-681431751029}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geoip", "ECS-Service\Geoip\Geoip.csproj", "{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{29F488C1-71CD-4904-A499-681431751029}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29F488C1-71CD-4904-A499-681431751029}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29F488C1-71CD-4904-A499-681431751029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +176,7 @@ Global
 		{F2430AE7-09E4-4685-B3A7-C78207B247E5} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{A29451EA-9BEE-4FDC-AA2D-E751ED8BF6EC} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{29F488C1-71CD-4904-A499-681431751029} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}
