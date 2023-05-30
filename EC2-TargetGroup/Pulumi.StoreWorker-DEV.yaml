@@ -1,4 +1,4 @@
-config:
+﻿config: # Store Worker改成用Hangfire，所以需要建立TargetGroup
   EC2-TargetGroup:ContainerPort: "51003"
   EC2-TargetGroup:ENV: DEV
   EC2-TargetGroup:LoadBalancerStack: DEV
