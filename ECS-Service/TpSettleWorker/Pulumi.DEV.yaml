@@ -1,7 +1,7 @@
 config:
   TpSettleWorker:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   TpSettleWorker:ContainerPort: "80"
-  TpSettleWorker:Cpu: "128"
+  TpSettleWorker:Cpu: "256"
   TpSettleWorker:DesiredCount: "1"
   TpSettleWorker:ENV: DEV
   TpSettleWorker:Memory: "128"
