@@ -9,3 +9,6 @@ config:
   BonusService:Version: 552c857
   BonusService:ServiceType: Worker
   BonusService:ServiceName: Bonus-Worker
+  BonusService:Volumes:
+    - ContainerPath: /bonus
+      VolumePath: /logs/bonusWorker

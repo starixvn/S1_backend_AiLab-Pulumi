@@ -9,3 +9,6 @@ config:
   PaymentService:Version: 919f09a
   PaymentService:ServiceType: Worker
   PaymentService:ServiceName: Payment-Worker
+  PaymentService:Volumes:
+    - ContainerPath: /payment
+      VolumePath: /logs/paymentWorker

@@ -9,3 +9,6 @@ config:
   TpService:Version: 8a3f042
   TpService:ServiceType: Worker
   TpService:ServiceName: TpService-Worker
+  TpService:Volumes:
+    - ContainerPath: /tpservice
+      VolumePath: /logs/tpserviceWorker

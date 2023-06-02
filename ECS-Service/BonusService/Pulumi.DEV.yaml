@@ -9,3 +9,6 @@ config:
   BonusService:NamePrefix: AI1
   BonusService:TargetGroupStack: Bonus-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   BonusService:Version: 552c857
+  BonusService:Volumes:
+    - ContainerPath: /bonus
+      VolumePath: /logs/bonus

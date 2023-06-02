@@ -9,3 +9,6 @@ config:
   TpService:NamePrefix: AI1
   TpService:TargetGroupStack: TpService-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   TpService:Version: 8a3f042
+  TpService:Volumes:
+    - ContainerPath: /tpservice
+      VolumePath: /logs/tpservice

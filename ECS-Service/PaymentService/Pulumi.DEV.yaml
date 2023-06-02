@@ -9,3 +9,6 @@ config:
   PaymentService:NamePrefix: AI1
   PaymentService:TargetGroupStack: Payment-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   PaymentService:Version: 919f09a
+  PaymentService:Volumes:
+    - ContainerPath: /payment
+      VolumePath: /logs/payment

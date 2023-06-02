@@ -6,6 +6,3 @@ config:
  aws:region: ap-southeast-1
  BonusService:ServiceName: Bonus
  BonusService:ImagePath: bonusservice/bonusservice
- BonusService:Volumes:
-    - ContainerPath: /bonus
-      VolumePath: /logs/bonus
