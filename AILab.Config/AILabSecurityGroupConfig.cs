@@ -56,7 +56,7 @@
 
         private static readonly string[] PRD_InternalEcsIds =
         {
-            "sg-0d90cb7044517daad"  //Internal-DEV-ECS
+            "sg-0a179401d8134481e"  //Internal-PRD-ECS
         };
 
 
