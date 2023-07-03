@@ -18,12 +18,13 @@ var workspace = await LocalWorkspace.CreateAsync(new LocalWorkspaceOptions()
 var stacks = await workspace.ListStacksAsync();
 
 //檢查所有stack，stack的config有符合env就會進行更新
-foreach (var stackName in stacks.Select(i => i.Name))
-{       
+//2023-07-03 Mickey 調整 By evn 去抓自己的 ENV=>yaml
+foreach (var stackName in stacks.Where(x => x.Name == env).Select(i => i.Name))
+{
     var stackArgs = new LocalProgramArgs(stackName, workDir);
     var stack = await LocalWorkspace.SelectStackAsync(stackArgs);
     var configEnv = await stack.GetConfigAsync("ENV");
-                
+
     //檢查環境
     if (configEnv != null && configEnv.Value.Contains(env))
     {
@@ -51,7 +52,7 @@ foreach (var stackName in stacks.Select(i => i.Name))
                 foreach (var change in result.Summary.ResourceChanges)
                 {
                     Console.WriteLine($"    {change.Key}: {change.Value}");
-                }                    
+                }
             }
             Console.WriteLine($"ServiceName: {result.Outputs["ServiceName"].Value}");
         }
