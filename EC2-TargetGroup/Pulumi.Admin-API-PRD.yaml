@@ -1,0 +1,5 @@
+﻿config:
+  EC2-TargetGroup:NamePrefix: AI1
+  EC2-TargetGroup:ENV: PRD
+  EC2-TargetGroup:LoadBalancerStack: PRD # 透過Pulumi Service取回EC2-LoadBalancer的Output
+  EC2-TargetGroup:ContainerPort: 5070
