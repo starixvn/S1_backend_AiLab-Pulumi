@@ -23,8 +23,7 @@ foreach (var stackName in stacks.Where(x => x.Name == env).Select(i => i.Name).T
     var stackArgs = new LocalProgramArgs(stackName, workDir);
     var stack = await LocalWorkspace.SelectStackAsync(stackArgs);
     var configEnv = await stack.GetConfigAsync("ENV");
-    Console.WriteLine($"=========== debug log:{stackName} ===========");
-
+    
     //檢查環境
     if (configEnv != null && configEnv.Value.Contains(env))
     {
