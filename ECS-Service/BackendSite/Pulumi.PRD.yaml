@@ -2,10 +2,13 @@ config:
   BackendSite:ClusterStack: PRD #透過Pulumi Service取回ECS-Cluster的Output
   BackendSite:ContainerPort: "5070"
   BackendSite:Cpu: "256"
-  BackendSite:DesiredCount: "2"
+  BackendSite:DesiredCount: "1"
   BackendSite:ENV: PRD
   BackendSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   BackendSite:Memory: "256"
   BackendSite:NamePrefix: AI1
   BackendSite:TargetGroupStack: Admin-API-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
   BackendSite:Version: e35c13c
+  BackendSite:Volumes:
+    - ContainerPath: /backendsite
+      VolumePath: /logs/production/backendsite
