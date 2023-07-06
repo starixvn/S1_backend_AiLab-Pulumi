@@ -19,43 +19,50 @@ var stacks = await workspace.ListStacksAsync();
 
 //檢查所有stack，stack的config有符合env就會進行更新
 foreach (var stackName in stacks.Select(i => i.Name).ToList())
-{       
-    var stackArgs = new LocalProgramArgs(stackName, workDir);
-    var stack = await LocalWorkspace.SelectStackAsync(stackArgs);
-    var configEnv = await stack.GetConfigAsync("ENV");
-    
-    //檢查環境
-    if (configEnv != null && configEnv.Value.Contains(env))
+{
+    try
     {
-        Console.WriteLine($"=========== Start Stack:{stackName} ===========");
-
-        Console.WriteLine($"Stack: {stackName} is refreshing ...");
-        await stack.RefreshAsync(new RefreshOptions { OnStandardOutput = Console.WriteLine });
-        Console.WriteLine($"Stack: {stackName} is refresh complete.");
-        await stack.SetConfigAsync("Version", new ConfigValue(version));
-
-        if (isDestroy)
+        var stackArgs = new LocalProgramArgs(stackName, workDir);
+        var stack = await LocalWorkspace.SelectStackAsync(stackArgs);
+        var configEnv = await stack.GetConfigAsync("ENV");
+     
+        //檢查環境
+        if (configEnv != null && configEnv.Value.Contains(env))
         {
-            Console.WriteLine("destroying stack...");
-            await stack.DestroyAsync(new DestroyOptions { OnStandardOutput = Console.WriteLine });
-            Console.WriteLine("stack destroy complete");
-        }
-        else
-        {
-            Console.WriteLine("updating stack...");
-            var result = await stack.UpAsync(new UpOptions { OnStandardOutput = Console.WriteLine });
+            Console.WriteLine($"=========== Start Stack:{stackName} ===========");
 
-            if (result.Summary.ResourceChanges != null)
+            Console.WriteLine($"Stack: {stackName} is refreshing ...");
+            await stack.RefreshAsync(new RefreshOptions { OnStandardOutput = Console.WriteLine });
+            Console.WriteLine($"Stack: {stackName} is refresh complete.");
+            await stack.SetConfigAsync("Version", new ConfigValue(version));
+
+            if (isDestroy)
             {
-                Console.WriteLine("update summary:");
-                foreach (var change in result.Summary.ResourceChanges)
-                {
-                    Console.WriteLine($"    {change.Key}: {change.Value}");
-                }                    
+                Console.WriteLine("destroying stack...");
+                await stack.DestroyAsync(new DestroyOptions { OnStandardOutput = Console.WriteLine });
+                Console.WriteLine("stack destroy complete");
             }
-            Console.WriteLine($"ServiceName: {result.Outputs["ServiceName"].Value}");
-        }
+            else
+            {
+                Console.WriteLine("updating stack...");
+                var result = await stack.UpAsync(new UpOptions { OnStandardOutput = Console.WriteLine });
 
-        Console.WriteLine($"=========== End Stack:{stackName} ===========");
+                if (result.Summary.ResourceChanges != null)
+                {
+                    Console.WriteLine("update summary:");
+                    foreach (var change in result.Summary.ResourceChanges)
+                    {
+                        Console.WriteLine($"    {change.Key}: {change.Value}");
+                    }                    
+                }
+                Console.WriteLine($"ServiceName: {result.Outputs["ServiceName"].Value}");
+            }
+
+            Console.WriteLine($"=========== End Stack:{stackName} ===========");
+        }
+    }
+    catch (Exception)
+    {
+        continue;
     }
 }
