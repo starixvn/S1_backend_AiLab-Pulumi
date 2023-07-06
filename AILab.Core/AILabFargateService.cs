@@ -45,36 +45,36 @@ namespace AILab.Core
                 var imageUri = $"{awsConfig.DockerRegistry}/{imagePath}:{version}";
 
                 //設定Volumes
-                var containerPaths = new InputList<TaskDefinitionMountPointArgs>();
-                var volumePaths = new InputList<TaskDefinitionVolumeArgs>();
-                var volumes = config.GetObject<JsonElement>("Volumes");
-                if (!volumes.Equals(default(JsonElement)))
-                {
-                    var i = 1;
-                    foreach (var path in volumes.EnumerateArray())
-                    {                 
-                        var name = $"volume-{i}";
-                        var containerPath = path.GetProperty("ContainerPath").ToString();
-                        var taskDefinitionMountPointArgs = new TaskDefinitionMountPointArgs
-                        {
-                            ContainerPath = containerPath,
-                            SourceVolume = name
-                        };
-                        containerPaths.Add(taskDefinitionMountPointArgs);                       
-                        var volumePath = path.GetProperty("VolumePath").ToString();
-                        var taskDefinitionVolumeArgs = new TaskDefinitionVolumeArgs()
-                        {
-                            Name = name,
-                            EfsVolumeConfiguration = new TaskDefinitionVolumeEfsVolumeConfigurationArgs()
-                            {
-                                FileSystemId = awsConfig.EFSFileSystemId,
-                                RootDirectory = volumePath
-                            }
-                        };
-                        volumePaths.Add(taskDefinitionVolumeArgs);
-                        i++;
-                    }
-                }
+                //var containerPaths = new InputList<TaskDefinitionMountPointArgs>();
+                //var volumePaths = new InputList<TaskDefinitionVolumeArgs>();
+                //var volumes = config.GetObject<JsonElement>("Volumes");
+                //if (!volumes.Equals(default(JsonElement)))
+                //{
+                //    var i = 1;
+                //    foreach (var path in volumes.EnumerateArray())
+                //    {                 
+                //        var name = $"volume-{i}";
+                //        var containerPath = path.GetProperty("ContainerPath").ToString();
+                //        var taskDefinitionMountPointArgs = new TaskDefinitionMountPointArgs
+                //        {
+                //            ContainerPath = containerPath,
+                //            SourceVolume = name
+                //        };
+                //        containerPaths.Add(taskDefinitionMountPointArgs);                       
+                //        var volumePath = path.GetProperty("VolumePath").ToString();
+                //        var taskDefinitionVolumeArgs = new TaskDefinitionVolumeArgs()
+                //        {
+                //            Name = name,
+                //            EfsVolumeConfiguration = new TaskDefinitionVolumeEfsVolumeConfigurationArgs()
+                //            {
+                //                FileSystemId = awsConfig.EFSFileSystemId,
+                //                RootDirectory = volumePath
+                //            }
+                //        };
+                //        volumePaths.Add(taskDefinitionVolumeArgs);
+                //        i++;
+                //    }
+                //}
 
                 //Get Cluster
                 var clusterStack = config.Require("ClusterStack");
@@ -89,22 +89,22 @@ namespace AILab.Core
                 {
                     var targetGroupStack = config.Require("TargetGroupStack");
                     var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{targetGroupStack}");
-                    var publicTargetGroupArn = reference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
+                    //var publicTargetGroupArn = reference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
                     var privateTargetGroupArn = reference.RequireOutput("PrivateTargetGroupArn").Apply(v => v.ToString());
                     loadBalancers.AddRange(new[]
                     {
-                        new ServiceLoadBalancerArgs
-                        {
-                            ContainerName = serviceName,
-                            ContainerPort = containerPort,
-                            TargetGroupArn = publicTargetGroupArn
-                        },
+                        //new ServiceLoadBalancerArgs
+                        //{
+                        //    ContainerName = serviceName,
+                        //    ContainerPort = containerPort,
+                        //    TargetGroupArn = publicTargetGroupArn
+                        //},
                         new ServiceLoadBalancerArgs
                         {
                             ContainerName = serviceName,
                             ContainerPort = containerPort,
                             TargetGroupArn = privateTargetGroupArn
-                        },
+                        }
                     });
                 }
                
@@ -162,10 +162,10 @@ namespace AILab.Core
                                 },
                                 EntryPoint = Array.Empty<string>(),
                                 Command = Array.Empty<string>(),
-                                MountPoints = containerPaths,
+                                //MountPoints = containerPaths,
                             }
                         },
-                        Volumes = volumePaths,
+                        //Volumes = volumePaths,
                         LogGroup = new DefaultLogGroupArgs
                         {
                             Skip = true
