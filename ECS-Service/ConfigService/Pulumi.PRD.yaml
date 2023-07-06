@@ -7,4 +7,4 @@ config:
   ConfigService:Memory: "128"
   ConfigService:NamePrefix: AI1
   ConfigService:TargetGroupStack: Config-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
-  ConfigService:Version: e0999d0
+  ConfigService:Version: fdf2b9c

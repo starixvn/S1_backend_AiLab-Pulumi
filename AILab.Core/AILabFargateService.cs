@@ -32,7 +32,7 @@ namespace AILab.Core
                 var containerPort = config.GetInt32("ContainerPort") ?? 80;
                 var healthCheckPath = config.Get("HealthCheckPath") ?? "/health";
                 var serviceType = config.Get("ServiceType") ?? "API";
-                
+
                 var isApp = serviceName.Contains("APP");
                 var awsConfig = new AILabAwsConfig(env, isApp);
                 var cpu = config.GetInt32("Cpu") ?? 512;
@@ -52,7 +52,7 @@ namespace AILab.Core
                 {
                     var i = 1;
                     foreach (var path in volumes.EnumerateArray())
-                    {                 
+                    {
                         var name = $"volume-{i}";
                         var containerPath = path.GetProperty("ContainerPath").ToString();
                         var taskDefinitionMountPointArgs = new TaskDefinitionMountPointArgs
@@ -60,7 +60,7 @@ namespace AILab.Core
                             ContainerPath = containerPath,
                             SourceVolume = name
                         };
-                        containerPaths.Add(taskDefinitionMountPointArgs);                       
+                        containerPaths.Add(taskDefinitionMountPointArgs);
                         var volumePath = path.GetProperty("VolumePath").ToString();
                         var taskDefinitionVolumeArgs = new TaskDefinitionVolumeArgs()
                         {
@@ -107,7 +107,7 @@ namespace AILab.Core
                         },
                     });
                 }
-               
+
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
                 //建立ECS服務
                 var service = new FargateService(shortName, new FargateServiceArgs
