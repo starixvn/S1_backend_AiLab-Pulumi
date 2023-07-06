@@ -18,7 +18,7 @@ var workspace = await LocalWorkspace.CreateAsync(new LocalWorkspaceOptions()
 var stacks = await workspace.ListStacksAsync();
 
 //檢查所有stack，stack的config有符合env就會進行更新
-foreach (var stackName in stacks.Select(i => i.Name).ToList())
+foreach (var stackName in stacks.Where(a => a.Name.Contains(env)).Select(i => i.Name))
 {
     try
     {
