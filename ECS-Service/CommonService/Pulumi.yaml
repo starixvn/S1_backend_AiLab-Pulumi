@@ -6,6 +6,3 @@ config:
  aws:region: ap-southeast-1
  CommonService:ServiceName: CommonService
  CommonService:ImagePath: integratedservice/commonservice
- CommonService:Volumes:
-    - ContainerPath: /common
-      VolumePath: /logs/common

@@ -9,3 +9,6 @@ config:
   CommonService:NamePrefix: AI1
   CommonService:TargetGroupStack: Common-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   CommonService:Version: 7d054ae
+  CommonService:Volumes:
+  - ContainerPath: /common
+    VolumePath: /logs/common
