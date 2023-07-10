@@ -9,3 +9,6 @@ config:
   BackendSite:NamePrefix: AI1
   BackendSite:TargetGroupStack: Admin-API-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
   BackendSite:Version: 8572f3a
+  BackendSite:Volumes:
+  - ContainerPath: /backendsite
+    VolumePath: /logs/backendsite

@@ -6,6 +6,3 @@ config:
  aws:region: ap-southeast-1
  BackendSite:ServiceName: BackendSite
  BackendSite:ImagePath: adminsite/backendsite
- BackendSite:Volumes:
-    - ContainerPath: /backendsite
-      VolumePath: /logs/backendsite

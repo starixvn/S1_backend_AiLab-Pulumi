@@ -7,5 +7,8 @@ config:
   BackendSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   BackendSite:Memory: "256"
   BackendSite:NamePrefix: AI1
-  BackendSite:TargetGroupStack: Admin-API-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
-  BackendSite:Version: 3da6b76
+  BackendSite:TargetGroup:
+    Stack: Admin-API-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
+    Groups:
+    - PublicTargetGroupArn
+  BackendSite:Version: 3fef0aa

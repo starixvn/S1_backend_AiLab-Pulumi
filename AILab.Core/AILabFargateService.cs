@@ -87,25 +87,23 @@ namespace AILab.Core
                 //設定Target Group
                 if (isAPI)
                 {
-                    var targetGroupStack = config.Require("TargetGroupStack");
-                    var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{targetGroupStack}");
-                    var publicTargetGroupArn = reference.RequireOutput("PublicTargetGroupArn").Apply(v => v.ToString());
-                    var privateTargetGroupArn = reference.RequireOutput("PrivateTargetGroupArn").Apply(v => v.ToString());
-                    loadBalancers.AddRange(new[]
+                    var targetGroup = config.RequireObject<JsonElement>("TargetGroup");
+                    var stack = targetGroup.GetProperty("Stack");
+                    var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.TargetGroupProject}/{stack}");
+                    var groups = targetGroup.GetProperty("Groups");
+                    if (!groups.Equals(default(JsonElement))) 
                     {
-                        new ServiceLoadBalancerArgs
+                        foreach (var tg in groups.EnumerateArray()) 
                         {
-                            ContainerName = serviceName,
-                            ContainerPort = containerPort,
-                            TargetGroupArn = publicTargetGroupArn
-                        },
-                        new ServiceLoadBalancerArgs
-                        {
-                            ContainerName = serviceName,
-                            ContainerPort = containerPort,
-                            TargetGroupArn = privateTargetGroupArn
-                        },
-                    });
+                            var arn =  reference.RequireOutput(tg.GetString()).Apply(v => v.ToString());
+                            loadBalancers.Add(new ServiceLoadBalancerArgs
+                            {
+                                ContainerName = serviceName,
+                                ContainerPort = containerPort,
+                                TargetGroupArn = arn
+                            });
+                        }
+                    }
                 }
 
                 var securityGroupConfig = new AILabSecurityGroupConfig(env);
