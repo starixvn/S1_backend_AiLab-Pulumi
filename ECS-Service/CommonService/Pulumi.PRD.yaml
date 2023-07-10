@@ -7,5 +7,8 @@ config:
   CommonService:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   CommonService:Memory: "128"
   CommonService:NamePrefix: AI1
-  CommonService:TargetGroupStack: Common-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
-  CommonService:Version: 5ba0278
+  CommonService:TargetGroup:
+    Stack: Common-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
+    Groups:
+    - PrivateTargetGroupArn
+  CommonService:Version: e69ba07
