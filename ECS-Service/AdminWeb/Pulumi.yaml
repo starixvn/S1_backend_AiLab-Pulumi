@@ -1,0 +1,8 @@
+name: AdminWeb
+description: Deploy AdminWeb to ECS-Cluster.
+runtime: dotnet
+
+config:
+ aws:region: ap-southeast-1
+ AdminWeb:ServiceName: AdminWeb
+ AdminWeb:HealthCheckPath: /health/index.html

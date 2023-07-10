@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreHangfire", "ECS-Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geoip", "ECS-Service\Geoip\Geoip.csproj", "{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "ECS-Service\AdminWeb\AdminWeb.csproj", "{1B727C47-82E8-479F-987C-852D3C82BCCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,10 @@ Global
 		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B727C47-82E8-479F-987C-852D3C82BCCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B727C47-82E8-479F-987C-852D3C82BCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B727C47-82E8-479F-987C-852D3C82BCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B727C47-82E8-479F-987C-852D3C82BCCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +183,7 @@ Global
 		{A29451EA-9BEE-4FDC-AA2D-E751ED8BF6EC} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{29F488C1-71CD-4904-A499-681431751029} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 		{3A5D280B-0C69-41F1-95D6-9E49F9B5CF9F} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
+		{1B727C47-82E8-479F-987C-852D3C82BCCA} = {B31137A9-AE78-4E60-8113-8DD50BE75F65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05EB58B2-5370-47A5-81DC-ABA2C1774641}

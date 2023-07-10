@@ -1,0 +1,12 @@
+config:
+  AdminWeb:ImagePath: desktop/admin-prd
+  AdminWeb:ClusterStack: PRD #透過Pulumi Service取回ECS-Cluster的Output
+  AdminWeb:ContainerPort: "5071"
+  AdminWeb:Cpu: "256"
+  AdminWeb:DesiredCount: "1"
+  AdminWeb:ENV: PRD
+  AdminWeb:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  AdminWeb:Memory: "256"
+  AdminWeb:NamePrefix: AI1
+  AdminWeb:TargetGroupStack: Admin-WEB-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
+  AdminWeb:Version: bdc88f9
