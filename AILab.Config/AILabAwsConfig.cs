@@ -62,7 +62,7 @@
 
         private static readonly string DEV_EFSFileSystemId = "fs-04693ed0dab2989a9";//efs-ecs-dev
 
-        private static readonly string PRD_EFSFileSystemId = "fs-04693ed0dab2989a9";//efs-ecs-dev
+        private static readonly string PRD_EFSFileSystemId = "fs-07c4d83dd68660230";//efs-ecs-prd
 
     }
 }
