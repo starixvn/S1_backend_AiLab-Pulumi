@@ -1,0 +1,18 @@
+config:
+  AI1PRDCluster:NamePrefix: AI1
+  AI1PRDCluster:ServiceName: BackendSite
+  AI1PRDCluster:ENV: PRD
+  AI1PRDCluster:ImagePath: adminsite/backendsite
+  AI1PRDCluster:ClusterStack: PRD #透過Pulumi Service取回ECS-Cluster的Output
+  AI1PRDCluster:ContainerPort: "5070"
+  AI1PRDCluster:HealthCheckPath: "/health"
+  AI1PRDCluster:ServiceType: "API"
+  AI1PRDCluster:Cpu: "256"
+  AI1PRDCluster:DesiredCount: "2"
+  AI1PRDCluster:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  AI1PRDCluster:Memory: "256"
+  AI1PRDCluster:TargetGroup:
+    Stack: Admin-API-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
+    Groups:
+    - PublicTargetGroupArn
+  AI1PRDCluster:Version: 3fef0aa
