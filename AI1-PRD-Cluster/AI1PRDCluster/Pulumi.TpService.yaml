@@ -1,0 +1,18 @@
+config:
+  AI1PRDCluster:NamePrefix: AI1
+  AI1PRDCluster:ServiceName: TpService
+  AI1PRDCluster:ENV: PRD
+  AI1PRDCluster:ImagePath: integratedservice/thirdpartyservice
+  AI1PRDCluster:ClusterStack: PRD
+  AI1PRDCluster:ContainerPort: "55996"
+  AI1PRDCluster:HealthCheckPath: "/health"
+  AI1PRDCluster:ServiceType: "API"
+  AI1PRDCluster:Cpu: "128"
+  AI1PRDCluster:DesiredCount: "1"
+  AI1PRDCluster:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
+  AI1PRDCluster:Memory: "128"
+  AI1PRDCluster:TargetGroup:
+    Stack: TpService-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
+    Groups:
+    - PrivateTargetGroupArn
+  AI1PRDCluster:Version: f46b174
