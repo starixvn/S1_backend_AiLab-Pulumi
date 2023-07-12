@@ -15,4 +15,4 @@ config:
     Stack: Common-PRD
     Groups:
     - PrivateTargetGroupArn
-  AI1PRDCluster:Version: e69ba07
+  AI1PRDCluster:Version: ca6774c
