@@ -16,4 +16,4 @@ config:
     Groups:
     - PublicTargetGroupArn
     - PrivateTargetGroupArn
-  AI1PRDCluster:Version: 37109a3
+  AI1PRDCluster:Version: 240ab45
