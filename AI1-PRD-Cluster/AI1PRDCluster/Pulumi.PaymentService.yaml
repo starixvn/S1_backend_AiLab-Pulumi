@@ -1,0 +1,18 @@
+config:
+  AI1PRDCluster:NamePrefix: AI1
+  AI1PRDCluster:ServiceName: PaymentService
+  AI1PRDCluster:ENV: PRD
+  AI1PRDCluster:ImagePath: paymentservice/paymentservice
+  AI1PRDCluster:ClusterStack: PRD
+  AI1PRDCluster:ContainerPort: "59159"
+  AI1PRDCluster:HealthCheckPath: "/health"
+  AI1PRDCluster:ServiceType: "API"
+  AI1PRDCluster:Cpu: "128"
+  AI1PRDCluster:DesiredCount: "1"
+  AI1PRDCluster:MaxCapacity: "3"
+  AI1PRDCluster:Memory: "128"
+  AI1PRDCluster:TargetGroup:
+    Stack: Payment-PRD 
+    Groups:
+    - PrivateTargetGroupArn
+  AI1PRDCluster:Version: 37109a3
