@@ -15,4 +15,4 @@ config:
     Stack: Bonus-PRD
     Groups:
     - PrivateTargetGroupArn
-  AI1PRDCluster:Version: ce86f4f
+  AI1PRDCluster:Version: 9ca2cdb
