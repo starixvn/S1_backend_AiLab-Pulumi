@@ -14,5 +14,6 @@ config:
   AI1PRDCluster:TargetGroup:
     Stack: Payment-PRD 
     Groups:
+    - PublicTargetGroupArn
     - PrivateTargetGroupArn
   AI1PRDCluster:Version: 37109a3
