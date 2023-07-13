@@ -1,0 +1,18 @@
+config:
+  AI1PRDCluster:NamePrefix: AI1
+  AI1PRDCluster:ServiceName: ConfigService
+  AI1PRDCluster:ENV: PRD
+  AI1PRDCluster:ImagePath: configservice/configservice
+  AI1PRDCluster:ClusterStack: PRD #透過Pulumi Service取回ECS-Cluster的Output
+  AI1PRDCluster:ContainerPort: "7242"
+  AI1PRDCluster:HealthCheckPath: "/health"
+  AI1PRDCluster:ServiceType: "API"
+  AI1PRDCluster:Cpu: "128"
+  AI1PRDCluster:DesiredCount: "1"
+  AI1PRDCluster:MaxCapacity: "1"
+  AI1PRDCluster:Memory: "128"
+  AI1PRDCluster:TargetGroup:
+    Stack: Config-PRD
+    Groups:
+    - PrivateTargetGroupArn
+  AI1PRDCluster:Version: fdf2b9c
