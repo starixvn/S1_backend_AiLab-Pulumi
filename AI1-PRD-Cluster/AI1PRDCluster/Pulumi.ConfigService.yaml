@@ -15,4 +15,4 @@ config:
     Stack: Config-PRD
     Groups:
     - PrivateTargetGroupArn
-  AI1PRDCluster:Version: fdf2b9c
+  AI1PRDCluster:Version: 483aa5f
