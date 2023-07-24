@@ -16,3 +16,6 @@ config:
     Groups:
     - PublicTargetGroupArn
   AI1PRDCluster:Version: 81be28b
+  AI1PRDCluster:Volumes:
+    - ContainerPath: /backendsite
+      VolumePath: /logs/backendsite
