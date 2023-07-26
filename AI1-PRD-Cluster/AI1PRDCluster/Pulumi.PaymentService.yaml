@@ -17,3 +17,6 @@ config:
     - PublicTargetGroupArn
     - PrivateTargetGroupArn
   AI1PRDCluster:Version: 240ab45
+  AI1PRDCluster:Volumes:
+    - ContainerPath: /payment
+      VolumePath: /logs/payment
