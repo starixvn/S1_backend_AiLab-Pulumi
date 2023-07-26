@@ -16,3 +16,6 @@ config:
     Groups:
     - PrivateTargetGroupArn
   AI1PRDCluster:Version: f46b174
+  AI1PRDCluster:Volumes:
+    - ContainerPath: /tpservice
+      VolumePath: /logs/tpservice
