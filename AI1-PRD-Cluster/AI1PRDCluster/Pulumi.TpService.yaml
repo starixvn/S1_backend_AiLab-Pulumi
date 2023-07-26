@@ -15,7 +15,7 @@ config:
     Stack: TpService-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
     Groups:
     - PrivateTargetGroupArn
-  AI1PRDCluster:Version: f46b174
+  AI1PRDCluster:Version: 28d724c
   AI1PRDCluster:Volumes:
     - ContainerPath: /tpservice
       VolumePath: /logs/tpservice
