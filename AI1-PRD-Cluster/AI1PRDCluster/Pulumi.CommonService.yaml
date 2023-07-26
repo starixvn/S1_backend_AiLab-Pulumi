@@ -15,7 +15,7 @@ config:
     Stack: Common-PRD
     Groups:
     - PrivateTargetGroupArn
-  AI1PRDCluster:Version: ca6774c
+  AI1PRDCluster:Version: 28d724c
   AI1PRDCluster:Volumes:
     - ContainerPath: /common
       VolumePath: /logs/common
