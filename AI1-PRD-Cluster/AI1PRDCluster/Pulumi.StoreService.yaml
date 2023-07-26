@@ -16,3 +16,6 @@ config:
     Groups:
     - PrivateTargetGroupArn
   AI1PRDCluster:Version: f17ba0f
+  AI1PRDCluster:Volumes:
+    - ContainerPath: /storeservice
+      VolumePath: /logs/storeservice
