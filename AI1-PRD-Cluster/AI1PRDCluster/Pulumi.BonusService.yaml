@@ -16,3 +16,6 @@ config:
     Groups:
     - PrivateTargetGroupArn
   AI1PRDCluster:Version: 9ca2cdb
+  AI1PRDCluster:Volumes:
+    - ContainerPath: /bonus
+      VolumePath: /logs/bonus
