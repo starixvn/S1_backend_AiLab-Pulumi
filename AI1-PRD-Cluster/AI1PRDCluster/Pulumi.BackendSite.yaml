@@ -15,7 +15,7 @@ config:
     Stack: Admin-API-PRD #透過Pulumi Service取回EC2-TargetGroup的Output
     Groups:
     - PublicTargetGroupArn
-  AI1PRDCluster:Version: 8a4687f
+  AI1PRDCluster:Version: 81be28b
   AI1PRDCluster:Volumes:
     - ContainerPath: /backendsite
       VolumePath: /logs/backendsite
