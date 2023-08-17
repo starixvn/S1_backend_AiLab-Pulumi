@@ -1,0 +1,13 @@
+config:
+  VPC-NatGateway:NamePrefix: nova88
+  VPC-NatGateway:VpcId: vpc-10889e77
+  VPC-NatGateway:NatGateways:
+    - Name: ngw-1a
+      Subnet: subnet-public1a
+      Eip: eipalloc-0bbd723d190c6850d
+    - Name: ngw-1b
+      Subnet: subnet-public1b
+      Eip: eipalloc-03ec0262a5820fcf9
+    - Name: ngw-1c
+      Subnet: subnet-public1c
+      Eip: eipalloc-02735972f8f945672

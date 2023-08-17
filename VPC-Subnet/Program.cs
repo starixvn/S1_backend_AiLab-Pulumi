@@ -16,9 +16,9 @@ return await Deployment.RunAsync(() =>
         var subnet = new Subnet(name, new SubnetArgs
         {
             Tags = new InputMap<string>
-                    {
-                        { "Name", name }
-                    },
+            {
+                { "Name", name }
+            },
             VpcId = vpcId,
             AvailabilityZone = item.AvailabilityZone,
             CidrBlock = item.Cidr
