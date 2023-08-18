@@ -27,7 +27,14 @@
         /// Pulumi的EC2-LoadBalancer專案名稱
         /// </summary>
         public string LoadBalancerProject { get; } = "EC2-LoadBalancer";
-
+        /// <summary>
+        /// Pulumi的VPC-Subnet專案名稱
+        /// </summary>
+        public string SubnetProject { get; } = "VPC-Subnet";
+        /// <summary>
+        /// Pulumi的VPC-NatGateway專案名稱
+        /// </summary>
+        public string NatGatewayProject { get; } = "VPC-NatGateway";
         /// <summary>
         /// Pulumi的EC2-TargetGroup專案名稱
         /// </summary>

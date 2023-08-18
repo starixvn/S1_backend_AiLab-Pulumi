@@ -1,6 +1,7 @@
 config:
   VPC-NatGateway:NamePrefix: nova88
   VPC-NatGateway:VpcId: vpc-10889e77
+  VPC-NatGateway:Stack: Nova88
   VPC-NatGateway:NatGateways:
     - Name: ngw-1a
       Subnet: subnet-public1a

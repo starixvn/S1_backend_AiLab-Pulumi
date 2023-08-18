@@ -1,0 +1,25 @@
+config:
+  VPC-RouteTables:NamePrefix: nova88
+  VPC-RouteTables:VpcId: vpc-10889e77
+  VPC-NatGateway:Stack: Nova88
+  VPC-RouteTables:RouteTables:
+    - Type: public
+      Name: rt-public
+      Rules:
+      - Cidr: 0.0.0.0/0
+        Target: igw-e39ea887
+    - Type: private
+      Name: rt-private1a
+      Rules:
+      - Cidr: 0.0.0.0/0
+        Target: ngw-1a
+    - Type: private
+      Name: rt-private1b
+      Rules:
+      - Cidr: 0.0.0.0/0
+        Target: ngw-1b
+    - Type: private
+      Name: rt-private1c
+      Rules:
+      - Cidr: 0.0.0.0/0
+        Target: ngw-1c

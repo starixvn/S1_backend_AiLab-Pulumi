@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AILabConfig;
 using Pulumi;
 using Pulumi.Aws.Ec2;
 
@@ -11,9 +12,10 @@ return await Deployment.RunAsync(() =>
 
     var outPut = new Dictionary<string, object?>();
     var natGateways = config.GetObject<IEnumerable<NatGatewayObject>>("NatGateways");
+    var awsConfig = new AILabAwsConfig("PRD");
+    var reference = new StackReference($"{awsConfig.PulumiOrganization}/{awsConfig.SubnetProject}/{stack}");
     foreach (var item in natGateways)
     {
-        var reference = new StackReference($"ailab-backend/VPC-Subnet/{stack}");
         var subnetId = reference.RequireOutput(item.Subnet).Apply(v => v.ToString());
 
         var name = $"{prefix}-{item.Name}";
