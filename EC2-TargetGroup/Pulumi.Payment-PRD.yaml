@@ -1,5 +1,0 @@
-config:
-  EC2-TargetGroup:ContainerPort: "59159"
-  EC2-TargetGroup:ENV: PRD
-  EC2-TargetGroup:LoadBalancerStack: PRD
-  EC2-TargetGroup:NamePrefix: AI1
