@@ -1,10 +1,10 @@
 config:
   Geoip:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   Geoip:ContainerPort: "55688"
-  Geoip:Cpu: "1024"
+  Geoip:Cpu: "256"
   Geoip:DesiredCount: "1"
   Geoip:ENV: DEV
-  Geoip:Memory: "1024" 
+  Geoip:Memory: "256" 
   Geoip:NamePrefix: AI1
   Geoip:ServiceType: API
   Geoip:TargetGroupStack: Geoip-DEV #透過Pulumi Service取回EC2-TargetGroup的Output
