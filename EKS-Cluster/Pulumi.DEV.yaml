@@ -1,0 +1,4 @@
+config:
+  EKS-Cluster:ENV: DEV
+  EKS-Cluster:NamePrefix: ailab
+  EKS-Cluster:ClusterName: nova
