@@ -28,13 +28,31 @@ return await Deployment.RunAsync(() =>
 
     // Create a fargate Profile for the EKS cluster.
     var podExecutionRoleArn = config.Require("PodExecutionRoleArn");
-    var farGateProfile = new Eks.FargateProfile("farGateProfile", new Eks.FargateProfileArgs()
+    var farGateProfile = new Eks.FargateProfile("fargateProfile", new Eks.FargateProfileArgs()
     {
         ClusterName = eksCluster.Name,
-        FargateProfileName = "farGateProfile",
+        FargateProfileName = "fargateProfile",
         PodExecutionRoleArn = podExecutionRoleArn,
         SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
-        Selectors = { new FargateProfileSelectorArgs { Namespace = $"{config.Require("ClusterName")}-{env.ToLower()}" } }
+        //Selectors = { new FargateProfileSelectorArgs { Namespace = $"{config.Require("ClusterName")}-{env.ToLower()}" } }
+        Selectors = { new FargateProfileSelectorArgs { Namespace = "default" } }
+    });
+
+    // Create CoreDNS fargate Profile for the EKS cluster.
+    var farGateProfile_CoreDNS = new Eks.FargateProfile("CoreDNS", new Eks.FargateProfileArgs()
+    {
+        ClusterName = eksCluster.Name,
+        FargateProfileName = "CoreDNS",
+        PodExecutionRoleArn = podExecutionRoleArn,
+        SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
+        Selectors = { new FargateProfileSelectorArgs
+        {
+            Namespace = "kube-system",
+            Labels = new InputMap<string>
+            {
+                { "k8s-app", "kube-dns" }
+            }
+        }}
     });
 
 });
