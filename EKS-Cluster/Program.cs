@@ -34,8 +34,18 @@ return await Deployment.RunAsync(() =>
         FargateProfileName = "fargateProfile",
         PodExecutionRoleArn = podExecutionRoleArn,
         SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
-        //Selectors = { new FargateProfileSelectorArgs { Namespace = $"{config.Require("ClusterName")}-{env.ToLower()}" } }
         Selectors = { new FargateProfileSelectorArgs { Namespace = "default" } }
+    });
+
+
+    // create awsLoadBalancerControllerProfile for the eks aws load balancer controller
+    var awsLoadBalancerControllerProfile = new Eks.FargateProfile("awsLoadBalancerControllerProfile", new Eks.FargateProfileArgs()
+    {
+        ClusterName = eksCluster.Name,
+        FargateProfileName = "awsLoadBalancerControllerProfile",
+        PodExecutionRoleArn = podExecutionRoleArn,
+        SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
+        Selectors = { new FargateProfileSelectorArgs { Namespace = "kube-system" } }
     });
 
     // Create CoreDNS fargate Profile for the EKS cluster.
