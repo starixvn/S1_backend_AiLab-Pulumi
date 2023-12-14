@@ -1,0 +1,5 @@
+config:
+  EKS-Cluster:ENV: PRD
+  EKS-Cluster:NamePrefix: ailab
+  EKS-Cluster:ClusterName: nova
+  EKS-Cluster:PodExecutionRoleArn: arn:aws:iam::761771912479:role/Ailab_nova_prd_AmazonEKSFargatePodExecutionRolePolicy
