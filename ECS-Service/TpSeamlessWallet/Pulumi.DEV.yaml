@@ -2,7 +2,7 @@ config:
   TpSeamlessWallet:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   TpSeamlessWallet:ContainerPort: "59259"
   TpSeamlessWallet:Cpu: "128"
-  TpSeamlessWallet:DesiredCount: "1"
+  TpSeamlessWallet:DesiredCount: "0"
   TpSeamlessWallet:ENV: DEV
   TpSeamlessWallet:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   TpSeamlessWallet:Memory: "128"

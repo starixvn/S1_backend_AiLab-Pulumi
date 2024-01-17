@@ -2,7 +2,7 @@ config:
   Geoip:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   Geoip:ContainerPort: "55688"
   Geoip:Cpu: "256"
-  Geoip:DesiredCount: "1"
+  Geoip:DesiredCount: "0"
   Geoip:ENV: DEV
   Geoip:Memory: "256" 
   Geoip:NamePrefix: AI1

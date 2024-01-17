@@ -2,7 +2,7 @@ config:
   Hangfire:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   Hangfire:ContainerPort: "45678"
   Hangfire:Cpu: "512" # 0.5cpu
-  Hangfire:DesiredCount: "1"
+  Hangfire:DesiredCount: "0"
   Hangfire:ENV: DEV
   Hangfire:Memory: "1024" # 1G
   Hangfire:NamePrefix: AI1

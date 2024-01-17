@@ -2,7 +2,7 @@ config:
   MemberSite:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   MemberSite:ContainerPort: "5068"
   MemberSite:Cpu: "256"
-  MemberSite:DesiredCount: "1"
+  MemberSite:DesiredCount: "0"
   MemberSite:ENV: DEV
   MemberSite:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling，沒設定會使用DesiredCount
   MemberSite:Memory: "256"

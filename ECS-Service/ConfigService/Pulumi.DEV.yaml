@@ -2,7 +2,7 @@ config:
   ConfigService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   ConfigService:ContainerPort: "7242"
   ConfigService:Cpu: "128"
-  ConfigService:DesiredCount: "1"
+  ConfigService:DesiredCount: "0"
   ConfigService:ENV: DEV
   ConfigService:Memory: "128"
   ConfigService:NamePrefix: AI1

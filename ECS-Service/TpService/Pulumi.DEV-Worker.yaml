@@ -2,7 +2,7 @@ config:
   TpService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   TpService:ContainerPort: "55996"
   TpService:Cpu: "128"
-  TpService:DesiredCount: "1"
+  TpService:DesiredCount: "0"
   TpService:ENV: DEV
   TpService:Memory: "128"
   TpService:NamePrefix: AI1

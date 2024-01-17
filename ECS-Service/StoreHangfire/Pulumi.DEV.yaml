@@ -2,7 +2,7 @@ config:
   StoreHangfire:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   StoreHangfire:ContainerPort: "51003"
   StoreHangfire:Cpu: "128" # 0.5cpu
-  StoreHangfire:DesiredCount: "1"
+  StoreHangfire:DesiredCount: "0"
   StoreHangfire:ENV: DEV
   StoreHangfire:Memory: "128" # 1G
   StoreHangfire:NamePrefix: AI1

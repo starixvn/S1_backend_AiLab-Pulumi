@@ -2,7 +2,7 @@ config:
   CommonService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   CommonService:ContainerPort: "59359"
   CommonService:Cpu: "128"
-  CommonService:DesiredCount: "1"
+  CommonService:DesiredCount: "0"
   CommonService:ENV: DEV
   CommonService:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   CommonService:Memory: "128"

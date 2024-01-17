@@ -2,7 +2,7 @@ config:
   Store:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   Store:ContainerPort: "51001"
   Store:Cpu: "128" # 0.5cpu
-  Store:DesiredCount: "1"
+  Store:DesiredCount: "0"
   Store:ENV: DEV
   Store:Memory: "128" # 1G
   Store:NamePrefix: AI1

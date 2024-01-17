@@ -2,7 +2,7 @@ config:
   PaymentService:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   PaymentService:ContainerPort: "59159"
   PaymentService:Cpu: "128"
-  PaymentService:DesiredCount: "1"
+  PaymentService:DesiredCount: "0"
   PaymentService:ENV: DEV
   PaymentService:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   PaymentService:Memory: "128"

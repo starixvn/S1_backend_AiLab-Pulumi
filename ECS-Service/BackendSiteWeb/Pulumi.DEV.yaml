@@ -2,7 +2,7 @@ config:
   BackendSiteWeb:ClusterStack: DEV #透過Pulumi Service取回ECS-Cluster的Output
   BackendSiteWeb:ContainerPort: "5071"
   BackendSiteWeb:Cpu: "256"
-  BackendSiteWeb:DesiredCount: "1"
+  BackendSiteWeb:DesiredCount: "0"
   BackendSiteWeb:ENV: DEV
   BackendSiteWeb:MaxCapacity: "3" #大於DesiredCount會建立AutoScaling
   BackendSiteWeb:Memory: "256"
