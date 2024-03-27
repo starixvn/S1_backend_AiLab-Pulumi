@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "ECS-Service-Deploy": {
-      "commandName": "Project",
-      "commandLineArgs": "DEV Hangfire 317a586"
-    }
-  }
-}

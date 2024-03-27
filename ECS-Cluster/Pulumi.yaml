@@ -1,7 +1,0 @@
-name: ECS-Cluster
-description: Create ECS-Cluster.
-runtime: dotnet
-
-config:
- aws:region: ap-southeast-1
-  

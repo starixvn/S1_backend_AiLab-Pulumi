@@ -1,3 +1,0 @@
-config:
-  ECS-Cluster:NamePrefix: AI1
-  ECS-Cluster:ENV: DEV

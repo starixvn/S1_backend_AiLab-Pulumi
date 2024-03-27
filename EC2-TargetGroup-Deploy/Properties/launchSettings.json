@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "EC2-TargetGroup-Deploy": {
-      "commandName": "Project",
-      "commandLineArgs": "Config-DEV"
-    }
-  }
-}

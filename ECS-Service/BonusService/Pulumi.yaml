@@ -1,8 +1,0 @@
-name: BonusService
-description: Deploy BonusService to ECS-Cluster.
-runtime: dotnet
-
-config:
- aws:region: ap-southeast-1
- BonusService:ServiceName: Bonus
- BonusService:ImagePath: bonusservice/bonusservice
