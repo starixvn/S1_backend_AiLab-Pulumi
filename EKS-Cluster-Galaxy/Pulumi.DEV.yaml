@@ -1,0 +1,8 @@
+config:
+  EKS-Cluster:ClusterName: galaxy
+  EKS-Cluster:ENV: DEV
+  EKS-Cluster:NamePrefix: ailab
+  EKS-Cluster:PodExecutionRoleArn: arn:aws:iam::420163908753:role/Ailab_galaxy_dev_AmazonEKSFargatePodExecutionRolePolicy #by cluster
+  aws:accessKey: AKIAWDU5YOSI6UDB6346
+  aws:region: ap-southeast-1
+  aws:secretKey: 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
