@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AILab.Core", "AILab.Core\AI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKS-Cluster", "EKS-Cluster\EKS-Cluster.csproj", "{EFFEA8C9-6E8C-489D-B4E1-318346DB9DC7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKS-Cluster-Galaxy", "EKS-Cluster-Galaxy\EKS-Cluster-Galaxy.csproj", "{DC7F54E2-02CA-4F5B-BE9B-33096FB444F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Galaxy.Config", "Galaxy.Config\Galaxy.Config.csproj", "{EADB12E5-6FE9-43C2-B5DB-A960CE7BA384}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{EFFEA8C9-6E8C-489D-B4E1-318346DB9DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFFEA8C9-6E8C-489D-B4E1-318346DB9DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFFEA8C9-6E8C-489D-B4E1-318346DB9DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC7F54E2-02CA-4F5B-BE9B-33096FB444F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC7F54E2-02CA-4F5B-BE9B-33096FB444F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC7F54E2-02CA-4F5B-BE9B-33096FB444F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC7F54E2-02CA-4F5B-BE9B-33096FB444F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EADB12E5-6FE9-43C2-B5DB-A960CE7BA384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EADB12E5-6FE9-43C2-B5DB-A960CE7BA384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EADB12E5-6FE9-43C2-B5DB-A960CE7BA384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EADB12E5-6FE9-43C2-B5DB-A960CE7BA384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
