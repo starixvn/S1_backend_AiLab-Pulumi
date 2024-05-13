@@ -8,7 +8,8 @@ return await Deployment.RunAsync(() =>
     // Get Config
     var config = new Config();
     var env = config.Require("ENV");
-    var vpcConfig = new AILabEKSVpcConfig(env);
+    var brand = config.Require("ClusterName");
+    var vpcConfig = new AILabEKSVpcConfig(env, brand);
     var namePrefix = config.Require("NamePrefix");
     var clusterName = $"{namePrefix}-{config.Require("ClusterName")}-{env.ToLower()}";
     var clusterRoleArn = config.Require("ClusterRoleArn");
