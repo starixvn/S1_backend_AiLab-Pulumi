@@ -29,28 +29,29 @@ return await Deployment.RunAsync(() =>
 
     // Create a fargate Profile for the EKS cluster.
     var podExecutionRoleArn = config.Require("PodExecutionRoleArn");
-    var farGateProfile = new Eks.FargateProfile("fargateProfile", new Eks.FargateProfileArgs()
+
+    
+    var @default = new Eks.FargateProfile("default", new Eks.FargateProfileArgs()
     {
         ClusterName = eksCluster.Name,
-        FargateProfileName = "fargateProfile",
+        FargateProfileName = "default",
         PodExecutionRoleArn = podExecutionRoleArn,
         SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
         Selectors = { new FargateProfileSelectorArgs { Namespace = "default" } }
     });
 
-
-    // create awsLoadBalancerControllerProfile for the eks aws load balancer controller
-    var awsLoadBalancerControllerProfile = new Eks.FargateProfile("awsLoadBalancerControllerProfile", new Eks.FargateProfileArgs()
+    
+    var kubeSystem = new Eks.FargateProfile("Kube_system", new Eks.FargateProfileArgs()
     {
         ClusterName = eksCluster.Name,
-        FargateProfileName = "awsLoadBalancerControllerProfile",
+        FargateProfileName = "Kube_system",
         PodExecutionRoleArn = podExecutionRoleArn,
         SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
         Selectors = { new FargateProfileSelectorArgs { Namespace = "kube-system" } }
     });
 
-    // Create CoreDNS fargate Profile for the EKS cluster.
-    var farGateProfile_CoreDNS = new Eks.FargateProfile("CoreDNS", new Eks.FargateProfileArgs()
+    // Kube-system & label 
+    var coreDns = new Eks.FargateProfile("CoreDNS", new Eks.FargateProfileArgs()
     {
         ClusterName = eksCluster.Name,
         FargateProfileName = "CoreDNS",
@@ -66,8 +67,25 @@ return await Deployment.RunAsync(() =>
         }}
     });
 
-});
+    var yashbet = new Eks.FargateProfile("Yashbet", new Eks.FargateProfileArgs()
+    {
+        ClusterName = eksCluster.Name,
+        FargateProfileName = "Yashbet",
+        PodExecutionRoleArn = podExecutionRoleArn,
+        SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
+        Selectors = { new FargateProfileSelectorArgs { Namespace = "yashbet" } }
+    });
 
+    
+    var agentsite = new Eks.FargateProfile("AgentSite", new Eks.FargateProfileArgs()
+    {
+        ClusterName = eksCluster.Name,
+        FargateProfileName = "AgentSite",
+        PodExecutionRoleArn = podExecutionRoleArn,
+        SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
+        Selectors = { new FargateProfileSelectorArgs { Namespace = "agentsite" } }
+    });
+});
 
 
 

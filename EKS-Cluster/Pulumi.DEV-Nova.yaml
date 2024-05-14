@@ -1,0 +1,8 @@
+config:
+  EKS-Cluster:ENV: DEV
+  EKS-Cluster:NamePrefix: ailab
+  EKS-Cluster:ClusterName: nova
+  EKS-Cluster:PodExecutionRoleArn: arn:aws:iam::761771912479:role/Ailab_nova_dev_AmazonEKSFargatePodExecutionRolePolicy #by cluster
+  aws:region: ap-southeast-1
+  EKS-Cluster:ClusterRoleArn: arn:aws:iam::761771912479:role/AILab-EKS-Clusters-Role
+  EKS-Cluster:PublicAccessCidrs: 0.0.0.0/0
