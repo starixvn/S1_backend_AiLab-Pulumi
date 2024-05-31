@@ -67,24 +67,24 @@ return await Deployment.RunAsync(() =>
         }}
     });
 
-    var yashbet = new Eks.FargateProfile("Yashbet", new Eks.FargateProfileArgs()
-    {
-        ClusterName = eksCluster.Name,
-        FargateProfileName = "Yashbet",
-        PodExecutionRoleArn = podExecutionRoleArn,
-        SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
-        Selectors = { new FargateProfileSelectorArgs { Namespace = "yashbet" } }
-    });
+    //var yashbet = new Eks.FargateProfile("Yashbet", new Eks.FargateProfileArgs()
+    //{
+    //    ClusterName = eksCluster.Name,
+    //    FargateProfileName = "Yashbet",
+    //    PodExecutionRoleArn = podExecutionRoleArn,
+    //    SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
+    //    Selectors = { new FargateProfileSelectorArgs { Namespace = "yashbet" } }
+    //});
 
     
-    var agentsite = new Eks.FargateProfile("AgentSite", new Eks.FargateProfileArgs()
-    {
-        ClusterName = eksCluster.Name,
-        FargateProfileName = "AgentSite",
-        PodExecutionRoleArn = podExecutionRoleArn,
-        SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
-        Selectors = { new FargateProfileSelectorArgs { Namespace = "agentsite" } }
-    });
+    //var agentsite = new Eks.FargateProfile("AgentSite", new Eks.FargateProfileArgs()
+    //{
+    //    ClusterName = eksCluster.Name,
+    //    FargateProfileName = "AgentSite",
+    //    PodExecutionRoleArn = podExecutionRoleArn,
+    //    SubnetIds = { vpcConfig.PrivateSubnets_EKSFargate },
+    //    Selectors = { new FargateProfileSelectorArgs { Namespace = "agentsite" } }
+    //});
 });
 
 
